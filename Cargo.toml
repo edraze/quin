@@ -4,3 +4,8 @@ version = "0.0.1"
 edition = "2021"
 
 [dependencies]
+egui_backend = { version = "0.2.0" }
+egui_window_glfw_passthrough = { version = "0.2.1" }
+egui_render_wgpu = { version = "0.3.0" }
+rdev = "0.5.2"
+tokio = { version = "1.27.0", features = ["full"] }
