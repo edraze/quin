@@ -5,10 +5,13 @@ use std::sync::mpsc::Receiver;
 use std::thread;
 use rdev::{Event, EventType};
 
-mod poc;
+mod poc; // todo remove
 mod core;
-mod handlers;
+mod common;
+mod registry;
 mod translator;
+mod config;
+mod overlay;
 
 pub fn run_application() {
     let receiver = run_input_listener();
@@ -20,7 +23,7 @@ fn run_input_listener() -> Receiver<Event> {
     thread::spawn(move || {
         rdev::listen(move |event| { // todo refactor pattern matching
             let Event { time: _, name: _, event_type } = &event;
-            if let EventType::KeyPress(key) | EventType::KeyRelease(key) = event_type { // todo remove this filtering
+            if let EventType::KeyPress(_) | EventType::KeyRelease(_) = event_type { // todo remove this filtering
                 send_channel
                     .send(event)
                     .unwrap_or_else(|e| println!("Could not send event {:?}", e));
@@ -31,15 +34,17 @@ fn run_input_listener() -> Receiver<Event> {
 }
 
 fn run_app_loop(input_receiver: Receiver<Event>) {
-    let handlers_registry = handlers::Registry::default();
     let state = core::State {};
-    let mut executor = core::Executor::new(handlers_registry.get_handlers(), state);
-    let mut translator = translator::Translator{};
-    loop {
+    let handlers = registry::get_handlers();
+    let mut executor = core::Executor::new(handlers, state);
+    let mut translator = translator::Translator::default();
+
+    overlay::run(move |gui_ctx| {
         if let Ok(event) = input_receiver.try_recv() {
             let labels = translator.translate(event);
             labels.iter()
                 .for_each(|label| executor.run(label))
         }
-    }
+        executor.draw(gui_ctx);
+    });
 }
