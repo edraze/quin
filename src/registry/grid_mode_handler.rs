@@ -6,7 +6,7 @@ use crate::common;
 use crate::core::{Bind, Binding, Draw, Handler, Label, State};
 
 const GM_ACTIVATE: &str = "gm_activate";
-const POINT_KEY_LETTERS: [&str; 26] = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]; // todo replace by range
+const POINT_KEY_LETTERS: [&str; 21] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", "r", "s", "t", "u", /*"v",*/ "w", "x", "y", "z"]; // todo replace by range
 
 pub struct GridModeHandler {
     is_mode_active: bool,
