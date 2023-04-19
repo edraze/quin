@@ -1,11 +1,9 @@
-#![deny(unsafe_code)]
-
 use std::sync::mpsc;
 use std::sync::mpsc::Receiver;
 use std::thread;
 use rdev::{Event, EventType};
 
-mod poc; // todo remove
+mod draft; // todo remove
 mod core;
 mod common;
 mod registry;
