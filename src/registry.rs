@@ -3,8 +3,10 @@ use once_cell::sync::Lazy;
 use grid_mode_handler::GridModeHandler;
 
 use crate::core::{Binding, Handler};
+use crate::registry::precise_mode_handler::PreciseModeHandler;
 
 mod grid_mode_handler;
+mod precise_mode_handler;
 
 pub fn get_handlers() -> Arc<Vec<Mutex<Box<dyn Handler + Send>>>> {
     REGISTRY.lock()
@@ -27,7 +29,8 @@ struct Registry {
 impl Default for Registry {
     fn default() -> Self {
         let handlers: Arc<Vec<Mutex<Box<dyn Handler + Send>>>> = Arc::new(vec![
-            Mutex::new(Box::<GridModeHandler>::default())
+            Mutex::new(Box::<GridModeHandler>::default()),
+            Mutex::new(Box::<PreciseModeHandler>::default()),
         ]);
         Registry { handlers }
     }
