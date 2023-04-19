@@ -1,6 +1,7 @@
 use enigo::{Enigo, MouseControllable};
 use crate::core::{Bind, Binding, Draw, Handler, Label, State};
 
+const PM_TOGGLE: &str = "pm_toggle";
 const PM_ACTIVATE: &str = "pm_activate";
 const PM_DEACTIVATE: &str = "pm_deactivate";
 const PM_MOVE_LEFT: &str = "pm_move_left";
@@ -19,8 +20,9 @@ pub struct PreciseModeHandler {
 impl Bind for PreciseModeHandler {
     fn get_bindings(&self) -> Vec<Binding> {
         vec![
-            Binding { label: PM_ACTIVATE.to_string(), default_input: "PAltRight".to_string() },
-            Binding { label: PM_DEACTIVATE.to_string(), default_input: "RAltRight".to_string() },
+            Binding { label: PM_ACTIVATE.to_string(), default_input: "RAltRight".to_string() },
+            Binding { label: PM_ACTIVATE.to_string(), default_input: "PAltLeft".to_string() },
+            Binding { label: PM_DEACTIVATE.to_string(), default_input: "RAltLeft".to_string() },
             Binding { label: PM_MOVE_LEFT.to_string(), default_input: "PKeyH".to_string() },
             Binding { label: PM_MOVE_RIGHT.to_string(), default_input: "PKeyL".to_string() },
             Binding { label: PM_MOVE_TOP.to_string(), default_input: "PKeyK".to_string() },
@@ -35,6 +37,7 @@ impl Handler for PreciseModeHandler {
     fn execute(&mut self, label: &Label, _: &mut State) {
         if let Label::Keys(label) = label {
             match label.as_str() {
+                PM_TOGGLE => self.toggle(),
                 PM_ACTIVATE => self.activate_mode(),
                 PM_DEACTIVATE => self.deactivate_mode(),
 
@@ -42,20 +45,23 @@ impl Handler for PreciseModeHandler {
                 PM_MOVE_RIGHT => if self.is_mode_active { self.move_cursor_right_relatively(CURSOR_SPEED) },
                 PM_MOVE_TOP => if self.is_mode_active { self.move_cursor_top_relatively(CURSOR_SPEED) },
                 PM_MOVE_BOTTOM => if self.is_mode_active { self.move_cursor_botttom_relatively(CURSOR_SPEED) },
-                _ => return
+                _ => {}
             }
-
         }
     }
 }
 
 impl PreciseModeHandler {
     fn activate_mode(&mut self) {
-        self.is_mode_active = true
+        self.is_mode_active = true;
     }
 
     fn deactivate_mode(&mut self) {
-        self.is_mode_active = false
+        self.is_mode_active = false;
+    }
+
+    fn toggle(&mut self) {
+        self.is_mode_active = !self.is_mode_active;
     }
 
     fn move_cursor_left_relatively(&mut self, speed: i32) {
