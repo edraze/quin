@@ -1,2 +1,2 @@
-mod hal_poc;
-mod grid_mode_poc;
+pub mod hal_poc;
+pub mod grid_mode_poc;

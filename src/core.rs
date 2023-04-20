@@ -50,7 +50,28 @@ impl Executor {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
+pub enum Event {
+    KeyPress(Key),
+    KeyRelease(Key),
+}
+
+impl fmt::Display for Event {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Event::KeyPress(key) => write!(f, "P{key}"),
+            Event::KeyRelease(key) => write!(f, "R{key}")
+        }
+    }
+}
+
+impl fmt::Display for Key {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+#[derive(Debug, Eq, PartialEq)]
 pub enum Key {
     AltLeft,
     AltRight,
@@ -158,10 +179,4 @@ pub enum Key {
     KpDelete,
     Function,
     Unknown,
-}
-
-impl fmt::Display for Key {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}", self)
-    }
 }

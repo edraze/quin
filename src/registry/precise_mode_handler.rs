@@ -1,8 +1,10 @@
 use enigo::{Enigo, MouseControllable};
+use crate::common::input_interceptor;
+use crate::common::input_interceptor::Filter;
 use crate::core::{Bind, Binding, Draw, Handler, Label, State};
 
 const PM_TOGGLE: &str = "pm_toggle";
-const PM_ACTIVATE: &str = "pm_activate";
+pub const PM_ACTIVATE: &str = "pm_activate";
 const PM_DEACTIVATE: &str = "pm_deactivate";
 const PM_MOVE_LEFT: &str = "pm_move_left";
 const PM_MOVE_RIGHT: &str = "pm_move_right";
@@ -20,7 +22,7 @@ pub struct PreciseModeHandler {
 impl Bind for PreciseModeHandler {
     fn get_bindings(&self) -> Vec<Binding> {
         vec![
-            Binding { label: PM_ACTIVATE.to_string(), default_input: "RAltRight".to_string() },
+            Binding { label: PM_TOGGLE.to_string(), default_input: "RAltRight".to_string() },
             Binding { label: PM_ACTIVATE.to_string(), default_input: "PAltLeft".to_string() },
             Binding { label: PM_DEACTIVATE.to_string(), default_input: "RAltLeft".to_string() },
             Binding { label: PM_MOVE_LEFT.to_string(), default_input: "PKeyH".to_string() },
@@ -37,7 +39,7 @@ impl Handler for PreciseModeHandler {
     fn execute(&mut self, label: &Label, _: &mut State) {
         if let Label::Keys(label) = label {
             match label.as_str() {
-                PM_TOGGLE => self.toggle(),
+                PM_TOGGLE => self.toggle_mode(),
                 PM_ACTIVATE => self.activate_mode(),
                 PM_DEACTIVATE => self.deactivate_mode(),
 
@@ -60,8 +62,14 @@ impl PreciseModeHandler {
         self.is_mode_active = false;
     }
 
-    fn toggle(&mut self) {
-        self.is_mode_active = !self.is_mode_active;
+    fn toggle_mode(&mut self) {
+        if self.is_mode_active {
+            input_interceptor::remove_filter(Filter::BlockAll);
+            self.deactivate_mode();
+        } else {
+            input_interceptor::filter(Filter::BlockAll);
+            self.activate_mode();
+        }
     }
 
     fn move_cursor_left_relatively(&mut self, speed: i32) {

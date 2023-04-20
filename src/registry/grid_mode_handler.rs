@@ -3,9 +3,13 @@ use egui_backend::egui;
 use egui_backend::egui::{Color32, Context, FontFamily, FontId, Pos2, Ui};
 use rdev::EventType;
 use crate::common;
+use crate::common::input_interceptor;
+use crate::common::input_interceptor::Filter;
 use crate::core::{Bind, Binding, Draw, Handler, Label, State};
+use crate::registry::mb_emulation_handler;
+use crate::registry::precise_mode_handler;
 
-const GM_ACTIVATE: &str = "gm_activate";
+pub const GM_ACTIVATE: &str = "gm_activate";
 const POINT_KEY_LETTERS: [&str; 21] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", "r", "s", "t", "u", /*"v",*/ "w", "x", "y", "z"]; // todo replace by range
 
 pub struct GridModeHandler {
@@ -30,7 +34,7 @@ impl Bind for GridModeHandler {
     fn get_bindings(&self) -> Vec<Binding> {
         let mut bindings: Vec<Binding> = self.points.keys()
             .map(|label| {
-                let default_input = common::keys::string_to_buffer(label);
+                let default_input = common::keys::string_to_event_buffer(label);
                 Binding { label: label.to_string(), default_input }
             })
             .collect();
@@ -53,10 +57,13 @@ impl Handler for GridModeHandler {
     fn execute(&mut self, label: &Label, _: &mut State) {
         if let Label::Keys(label) = label {
             if label.eq(GM_ACTIVATE) {
-                self.is_mode_active = !self.is_mode_active;
-            }
-            if self.is_mode_active {
-                if let Some(Point { x, y }) = self.points.get(label) {
+                self.toggle_mode();
+            } else if self.is_mode_active {
+                if label.eq(precise_mode_handler::PM_ACTIVATE) ||
+                    label.eq(mb_emulation_handler::MB_ACTIVATE) ||
+                    label.eq(mb_emulation_handler::MB_LEFT) {
+                    self.toggle_mode();
+                } else if let Some(Point { x, y }) = self.points.get(label) {
                     rdev::simulate(&EventType::MouseMove { x: *x as f64, y: *y as f64 }).unwrap();
                 }
             }
@@ -65,6 +72,16 @@ impl Handler for GridModeHandler {
 }
 
 impl GridModeHandler {
+    fn toggle_mode(&mut self) {
+        if self.is_mode_active {
+            input_interceptor::remove_filter(Filter::BlockAll);
+            self.is_mode_active = false;
+        } else {
+            input_interceptor::filter(Filter::BlockAll);
+            self.is_mode_active = true;
+        }
+    }
+
     fn draw_grid(&self, gui_ctx: &Context) {
         let panel_frame = egui::Frame {
             fill: Color32::TRANSPARENT,

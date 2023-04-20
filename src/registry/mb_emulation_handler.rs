@@ -1,11 +1,13 @@
 use rdev::Button::{Left, Right};
 use rdev::{Button, EventType};
+use crate::common::input_interceptor;
+use crate::common::input_interceptor::Filter;
 use crate::core::{Bind, Binding, Draw, Handler, Label, State};
 
 const MB_TOGGLE: &str = "mb_toggle";
-const MB_ACTIVATE: &str = "mb_activate";
+pub const MB_ACTIVATE: &str = "mb_activate";
 const MB_DEACTIVATE: &str = "mb_deactivate";
-const MB_LEFT: &str = "mb_left";
+pub const MB_LEFT: &str = "mb_left";
 const MB_RIGHT: &str = "mb_right";
 const MB_SCROLL_UP: &str = "mb_scroll_up";
 const MB_SCROLL_DOWN: &str = "mb_scroll_down";
@@ -38,7 +40,7 @@ impl Handler for MButtonsEmulationHandler {
     fn execute(&mut self, label: &Label, _: &mut State) {
         if let Label::Keys(label) = label {
             match label.as_str() {
-                MB_TOGGLE => self.toggle(),
+                MB_TOGGLE => self.toggle_mode(),
                 MB_ACTIVATE => self.activate_mode(),
                 MB_DEACTIVATE => self.deactivate_mode(),
 
@@ -63,12 +65,13 @@ impl MButtonsEmulationHandler {
         self.toggle_drag_and_drop();
     }
 
-    fn toggle(&mut self) {
+    fn toggle_mode(&mut self) {
         if self.is_mode_active {
-            self.is_mode_active = false;
-            self.toggle_drag_and_drop();
+            input_interceptor::remove_filter(Filter::BlockAll);
+            self.deactivate_mode();
         } else {
-            self.is_mode_active = true;
+            input_interceptor::filter(Filter::BlockAll);
+            self.activate_mode();
         }
     }
 

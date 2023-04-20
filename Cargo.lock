@@ -1067,6 +1067,7 @@ dependencies = [
  "serde",
  "sysinfo",
  "toml",
+ "winapi",
  "windows",
 ]
 

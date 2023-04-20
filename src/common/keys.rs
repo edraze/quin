@@ -1,4 +1,4 @@
-pub fn string_to_buffer(string: &str) -> String {
+pub fn string_to_event_buffer(string: &str) -> String {
     string.chars()
         .map(char_to_buffer)
         .collect()
