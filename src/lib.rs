@@ -1,11 +1,10 @@
-#![deny(unsafe_code)]
-
 use std::sync::mpsc;
 use std::sync::mpsc::Receiver;
 use std::thread;
-use rdev::{Event, EventType};
+use crate::common::input_interceptor;
+use crate::core::Event;
 
-mod poc; // todo remove
+mod draft;// todo remove
 mod core;
 mod common;
 mod registry;
@@ -21,14 +20,11 @@ pub fn run_application() {
 fn run_input_listener() -> Receiver<Event> {
     let (send_channel, receive_channel) = mpsc::channel();
     thread::spawn(move || {
-        rdev::listen(move |event| { // todo refactor pattern matching
-            let Event { time: _, name: _, event_type } = &event;
-            if let EventType::KeyPress(_) | EventType::KeyRelease(_) = event_type { // todo remove this filtering
-                send_channel
-                    .send(event)
-                    .unwrap_or_else(|e| println!("Could not send event {:?}", e));
-            }
-        }).expect("Could not listen");
+        input_interceptor::listen(move |event| {
+            send_channel
+                .send(event)
+                .unwrap_or_else(|e| println!("Could not send event {:?}", e));
+        })
     });
     receive_channel
 }
