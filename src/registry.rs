@@ -4,11 +4,13 @@ use grid_mode_handler::GridModeHandler;
 
 use crate::core::{Binding, Handler};
 use crate::registry::mb_emulation_handler::MButtonsEmulationHandler;
+use crate::registry::neogrid_mode_handler::NeoGridModeHandler;
 use crate::registry::precise_mode_handler::PreciseModeHandler;
 
 mod grid_mode_handler;
 mod precise_mode_handler;
 mod mb_emulation_handler;
+mod neogrid_mode_handler;
 
 pub fn get_handlers() -> Arc<Vec<Mutex<Box<dyn Handler + Send>>>> {
     REGISTRY.lock()
@@ -31,7 +33,8 @@ struct Registry {
 impl Default for Registry {
     fn default() -> Self {
         let handlers: Arc<Vec<Mutex<Box<dyn Handler + Send>>>> = Arc::new(vec![
-            Mutex::new(Box::<GridModeHandler>::default()),
+            // Mutex::new(Box::<GridModeHandler>::default()), // todo deprecated, disable through config
+            Mutex::new(Box::<NeoGridModeHandler>::default()),
             Mutex::new(Box::<PreciseModeHandler>::default()),
             Mutex::new(Box::<MButtonsEmulationHandler>::default()),
         ]);

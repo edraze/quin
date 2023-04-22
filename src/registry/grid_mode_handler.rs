@@ -9,11 +9,11 @@ use crate::core::{Bind, Binding, Draw, Handler, Label, State};
 use crate::registry::mb_emulation_handler;
 use crate::registry::precise_mode_handler;
 
-pub const GM_ACTIVATE: &str = "gm_activate";
-pub const GM_CHOOSE_TOP_LEFT: &str = "gm_choose_top_left";
-pub const GM_CHOOSE_TOP_RIGHT: &str = "gm_choose_top_right";
-pub const GM_CHOOSE_BOTTOM_LEFT: &str = "gm_choose_bottom_left";
-pub const GM_CHOOSE_BOTTOM_RIGHT: &str = "gm_choose_bottom_right";
+const GM_ACTIVATE: &str = "gm_activate";
+const GM_CHOOSE_TOP_LEFT: &str = "gm_choose_top_left";
+const GM_CHOOSE_TOP_RIGHT: &str = "gm_choose_top_right";
+const GM_CHOOSE_BOTTOM_LEFT: &str = "gm_choose_bottom_left";
+const GM_CHOOSE_BOTTOM_RIGHT: &str = "gm_choose_bottom_right";
 const POINT_KEY_LETTERS: [&str; 17] = ["a", "b", "c", /*"d", "e", "f",*/ "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", /*"r",*/ "s", "t", "u", /*"v",*/ "w", "x", "y", "z"]; // todo replace by range
 
 pub struct GridModeHandler {
