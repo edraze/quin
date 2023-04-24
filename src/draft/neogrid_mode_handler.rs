@@ -7,8 +7,8 @@ use crate::common;
 use crate::common::input_interceptor;
 use crate::common::input_interceptor::Filter;
 use crate::core::{Bind, Binding, Draw, Handler, Label, State};
-use crate::registry::mb_emulation_handler;
-use crate::registry::precise_mode_handler;
+// use crate::registry::mb_emulation_handler;
+// use crate::registry::precise_mode_handler;
 
 const GRID_DENSITY: u32 = 15;
 
@@ -171,9 +171,9 @@ impl Handler for NeoGridModeHandler {
                 self.toggle_mode();
             } else if self.is_mode_active {
                 match label.as_str() {
-                    precise_mode_handler::PM_ACTIVATE |
-                    mb_emulation_handler::MB_ACTIVATE |
-                    mb_emulation_handler::MB_LEFT => self.toggle_mode(),
+                    // precise_mode_handler::PM_ACTIVATE |
+                    // mb_emulation_handler::MB_ACTIVATE |
+                    // mb_emulation_handler::MB_LEFT => self.toggle_mode(),
                     _ => {
                         if let Some(region) = &self.selected_region {
                             if let Some(point) = self.points.iter()

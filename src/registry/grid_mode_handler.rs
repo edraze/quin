@@ -1,5 +1,5 @@
 use egui_backend::egui;
-use egui_backend::egui::{Color32, Context, FontFamily, FontId, Pos2, Rect, Shape, Stroke, TextStyle, Ui};
+use egui_backend::egui::{Color32, Context, FontId, Pos2, Rect, Shape, Stroke, TextStyle, Ui};
 use egui_backend::egui::epaint::RectShape;
 use rdev::EventType;
 use crate::common;
@@ -9,59 +9,47 @@ use crate::core::{Bind, Binding, Draw, Handler, Label, State};
 use crate::registry::mb_emulation_handler;
 use crate::registry::precise_mode_handler;
 
+const PIVOT_GRID_DENSITY_PX: f32 = 20.0;
 const GM_ACTIVATE: &str = "gm_activate";
-const GM_CHOOSE_TOP_LEFT: &str = "gm_choose_top_left";
-const GM_CHOOSE_TOP_RIGHT: &str = "gm_choose_top_right";
-const GM_CHOOSE_BOTTOM_LEFT: &str = "gm_choose_bottom_left";
-const GM_CHOOSE_BOTTOM_RIGHT: &str = "gm_choose_bottom_right";
-const POINT_KEY_LETTERS: [&str; 17] = ["a", "b", "c", /*"d", "e", "f",*/ "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", /*"r",*/ "s", "t", "u", /*"v",*/ "w", "x", "y", "z"]; // todo replace by range
+const LABEL_LETTERS: [&str; 21] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", "r", "s", "t", "u", /*"v",*/ "w", "x", "y", "z"]; // todo replace by range
 
 pub struct GridModeHandler {
     is_mode_active: bool,
     points: Vec<Point>,
-    region: Region,
+    is_pivot_active: bool,
+    pivot: Pivot,
 }
 
 impl Default for GridModeHandler {
     fn default() -> Self {
-        let points = generate_points();
-        GridModeHandler { is_mode_active: false, points, region: Region::default() }
+        let points = build_points_grid();
+        GridModeHandler { is_mode_active: false, points, is_pivot_active: false, pivot: Pivot::default() }
     }
 }
 
 #[derive(Debug)]
-struct Region {
+struct Pivot {
     x: f32,
     y: f32,
     width: f32,
     height: f32,
+    density: f32,
+    points: Vec<Point>,
 }
 
-impl Default for Region {
+impl Default for Pivot {
     fn default() -> Self {
-        let (width, height) = rdev::display_size().unwrap();
-        Region { x: 0.0, y: 0.0, width: width as f32, height: height as f32 }
+        let (x, y) = (0.0, 0.0);
+        let letters_count = LABEL_LETTERS.len() as f32 - 1.0;
+        let (display_width, display_height) = rdev::display_size().unwrap();
+        let (pivot_width, pivot_height) = (display_width as f32 / letters_count, display_height as f32 / letters_count);
+        let density = PIVOT_GRID_DENSITY_PX;
+        let points = build_points_grid_for_rect(x, y, pivot_width, pivot_height, density, density);
+        Pivot { x, y, width: pivot_width, height: pivot_height, density, points }
     }
 }
 
-impl Region {
-    fn get_top_left(&self) -> Self {
-        Self { x: self.x, y: self.y, width: self.width / 2.0, height: self.height / 2.0 }
-    }
-
-    fn get_top_right(&self) -> Self {
-        Self { x: self.get_width_middle(), y: self.y, width: self.width / 2.0, height: self.height / 2.0 }
-    }
-
-    fn get_bottom_left(&self) -> Self {
-        Self { x: self.x, y: self.get_height_middle(), width: self.width / 2.0, height: self.height / 2.0 }
-    }
-
-    fn get_bottom_right(&self) -> Self {
-        let (x, y) = self.get_middle();
-        Self { x, y, width: self.width / 2.0, height: self.height / 2.0 }
-    }
-
+impl Pivot {
     fn get_width_middle(&self) -> f32 {
         self.x + self.width / 2.0
     }
@@ -82,41 +70,26 @@ impl Region {
         self.y + self.height
     }
 
-    fn is_inside(&self, point: &Point) -> bool {
-        point.x > self.x && point.x < self.get_end_x() &&
-            point.y > self.y && point.y < self.get_end_y()
+    fn draw(&self, ui: &mut Ui) {
+        for point in &self.points {
+            point.draw(ui);
+        }
     }
 
-    fn draw(&self, ui: &mut Ui) {
-        let position = Pos2 { x: self.x, y: self.y };
-        let size = (self.width, self.height);
-        let rect = Rect::from_min_size(position, size.into());
-        let stroke = Stroke::new(0.5, Color32::GREEN);
-        let rect = Shape::Rect(RectShape {
-            rect,
-            rounding: Default::default(),
-            fill: Color32::TRANSPARENT,
-            stroke,
-        });
-        ui.painter().add(rect);
+    fn update_points(&mut self) {
+        self.points = build_points_grid_for_rect(self.x, self.y, self.width, self.height, self.density, self.density);
+    }
 
-        let line = Shape::line(vec![
-            Pos2::new(self.get_width_middle(), self.y),
-            Pos2::new(self.get_width_middle(), self.get_end_y()),
-        ], stroke);
-        ui.painter().add(line);
-
-        let line = Shape::line(vec![
-            Pos2::new(self.x, self.get_height_middle()),
-            Pos2::new(self.get_end_x(), self.get_height_middle()),
-        ], stroke);
-        ui.painter().add(line);
+    fn set_position(&mut self, x: f32, y: f32) {
+        self.x = x - self.width / 2.0;
+        self.y = y - self.height / 2.0;
+        self.update_points();
     }
 }
 
 #[derive(Default, Debug)]
 struct Point {
-    key: String,
+    label: String,
     x: f32,
     y: f32,
 }
@@ -129,7 +102,7 @@ impl Point {
         painter.add(egui::epaint::CircleShape::filled(position, 1.0, Color32::RED));
 
         let galley = painter.layout(
-            self.key.clone(),
+            self.label.clone(),
             FontId::proportional(10.0),
             Color32::YELLOW,
             f32::INFINITY,
@@ -150,17 +123,15 @@ impl Point {
 impl Bind for GridModeHandler {
     fn get_bindings(&self) -> Vec<Binding> {
         let mut bindings: Vec<Binding> = self.points.iter()
+            .chain(self.pivot.points.iter())
             .map(|point| {
-                let label = point.key.clone();
+                let label = point.label.clone();
                 let default_input = common::keys::string_to_event_buffer(&label);
                 Binding { label, default_input }
             })
             .collect();
+
         bindings.push(Binding { label: GM_ACTIVATE.to_string(), default_input: "RAltRight".to_string() });
-        bindings.push(Binding { label: GM_CHOOSE_TOP_LEFT.to_string(), default_input: "RKeyE".to_string() });
-        bindings.push(Binding { label: GM_CHOOSE_TOP_RIGHT.to_string(), default_input: "RKeyR".to_string() });
-        bindings.push(Binding { label: GM_CHOOSE_BOTTOM_LEFT.to_string(), default_input: "RKeyD".to_string() });
-        bindings.push(Binding { label: GM_CHOOSE_BOTTOM_RIGHT.to_string(), default_input: "RKeyF".to_string() });
         bindings
     }
 }
@@ -168,9 +139,7 @@ impl Bind for GridModeHandler {
 impl Draw for GridModeHandler {
     fn draw(&self, gui_ctx: &Context) {
         if self.is_mode_active {
-            self.draw_grid(gui_ctx);
-        } else {
-            common::gui::init_frame(gui_ctx);
+            self.draw(gui_ctx);
         }
     }
 }
@@ -185,28 +154,7 @@ impl Handler for GridModeHandler {
                     precise_mode_handler::PM_ACTIVATE |
                     mb_emulation_handler::MB_ACTIVATE |
                     mb_emulation_handler::MB_LEFT => self.toggle_mode(),
-                    GM_CHOOSE_TOP_LEFT => {
-                        self.region = self.region.get_top_left();
-                        self.move_mouse_to_region();
-                    }
-                    GM_CHOOSE_TOP_RIGHT => {
-                        self.region = self.region.get_top_right();
-                        self.move_mouse_to_region();
-                    }
-                    GM_CHOOSE_BOTTOM_LEFT => {
-                        self.region = self.region.get_bottom_left();
-                        self.move_mouse_to_region();
-                    }
-                    GM_CHOOSE_BOTTOM_RIGHT => {
-                        self.region = self.region.get_bottom_right();
-                        self.move_mouse_to_region();
-                    }
-                    _ => {
-                        if let Some(Point { key: _, x, y }) = self.points.iter()
-                            .find(|point| point.key.eq(label)) {
-                            rdev::simulate(&EventType::MouseMove { x: *x as f64, y: *y as f64 }).unwrap();
-                        }
-                    }
+                    label => self.on_point_label(label)
                 }
             }
         }
@@ -217,7 +165,7 @@ impl GridModeHandler {
     fn toggle_mode(&mut self) {
         if self.is_mode_active {
             input_interceptor::remove_filter(Filter::BlockAll);
-            self.region = Default::default();
+            self.is_pivot_active = false;
             self.is_mode_active = false;
         } else {
             input_interceptor::filter(Filter::BlockAll);
@@ -225,7 +173,22 @@ impl GridModeHandler {
         }
     }
 
-    fn draw_grid(&self, gui_ctx: &Context) {
+    fn on_point_label(&mut self, label: &str) {
+        if self.is_pivot_active {
+            if let Some(Point { label: _, x, y }) = self.pivot.points.iter()
+                .find(|point| point.label.eq(label)) {
+                rdev::simulate(&EventType::MouseMove { x: *x as f64, y: *y as f64 }).unwrap();
+                self.is_pivot_active = false;
+            }
+        } else if let Some(Point { label: _, x, y }) = self.points.iter()
+            .find(|point| point.label.eq(label)) {
+            self.pivot.set_position(*x, *y);
+            rdev::simulate(&EventType::MouseMove { x: *x as f64, y: *y as f64 }).unwrap();
+            self.is_pivot_active = true;
+        }
+    }
+
+    fn draw(&self, gui_ctx: &Context) {
         let panel_frame = egui::Frame {
             fill: Color32::TRANSPARENT,
             rounding: 0.0.into(),
@@ -234,36 +197,43 @@ impl GridModeHandler {
             ..Default::default()
         };
 
-        egui::CentralPanel::default().frame(panel_frame).show(gui_ctx, |ui| {
-            self.region.draw(ui);
-            self.points.iter()
-                .filter(|point| self.region.is_inside(point))
-                .for_each(|point| point.draw(ui));
-        });
-    }
-
-    fn move_mouse_to_region(&self) {
-        let (x, y) = self.region.get_middle();
-        rdev::simulate(&EventType::MouseMove { x: x as f64, y: y as f64 }).unwrap();
+        egui::CentralPanel::default().frame(panel_frame).show(gui_ctx, |ui|
+            if self.is_pivot_active {
+                self.pivot.draw(ui);
+            } else {
+                self.points.iter()
+                    .for_each(|point| point.draw(ui));
+            },
+        );
     }
 }
 
-fn generate_points() -> Vec<Point> {
+fn build_points_grid() -> Vec<Point> {
+    let letters_count = LABEL_LETTERS.len() as f32 - 1.0;
+    let (pivot_width, pivot_height) = rdev::display_size().unwrap();
+    let (x_padding, y_padding) = (pivot_width as f32 / letters_count, pivot_height as f32 / letters_count);
+    let (pivot_x, pivot_y) = (x_padding / 2.0, y_padding / 2.0);
+    build_points_grid_for_rect(pivot_x, pivot_y, pivot_width as f32, pivot_height as f32, x_padding, y_padding)
+}
+
+fn build_points_grid_for_rect(x_start: f32, y_start: f32, width: f32, height: f32, x_padding: f32, y_padding: f32) -> Vec<Point> {
     let mut result = Vec::new();
+    let x_points_count = width / x_padding;
+    let y_points_count = height / y_padding;
 
-    let step = 30.0;
-    let of_set = 15.0;
-    let (w, h) = rdev::display_size().unwrap();
-    let v_dots = h / step as u64;
-    let h_dots = w / step as u64;
+    let mut y_label_iter = LABEL_LETTERS.into_iter();
+    for y_index in 0..=y_points_count as i32 {
+        let y_label = y_label_iter.next().expect("Not enough len of LABEL_LETTERS");
+        let mut x_label_iter = LABEL_LETTERS.into_iter();
+        for x_index in 0..=x_points_count as i32 {
+            let x = x_start + x_index as f32 * x_padding;
+            let y = y_start + y_index as f32 * y_padding;
 
-    let mut keys_iter = generate_keys(v_dots * h_dots).into_iter();
-    for v_index in 1..=v_dots {
-        for h_index in 1..=h_dots {
-            let key = keys_iter.next().expect("Not enough keys");
-            let x = h_index as f32 * step - of_set;
-            let y = v_index as f32 * step - of_set;
-            result.push(Point { key, x, y });
+            let x_label = x_label_iter.next().expect("Not enough len of LABEL_LETTERS");
+            let label = format!("{y_label}{x_label}");
+
+            let point = Point { x, y, label };
+            result.push(point);
         }
     }
     result
@@ -274,7 +244,7 @@ fn generate_keys(size: u64) -> Vec<String> {
         let mut i = size;
         let mut new_generation = Vec::new();
         for source_key in &source_set {
-            for letter in POINT_KEY_LETTERS {
+            for letter in LABEL_LETTERS {
                 let new_key = format!("{source_key}{letter}");
                 new_generation.push(new_key);
                 i -= 1;
@@ -290,10 +260,8 @@ fn generate_keys(size: u64) -> Vec<String> {
         new_generation
     }
 
-    let mut source_set = POINT_KEY_LETTERS
+    let source_set = LABEL_LETTERS
         .map(|letter| letter.to_string())
         .to_vec();
-    let generated = generate_key_set(size - source_set.len() as u64, source_set.clone());
-    source_set.extend(generated);
-    source_set
+    generate_key_set(size, source_set)
 }

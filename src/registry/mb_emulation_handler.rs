@@ -95,9 +95,9 @@ fn emulate(button: Button) {
 }
 
 fn scroll_up() {
-    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: -1 }).unwrap();
+    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: -2 }).unwrap();
 }
 
 fn scroll_down() {
-    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: 1 }).unwrap();
+    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: 2 }).unwrap();
 }
