@@ -50,26 +50,6 @@ impl Default for Pivot {
 }
 
 impl Pivot {
-    fn get_width_middle(&self) -> f32 {
-        self.x + self.width / 2.0
-    }
-
-    fn get_height_middle(&self) -> f32 {
-        self.y + self.height / 2.0
-    }
-
-    fn get_middle(&self) -> (f32, f32) {
-        (self.get_width_middle(), self.get_height_middle())
-    }
-
-    fn get_end_x(&self) -> f32 {
-        self.x + self.width
-    }
-
-    fn get_end_y(&self) -> f32 {
-        self.y + self.height
-    }
-
     fn draw(&self, ui: &mut Ui) {
         for point in &self.points {
             point.draw(ui);
