@@ -1,14 +1,15 @@
 use std::sync::{Arc, Mutex};
+
 use once_cell::sync::Lazy;
-use grid_mode_handler::GridModeHandler;
 
 use crate::core::{Binding, Handler};
+use crate::registry::grid_mode_handler::GridModeHandler;
 use crate::registry::mb_emulation_handler::MButtonsEmulationHandler;
 use crate::registry::precise_mode_handler::PreciseModeHandler;
 
-mod grid_mode_handler;
 mod precise_mode_handler;
 mod mb_emulation_handler;
+mod grid_mode_handler;
 
 pub fn get_handlers() -> Arc<Vec<Mutex<Box<dyn Handler + Send>>>> {
     REGISTRY.lock()

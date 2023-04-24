@@ -29,10 +29,13 @@ impl Translator {
         self.save_input(event.to_string());
         let input_buffer_string = self.input_buffer.join("");
 
-        self.bindings.iter()
-            .filter(|(label, hotkeys)| input_buffer_string.ends_with(hotkeys))
-            .map(|(label, hotkeys)| Label::Keys(label.clone()))
-            .collect()
+        let labels: Vec<_> = self.bindings.iter()
+            .filter(|(_, hotkeys)| input_buffer_string.ends_with(hotkeys))
+            .map(|(label, _)| Label::Keys(label.clone()))
+            .collect();
+
+        if !labels.is_empty() { self.input_buffer.clear(); }
+        labels
     }
 
     fn save_input(&mut self, input: String) {

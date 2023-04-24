@@ -1,4 +1,4 @@
-use rdev::Button::{Left, Right};
+use rdev::Button::{Left, Middle, Right};
 use rdev::{Button, EventType};
 use crate::common::input_interceptor;
 use crate::common::input_interceptor::Filter;
@@ -9,6 +9,7 @@ pub const MB_ACTIVATE: &str = "mb_activate";
 const MB_DEACTIVATE: &str = "mb_deactivate";
 pub const MB_LEFT: &str = "mb_left";
 const MB_RIGHT: &str = "mb_right";
+const MB_MIDDLE: &str = "mb_middle";
 const MB_SCROLL_UP: &str = "mb_scroll_up";
 const MB_SCROLL_DOWN: &str = "mb_scroll_down";
 const MB_DRAG_AND_DROP: &str = "mb_drag_and_drop";
@@ -27,6 +28,7 @@ impl Bind for MButtonsEmulationHandler {
             Binding { label: MB_DEACTIVATE.to_string(), default_input: "RAltLeft".to_string() },
             Binding { label: MB_LEFT.to_string(), default_input: "PSemiColon".to_string() },
             Binding { label: MB_RIGHT.to_string(), default_input: "PQuote".to_string() },
+            Binding { label: MB_MIDDLE.to_string(), default_input: "PSlash".to_string() },
             Binding { label: MB_SCROLL_UP.to_string(), default_input: "PDot".to_string() },
             Binding { label: MB_SCROLL_DOWN.to_string(), default_input: "PComma".to_string() },
             Binding { label: MB_DRAG_AND_DROP.to_string(), default_input: "PKeyV".to_string() },
@@ -46,6 +48,7 @@ impl Handler for MButtonsEmulationHandler {
 
                 MB_LEFT => if self.is_mode_active { emulate(Left) },
                 MB_RIGHT => if self.is_mode_active { emulate(Right) },
+                MB_MIDDLE => if self.is_mode_active { emulate(Middle) },
                 MB_SCROLL_UP => if self.is_mode_active { scroll_up() },
                 MB_SCROLL_DOWN => if self.is_mode_active { scroll_down() },
                 MB_DRAG_AND_DROP => self.toggle_drag_and_drop(),
@@ -92,9 +95,9 @@ fn emulate(button: Button) {
 }
 
 fn scroll_up() {
-    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: -1 }).unwrap();
+    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: -2 }).unwrap();
 }
 
 fn scroll_down() {
-    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: 1 }).unwrap();
+    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: 2 }).unwrap();
 }
