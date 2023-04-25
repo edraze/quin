@@ -6,7 +6,7 @@ use rdev::EventType;
 use crate::common;
 use crate::common::input_interceptor;
 use crate::common::input_interceptor::Filter;
-use crate::core::{Bind, Binding, Draw, Handler, Label, State};
+use crate::core::{Bind, Binding, Draw, Handler, Identify, Label, State};
 // use crate::registry::mb_emulation_handler;
 // use crate::registry::precise_mode_handler;
 
@@ -161,6 +161,12 @@ impl Draw for NeoGridModeHandler {
         } else {
             common::gui::init_frame(gui_ctx);
         }
+    }
+}
+
+impl Identify for NeoGridModeHandler {
+    fn get_id(&self) -> String {
+        "neogrid".to_string()
     }
 }
 

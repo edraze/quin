@@ -1,5 +1,4 @@
-use std::collections::{HashMap, HashSet};
-use crate::config::ConfigLoader;
+use std::collections::{HashSet};
 use crate::core::{Event, Label};
 use crate::registry;
 
@@ -10,13 +9,11 @@ pub struct Translator {
 
 impl Default for Translator {
     fn default() -> Self {
-        let config = ConfigLoader::load_default();
         let input_buffer = Vec::with_capacity(8); // todo determinate capacity by max value from config
 
-        let mut bindings: HashSet<(String, String)> = registry::get_bindings().into_iter()
+        let bindings: HashSet<(String, String)> = registry::get_bindings().into_iter()
             .map(|binding| (binding.label, binding.default_input))
             .collect();
-        bindings.extend(config.bindings.into_iter().collect::<Vec<_>>());
 
         let mut bindings = Vec::from_iter(bindings);
         bindings.sort_by_key(|(_, input_buffer)| input_buffer.len());

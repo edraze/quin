@@ -1,2 +1,35 @@
-[bindings]
-gm_activate = "RAltRight" # todo create abstraction above key names
+[common]
+active_handlers = [
+    "grid-mode-handler",
+    "mouse-buttons-emulation-handler",
+    "precise-mode-handler"
+]
+
+#[handlers.grid-mode-handler]
+#pivot_grid_density_px = 50
+#[handlers.grid-mode-handler.bindings]
+#gm_activate = "RAltRight"
+
+#[handlers.mouse-buttons-emulation-handler]
+#scroll_speed = 50
+#[handlers.mouse-buttons-emulation-handler.bindings]
+#mb_toggle = "RAltRight"
+#mb_activate = "PAltLeft"
+#mb_deactivate = "RAltLeft"
+#mb_left = "PSemiColon"
+#mb_right = "PQuote"
+#mb_middle = "PSlash"
+#mb_scroll_up = "PDot"
+#mb_scroll_down = "PComma"
+#mb_drag_and_drop = "PKeyV"
+
+#[handlers.precise-mode-handler]
+#cursor_speed = 50
+#[handlers.precise-mode-handler.bindings]
+#pm_toggle = "RAltRight"
+#pm_activate = "PAltLeft"
+#pm_deactivate = "RAltLeft"
+#pm_move_left = "PKeyH"
+#pm_move_right = "PKeyL"
+#pm_move_top = "PKeyK"
+#pm_move_bottom = "PKeyJ"
