@@ -19,12 +19,18 @@ const PM_MOVE_BOTTOM: &str = "pm_move_bottom";
 
 #[derive(Deserialize)]
 pub struct PreciseModeConfig {
+    #[serde(default = "PreciseModeConfig::default_cursor_speed")]
     cursor_speed: i32,
+    #[serde(default = "PreciseModeConfig::default_bindings")]
     bindings: HashMap<String, String>,
 }
 
-impl Default for PreciseModeConfig {
-    fn default() -> Self {
+impl PreciseModeConfig {
+    fn default_cursor_speed() -> i32 {
+        5
+    }
+
+    fn default_bindings() -> HashMap<String, String> {
         let mut bindings = HashMap::new();
         bindings.insert(PM_TOGGLE.to_string(), KeyRelease(AltRight).to_string());
         bindings.insert(PM_ACTIVATE.to_string(), KeyPress(AltLeft).to_string());
@@ -33,8 +39,13 @@ impl Default for PreciseModeConfig {
         bindings.insert(PM_MOVE_RIGHT.to_string(), KeyPress(KeyL).to_string());
         bindings.insert(PM_MOVE_TOP.to_string(), KeyPress(KeyK).to_string());
         bindings.insert(PM_MOVE_BOTTOM.to_string(), KeyPress(KeyJ).to_string());
+        bindings
+    }
+}
 
-        PreciseModeConfig { cursor_speed: 5, bindings }
+impl Default for PreciseModeConfig {
+    fn default() -> Self {
+        Self { cursor_speed: Self::default_cursor_speed(), bindings: Self::default_bindings() }
     }
 }
 
@@ -46,8 +57,9 @@ pub struct PreciseModeHandler {
 
 impl Bind for PreciseModeHandler {
     fn get_bindings(&self) -> Vec<Binding> {
-        self.config.bindings.clone()
-            .into_iter()
+        let mut bindings = PreciseModeConfig::default_bindings();
+        bindings.extend(self.config.bindings.clone());
+        bindings.into_iter()
             .map(|(label, default_input)| Binding { label, default_input })
             .collect()
     }

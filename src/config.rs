@@ -25,6 +25,7 @@ impl ConfigLoader {
 #[derive(Debug, Deserialize)]
 pub struct Config {
     pub common: Map<String, Value>,
+    #[serde(default)]
     pub handlers: Map<String, Value>,
 }
 
@@ -43,6 +44,6 @@ impl Config {
     pub fn get_handler_config<T: Default + DeserializeOwned>(&self, handler_id: &str) -> T {
         self.handlers.get(handler_id)
             .map(|handler_config| toml::from_str(&toml::to_string(handler_config).unwrap()).unwrap())
-            .unwrap_or(T::default())
+            .unwrap_or_default()
     }
 }

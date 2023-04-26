@@ -3,7 +3,7 @@ use std::sync::{Arc, Mutex};
 use once_cell::sync::Lazy;
 use crate::config::ConfigLoader;
 
-use crate::core::{Binding, Handler, Identify};
+use crate::core::{Binding, Handler};
 use crate::registry::grid_mode_handler::GridModeHandler;
 use crate::registry::mb_emulation_handler::MButtonsEmulationHandler;
 use crate::registry::precise_mode_handler::PreciseModeHandler;
@@ -36,8 +36,8 @@ impl Default for Registry {
 
         let all_handlers: Vec<Box<dyn Handler+Send>> = vec![
             Box::new(GridModeHandler::new(config.get_handler_config(grid_mode_handler::HANDLER_ID))), // todo hide handler id inside handler
-            Box::new(PreciseModeHandler::new(config.get_handler_config(precise_mode_handler::HANDLER_ID))),
             Box::new(MButtonsEmulationHandler::new(config.get_handler_config(mb_emulation_handler::HANDLER_ID))),
+            Box::new(PreciseModeHandler::new(config.get_handler_config(precise_mode_handler::HANDLER_ID))),
         ];
 
         let handlers: Arc<Vec<Mutex<Box<dyn Handler + Send>>>> = Arc::new(all_handlers.into_iter()

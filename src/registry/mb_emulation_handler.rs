@@ -21,12 +21,18 @@ const MB_DRAG_AND_DROP: &str = "mb_drag_and_drop";
 
 #[derive(Deserialize)]
 pub struct MButtonsEmulationConfig {
+    #[serde(default = "MButtonsEmulationConfig::default_scroll_speed")]
     scroll_speed: i64,
+    #[serde(default = "MButtonsEmulationConfig::default_bindings")]
     bindings: HashMap<String, String>,
 }
 
-impl Default for MButtonsEmulationConfig {
-    fn default() -> Self {
+impl MButtonsEmulationConfig {
+    fn default_scroll_speed() -> i64 {
+        2
+    }
+
+    fn default_bindings() -> HashMap<String, String> {
         let mut bindings = HashMap::new();
         bindings.insert(MB_TOGGLE.to_string(), KeyRelease(AltRight).to_string());
         bindings.insert(MB_ACTIVATE.to_string(), KeyPress(AltLeft).to_string());
@@ -37,8 +43,13 @@ impl Default for MButtonsEmulationConfig {
         bindings.insert(MB_SCROLL_UP.to_string(), KeyPress(Dot).to_string());
         bindings.insert(MB_SCROLL_DOWN.to_string(), KeyPress(Comma).to_string());
         bindings.insert(MB_DRAG_AND_DROP.to_string(), KeyPress(KeyV).to_string());
+        bindings
+    }
+}
 
-        Self { scroll_speed: 2, bindings }
+impl Default for MButtonsEmulationConfig {
+    fn default() -> Self {
+        Self { scroll_speed: Self::default_scroll_speed(), bindings: Self::default_bindings() }
     }
 }
 
@@ -50,8 +61,9 @@ pub struct MButtonsEmulationHandler {
 
 impl Bind for MButtonsEmulationHandler {
     fn get_bindings(&self) -> Vec<Binding> {
-        self.config.bindings.clone()
-            .into_iter()
+        let mut bindings = MButtonsEmulationConfig::default_bindings();
+        bindings.extend(self.config.bindings.clone());
+        bindings.into_iter()
             .map(|(label, default_input)| Binding { label, default_input })
             .collect()
     }
@@ -126,7 +138,7 @@ fn emulate(button: Button) {
 }
 
 fn scroll_up(speed: i64) {
-    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: speed * -1 }).unwrap();
+    rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: -speed }).unwrap();
 }
 
 fn scroll_down(speed: i64) {

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use egui_backend::egui;
-use egui_backend::egui::{Color32, Context, FontId, Pos2, Shape, Stroke, TextStyle, Ui};
+use egui_backend::egui::{Color32, Context, FontId, Pos2, Shape, Stroke, Ui};
 use egui_backend::egui::epaint::RectShape;
 use rdev::EventType;
 use crate::common;
@@ -19,15 +19,27 @@ const LABEL_LETTERS: [&str; 21] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "
 
 #[derive(Deserialize)]
 pub struct GridModeConfig {
+    #[serde(default = "GridModeConfig::default_pivot_density")]
     pivot_grid_density_px: f32,
+    #[serde(default = "GridModeConfig::default_bindings")]
     bindings: HashMap<String, String>,
+}
+
+impl GridModeConfig {
+    fn default_pivot_density() -> f32 {
+        20.0
+    }
+
+    fn default_bindings() -> HashMap<String, String> {
+        let mut bindings = HashMap::new();
+        bindings.insert(GM_ACTIVATE.to_string(), KeyRelease(AltRight).to_string());
+        bindings
+    }
 }
 
 impl Default for GridModeConfig {
     fn default() -> Self {
-        let mut bindings = HashMap::new();
-        bindings.insert(GM_ACTIVATE.to_string(), KeyRelease(AltRight).to_string());
-        Self { pivot_grid_density_px: 20.0, bindings }
+        Self { pivot_grid_density_px: Self::default_pivot_density(), bindings: Self::default_bindings() }
     }
 }
 
@@ -120,7 +132,9 @@ impl Bind for GridModeHandler {
             })
             .collect();
 
-        for (label, default_input) in &self.config.bindings {
+        let mut static_bindings = GridModeConfig::default_bindings();
+        static_bindings.extend(self.config.bindings.clone());
+        for (label, default_input) in static_bindings {
             bindings.push(Binding { label: label.clone(), default_input: default_input.clone() });
         }
         bindings
