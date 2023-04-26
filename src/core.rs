@@ -15,11 +15,15 @@ pub trait Bind {
     fn get_bindings(&self) -> Vec<Binding>;
 }
 
+pub trait Identify {
+    fn get_id(&self) -> String;
+}
+
 pub trait Draw {
     fn draw(&self, _: &egui::Context) {}
 }
 
-pub trait Handler: Bind + Draw {
+pub trait Handler: Bind + Identify + Draw {
     fn execute(&mut self, label: &Label, state: &mut State);
 }
 

@@ -1,30 +1,54 @@
+use std::collections::HashMap;
 use egui_backend::egui;
-use egui_backend::egui::{Color32, Context, FontId, Pos2, Rect, Shape, Stroke, TextStyle, Ui};
+use egui_backend::egui::{Color32, Context, FontId, Pos2, Shape, Stroke, Ui};
 use egui_backend::egui::epaint::RectShape;
 use rdev::EventType;
 use crate::common;
 use crate::common::input_interceptor;
 use crate::common::input_interceptor::Filter;
-use crate::core::{Bind, Binding, Draw, Handler, Label, State};
+use crate::core::{Bind, Binding, Draw, Handler, Identify, Label, State};
 use crate::registry::mb_emulation_handler;
 use crate::registry::precise_mode_handler;
+use serde::Deserialize;
+use crate::core::Event::KeyRelease;
+use crate::core::Key::AltRight;
 
-const PIVOT_GRID_DENSITY_PX: f32 = 20.0;
+pub const HANDLER_ID: &str = "grid-mode-handler";
 const GM_ACTIVATE: &str = "gm_activate";
 const LABEL_LETTERS: [&str; 21] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", "r", "s", "t", "u", /*"v",*/ "w", "x", "y", "z"]; // todo replace by range
 
+#[derive(Deserialize)]
+pub struct GridModeConfig {
+    #[serde(default = "GridModeConfig::default_pivot_density")]
+    pivot_grid_density_px: f32,
+    #[serde(default = "GridModeConfig::default_bindings")]
+    bindings: HashMap<String, String>,
+}
+
+impl GridModeConfig {
+    fn default_pivot_density() -> f32 {
+        20.0
+    }
+
+    fn default_bindings() -> HashMap<String, String> {
+        let mut bindings = HashMap::new();
+        bindings.insert(GM_ACTIVATE.to_string(), KeyRelease(AltRight).to_string());
+        bindings
+    }
+}
+
+impl Default for GridModeConfig {
+    fn default() -> Self {
+        Self { pivot_grid_density_px: Self::default_pivot_density(), bindings: Self::default_bindings() }
+    }
+}
+
 pub struct GridModeHandler {
+    config: GridModeConfig,
     is_mode_active: bool,
     points: Vec<Point>,
     is_pivot_active: bool,
     pivot: Pivot,
-}
-
-impl Default for GridModeHandler {
-    fn default() -> Self {
-        let points = build_points_grid();
-        GridModeHandler { is_mode_active: false, points, is_pivot_active: false, pivot: Pivot::default() }
-    }
 }
 
 #[derive(Debug)]
@@ -37,19 +61,16 @@ struct Pivot {
     points: Vec<Point>,
 }
 
-impl Default for Pivot {
-    fn default() -> Self {
+impl Pivot {
+    fn new(density: f32) -> Self {
         let (x, y) = (0.0, 0.0);
         let letters_count = LABEL_LETTERS.len() as f32 - 1.0;
         let (display_width, display_height) = rdev::display_size().unwrap();
         let (pivot_width, pivot_height) = (display_width as f32 / letters_count, display_height as f32 / letters_count);
-        let density = PIVOT_GRID_DENSITY_PX;
         let points = build_points_grid_for_rect(x, y, pivot_width, pivot_height, density, density);
         Pivot { x, y, width: pivot_width, height: pivot_height, density, points }
     }
-}
 
-impl Pivot {
     fn draw(&self, ui: &mut Ui) {
         for point in &self.points {
             point.draw(ui);
@@ -111,8 +132,18 @@ impl Bind for GridModeHandler {
             })
             .collect();
 
-        bindings.push(Binding { label: GM_ACTIVATE.to_string(), default_input: "RAltRight".to_string() });
+        let mut static_bindings = GridModeConfig::default_bindings();
+        static_bindings.extend(self.config.bindings.clone());
+        for (label, default_input) in static_bindings {
+            bindings.push(Binding { label: label.clone(), default_input: default_input.clone() });
+        }
         bindings
+    }
+}
+
+impl Identify for GridModeHandler {
+    fn get_id(&self) -> String {
+        HANDLER_ID.to_string()
     }
 }
 
@@ -142,6 +173,12 @@ impl Handler for GridModeHandler {
 }
 
 impl GridModeHandler {
+    pub fn new(config: GridModeConfig) -> Self {
+        let points = build_points_grid();
+        let pivot = Pivot::new(config.pivot_grid_density_px);
+        Self { config, is_mode_active: false, points, is_pivot_active: false, pivot }
+    }
+
     fn toggle_mode(&mut self) {
         if self.is_mode_active {
             input_interceptor::remove_filter(Filter::BlockAll);

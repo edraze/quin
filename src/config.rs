@@ -1,8 +1,11 @@
-use std::collections::HashMap;
 use std::fs;
+use serde::de::DeserializeOwned;
 use serde::Deserialize;
+use toml::map::Map;
+use toml::Value;
 
 const DEFAULT_CONFIG_PATH: &str = "./config.toml";
+const COMMON_ACTIVE_HANDLERS_FIELD: &str = "active_handlers";
 
 pub struct ConfigLoader {}
 
@@ -21,5 +24,26 @@ impl ConfigLoader {
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    pub bindings: HashMap<String, String>
+    pub common: Map<String, Value>,
+    #[serde(default)]
+    pub handlers: Map<String, Value>,
+}
+
+impl Config {
+    pub fn is_handler_active(&self, handler_id: &str) -> bool {
+        let common_active_handlers_opt = self.common.get(COMMON_ACTIVE_HANDLERS_FIELD);
+        if let Some(active_handlers) = common_active_handlers_opt {
+            return match active_handlers {
+                Value::Array(values) => values.contains(&Value::String(handler_id.into())),
+                _ => false
+            };
+        }
+        false
+    }
+
+    pub fn get_handler_config<T: Default + DeserializeOwned>(&self, handler_id: &str) -> T {
+        self.handlers.get(handler_id)
+            .map(|handler_config| toml::from_str(&toml::to_string(handler_config).unwrap()).unwrap())
+            .unwrap_or_default()
+    }
 }

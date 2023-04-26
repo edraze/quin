@@ -1,8 +1,14 @@
+use std::collections::HashMap;
+use std::default::Default;
 use enigo::{Enigo, MouseControllable};
+use serde::Deserialize;
 use crate::common::input_interceptor;
 use crate::common::input_interceptor::Filter;
-use crate::core::{Bind, Binding, Draw, Handler, Label, State};
+use crate::core::{Bind, Binding, Draw, Handler, Identify, Label, State};
+use crate::core::Event::{KeyPress, KeyRelease};
+use crate::core::Key::{AltLeft, AltRight, KeyH, KeyJ, KeyK, KeyL};
 
+pub const HANDLER_ID: &str = "precise-mode-handler";
 const PM_TOGGLE: &str = "pm_toggle";
 pub const PM_ACTIVATE: &str = "pm_activate";
 const PM_DEACTIVATE: &str = "pm_deactivate";
@@ -11,25 +17,57 @@ const PM_MOVE_RIGHT: &str = "pm_move_right";
 const PM_MOVE_TOP: &str = "pm_move_top";
 const PM_MOVE_BOTTOM: &str = "pm_move_bottom";
 
-const CURSOR_SPEED: i32 = 5;
+#[derive(Deserialize)]
+pub struct PreciseModeConfig {
+    #[serde(default = "PreciseModeConfig::default_cursor_speed")]
+    cursor_speed: i32,
+    #[serde(default = "PreciseModeConfig::default_bindings")]
+    bindings: HashMap<String, String>,
+}
 
-#[derive(Default)]
+impl PreciseModeConfig {
+    fn default_cursor_speed() -> i32 {
+        5
+    }
+
+    fn default_bindings() -> HashMap<String, String> {
+        let mut bindings = HashMap::new();
+        bindings.insert(PM_TOGGLE.to_string(), KeyRelease(AltRight).to_string());
+        bindings.insert(PM_ACTIVATE.to_string(), KeyPress(AltLeft).to_string());
+        bindings.insert(PM_DEACTIVATE.to_string(), KeyRelease(AltLeft).to_string());
+        bindings.insert(PM_MOVE_LEFT.to_string(), KeyPress(KeyH).to_string());
+        bindings.insert(PM_MOVE_RIGHT.to_string(), KeyPress(KeyL).to_string());
+        bindings.insert(PM_MOVE_TOP.to_string(), KeyPress(KeyK).to_string());
+        bindings.insert(PM_MOVE_BOTTOM.to_string(), KeyPress(KeyJ).to_string());
+        bindings
+    }
+}
+
+impl Default for PreciseModeConfig {
+    fn default() -> Self {
+        Self { cursor_speed: Self::default_cursor_speed(), bindings: Self::default_bindings() }
+    }
+}
+
 pub struct PreciseModeHandler {
+    config: PreciseModeConfig,
     is_mode_active: bool,
     enigo: Enigo,
 }
 
 impl Bind for PreciseModeHandler {
     fn get_bindings(&self) -> Vec<Binding> {
-        vec![
-            Binding { label: PM_TOGGLE.to_string(), default_input: "RAltRight".to_string() },
-            Binding { label: PM_ACTIVATE.to_string(), default_input: "PAltLeft".to_string() },
-            Binding { label: PM_DEACTIVATE.to_string(), default_input: "RAltLeft".to_string() },
-            Binding { label: PM_MOVE_LEFT.to_string(), default_input: "PKeyH".to_string() },
-            Binding { label: PM_MOVE_RIGHT.to_string(), default_input: "PKeyL".to_string() },
-            Binding { label: PM_MOVE_TOP.to_string(), default_input: "PKeyK".to_string() },
-            Binding { label: PM_MOVE_BOTTOM.to_string(), default_input: "PKeyJ".to_string() },
-        ]
+        let mut bindings = PreciseModeConfig::default_bindings();
+        bindings.extend(self.config.bindings.clone());
+        bindings.into_iter()
+            .map(|(label, default_input)| Binding { label, default_input })
+            .collect()
+    }
+}
+
+impl Identify for PreciseModeHandler {
+    fn get_id(&self) -> String {
+        HANDLER_ID.to_string()
     }
 }
 
@@ -43,10 +81,10 @@ impl Handler for PreciseModeHandler {
                 PM_ACTIVATE => self.activate_mode(),
                 PM_DEACTIVATE => self.deactivate_mode(),
 
-                PM_MOVE_LEFT => if self.is_mode_active { self.move_cursor_left_relatively(CURSOR_SPEED) },
-                PM_MOVE_RIGHT => if self.is_mode_active { self.move_cursor_right_relatively(CURSOR_SPEED) },
-                PM_MOVE_TOP => if self.is_mode_active { self.move_cursor_top_relatively(CURSOR_SPEED) },
-                PM_MOVE_BOTTOM => if self.is_mode_active { self.move_cursor_botttom_relatively(CURSOR_SPEED) },
+                PM_MOVE_LEFT => if self.is_mode_active { self.move_cursor_left_relatively(self.config.cursor_speed) },
+                PM_MOVE_RIGHT => if self.is_mode_active { self.move_cursor_right_relatively(self.config.cursor_speed) },
+                PM_MOVE_TOP => if self.is_mode_active { self.move_cursor_top_relatively(self.config.cursor_speed) },
+                PM_MOVE_BOTTOM => if self.is_mode_active { self.move_cursor_botttom_relatively(self.config.cursor_speed) },
                 _ => {}
             }
         }
@@ -54,6 +92,10 @@ impl Handler for PreciseModeHandler {
 }
 
 impl PreciseModeHandler {
+    pub fn new(config: PreciseModeConfig) -> Self {
+        Self { is_mode_active: false, config, enigo: Enigo::default() }
+    }
+
     fn activate_mode(&mut self) {
         self.is_mode_active = true;
     }
