@@ -1055,7 +1055,7 @@ dependencies = [
 
 [[package]]
 name = "quin"
-version = "0.0.3"
+version = "0.1.0"
 dependencies = [
  "egui_backend",
  "egui_render_wgpu",

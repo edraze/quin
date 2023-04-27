@@ -63,8 +63,8 @@ pub enum Event {
 impl fmt::Display for Event {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Event::KeyPress(key) => write!(f, "P{key}"),
-            Event::KeyRelease(key) => write!(f, "R{key}")
+            Event::KeyPress(key) => write!(f, "P({key})"),
+            Event::KeyRelease(key) => write!(f, "R({key})")
         }
     }
 }

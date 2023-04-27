@@ -1,6 +1,6 @@
 use std::fs;
 use serde::de::DeserializeOwned;
-use serde::Deserialize;
+...use serde::{Deserialize, Serialize};
 use toml::map::Map;
 use toml::Value;
 
@@ -10,9 +10,19 @@ const COMMON_ACTIVE_HANDLERS_FIELD: &str = "active_handlers";
 pub struct ConfigLoader {}
 
 impl ConfigLoader {
+    fn create_default() {
+        let default_config_content = include_str!("../config.toml");
+        fs::write(DEFAULT_CONFIG_PATH, default_config_content)
+            .expect("Can't write default config.toml");
+    }
+
     fn load_config(path_to_file: &str) -> Config {
         let config_string = fs::read_to_string(path_to_file)
-            .expect("Config don't exist. Please create config.toml in root directory"); // todo on missed create config with default bindings
+            .unwrap_or_else(|_| {
+                Self::create_default();
+                fs::read_to_string(path_to_file)
+                    .expect("Config don't exist. Please create config.toml in root directory")
+            });
         toml::from_str(&config_string)
             .expect("Can't deserialize config.toml. Looks like it is invalid")
     }
@@ -22,12 +32,12 @@ impl ConfigLoader {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
     pub common: Map<String, Value>,
     #[serde(default)]
     pub handlers: Map<String, Value>,
-}
+};
 
 impl Config {
     pub fn is_handler_active(&self, handler_id: &str) -> bool {
