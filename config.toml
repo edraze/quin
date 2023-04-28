@@ -6,30 +6,30 @@ active_handlers = [
 ]
 
 #[handlers.grid-mode-handler]
-#pivot_grid_density_px = 50
+#pivot_grid_density_px = 10
 #[handlers.grid-mode-handler.bindings]
-#gm_activate = "RAltRight"
+#gm_activate = "R(AltRight)"
 
 #[handlers.mouse-buttons-emulation-handler]
-#scroll_speed = 50
+#scroll_speed = 2
 #[handlers.mouse-buttons-emulation-handler.bindings]
-#mb_toggle = "RAltRight"
-#mb_activate = "PAltLeft"
-#mb_deactivate = "RAltLeft"
-#mb_left = "PSemiColon"
-#mb_right = "PQuote"
-#mb_middle = "PSlash"
-#mb_scroll_up = "PDot"
-#mb_scroll_down = "PComma"
-#mb_drag_and_drop = "PKeyV"
+#mb_toggle = "R(AltRight)"
+#mb_activate = "P(AltLeft)"
+#mb_deactivate = "R(AltLeft)"
+#mb_left = "P(SemiColon)"
+#mb_right = "P(Quote)"
+#mb_middle = "P(Slash)"
+#mb_scroll_up = "P(Dot)"
+#mb_scroll_down = "P(Comma)"
+#mb_drag_and_drop = "P(KeyV)"
 
 #[handlers.precise-mode-handler]
-#cursor_speed = 50
+#cursor_speed = 5
 #[handlers.precise-mode-handler.bindings]
-#pm_toggle = "RAltRight"
-#pm_activate = "PAltLeft"
-#pm_deactivate = "RAltLeft"
-#pm_move_left = "PKeyH"
-#pm_move_right = "PKeyL"
-#pm_move_top = "PKeyK"
-#pm_move_bottom = "PKeyJ"
+#pm_toggle = "R(AltRight)"
+#pm_activate = "P(AltLeft)"
+#pm_deactivate = "R(AltLeft)"
+#pm_move_left = "P(KeyH)"
+#pm_move_right = "P(KeyL)"
+#pm_move_top = "P(KeyK)"
+#pm_move_bottom = "P(KeyJ)"

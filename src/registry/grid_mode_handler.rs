@@ -15,7 +15,7 @@ use crate::core::Key::AltRight;
 
 pub const HANDLER_ID: &str = "grid-mode-handler";
 const GM_ACTIVATE: &str = "gm_activate";
-const LABEL_LETTERS: [&str; 21] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", "r", "s", "t", "u", /*"v",*/ "w", "x", "y", "z"]; // todo replace by range
+const LABEL_LETTERS: [&str; 21] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", "r", "s", "t", "u", /*"v",*/ "w", "x", "y", "z"];
 
 #[derive(Deserialize)]
 pub struct GridModeConfig {
