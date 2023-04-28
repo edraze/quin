@@ -2,7 +2,6 @@
 
 Utility to control mouse with keyboard.
 
-[//]: # (todo link to technical docs)
 
 ### 🚧Work in progress🚧
 
@@ -10,6 +9,7 @@ Keep in mind the project is unstable and under development.
 Only Windows is currently supported.
 If you encounter a problem or have an idea for improvement,
 feel free to [create issue](https://github.com/lkaratl/quin/issues/new).
+
 ---
 
 ## Features
