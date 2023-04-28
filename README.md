@@ -10,19 +10,19 @@ Keep in mind the project is unstable and under development.
 Only Windows is currently supported.
 If you encounter a problem or have an idea for improvement,
 feel free to [create issue](https://github.com/lkaratl/quin/issues/new).
+---
 
 ## Features
+<div>
+    <ul style="display: grid; grid-template-columns: repeat(2, 1fr);" class="columns" data-columns="2">
+        <li><h2>Grid Mode</h2>
+            <p><img src="docs/grid_mode.gif"/></p></li>
+        <li style="margin-left: 15px"><h2>Precise Mode</h2>
+            <p><img src="docs/precise_mode.gif"/></p></li>
+    </ul>
+</div>
 
-[//]: # (todo link to technical docs)
-[grid navigation mode]
-* show grid use case
-* show pivot use case
-
-[//]: # (todo link to technical docs)
-[mouse movement/buttons emulation]
-* hjkl - movement
-* ;',./ - mouse emulation events
-* drag & drop
+---
 
 ## Config
 
@@ -69,9 +69,12 @@ feel free to [create issue](https://github.com/lkaratl/quin/issues/new).
 
 `P(<key>)` - emit press event
 `R(<key>)` - emit release event
-`<key>` - possible values see [here](https://github.com/lkaratl/quin/blob/fdcc29dd016a13399c4e2516176b40232510427e/src/core.rs#L79)
+`<key>` - possible values
+see [here](https://github.com/lkaratl/quin/blob/fdcc29dd016a13399c4e2516176b40232510427e/src/core.rs#L79)
 
 Source of [default config](config.toml) file.
+
+---
 
 ## License
 

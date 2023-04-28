@@ -1,6 +1,6 @@
 use std::fs;
 use serde::de::DeserializeOwned;
-...use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 use toml::map::Map;
 use toml::Value;
 
@@ -37,7 +37,7 @@ pub struct Config {
     pub common: Map<String, Value>,
     #[serde(default)]
     pub handlers: Map<String, Value>,
-};
+}
 
 impl Config {
     pub fn is_handler_active(&self, handler_id: &str) -> bool {
