@@ -15,7 +15,7 @@ use crate::core::Key::AltRight;
 
 pub const HANDLER_ID: &str = "grid-mode-handler";
 const GM_ACTIVATE: &str = "gm_activate";
-const LABEL_LETTERS: [&str; 21] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", "r", "s", "t", "u", /*"v",*/ "w", "x", "y", "z"];
+const LABEL_LETTERS: [&str; 22] = ["a", "b", "c", "d", "e", "f", "g", /*"h",*/ "i", /*"j", "k", "l",*/ "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
 #[derive(Deserialize)]
 pub struct GridModeConfig {
@@ -161,12 +161,8 @@ impl Handler for GridModeHandler {
             if label.eq(GM_ACTIVATE) {
                 self.toggle_mode();
             } else if self.is_mode_active {
-                match label.as_str() {
-                    precise_mode_handler::PM_ACTIVATE |
-                    mb_emulation_handler::MB_ACTIVATE |
-                    mb_emulation_handler::MB_LEFT => self.toggle_mode(),
-                    label => self.on_point_label(label)
-                }
+                let label = label.as_str();
+                self.on_point_label(label)
             }
         }
     }
