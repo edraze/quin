@@ -1,9 +1,10 @@
 use bevy::prelude::*;
 use bevy::window::{Cursor, WindowLevel};
 use bevy_egui::EguiPlugin;
-use crate::plugins::configurator::ConfiguratorPlugin;
+use crate::plugins::mouse_emulator::MouseEmulatorPlugin;
 
 use crate::plugins::exit::ExitPlugin;
+use crate::plugins::global_input::GlobalInputPlugin;
 use crate::plugins::gui::{gui_handler, GuiEvent};
 use crate::plugins::input_to_gui::input_to_gui_event;
 use crate::plugins::tray::TrayPlugin;
@@ -37,9 +38,10 @@ fn main() {
             ..default()
         }))
         .add_plugins(EguiPlugin)
-        .add_plugins(ConfiguratorPlugin)
         .add_plugins(TrayPlugin)
         .add_plugins(ExitPlugin)
+        .add_plugins(GlobalInputPlugin)
+        .add_plugins(MouseEmulatorPlugin)
         .insert_resource(ClearColor(Color::NONE))
         .add_systems(Startup, setup)
 

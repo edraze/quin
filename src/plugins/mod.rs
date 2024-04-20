@@ -3,4 +3,5 @@ pub mod global_input;
 pub mod gui;
 pub mod tray;
 pub mod exit;
-pub mod configurator;
+pub mod mouse_emulator;
+mod config_loader;

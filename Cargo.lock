@@ -392,6 +392,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy-persistent"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aea135429b65addde235d0bccb3f76fc7da59934da05ad7a9d8513a3cd7e6c1e"
+dependencies = [
+ "bevy",
+ "gloo-storage",
+ "serde",
+ "serde_yaml",
+ "thiserror",
+]
+
+[[package]]
 name = "bevy_a11y"
 version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -461,7 +474,6 @@ dependencies = [
  "futures-io",
  "futures-lite",
  "js-sys",
- "notify-debouncer-full",
  "parking_lot",
  "ron",
  "serde",
@@ -608,9 +620,9 @@ dependencies = [
 
 [[package]]
 name = "bevy_egui"
-version = "0.26.0"
+version = "0.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "44197ead4c9e40303fa5056be44de593f17151bd08d1d9dbe7b127700e1b9d01"
+checksum = "eac153cb176b04eb0734c60fbc2912aa6fb2539f5b64ba832661c1c4cf9e298a"
 dependencies = [
  "arboard",
  "bevy",
@@ -1907,18 +1919,18 @@ checksum = "f25c0e292a7ca6d6498557ff1df68f32c99850012b6ea401cf8daf771f22ff53"
 
 [[package]]
 name = "ecolor"
-version = "0.26.2"
+version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03cfe80b1890e1a8cdbffc6044d6872e814aaf6011835a2a5e2db0e5c5c4ef4e"
+checksum = "20930a432bbd57a6d55e07976089708d4893f3d556cf42a0d79e9e321fa73b10"
 dependencies = [
  "bytemuck",
 ]
 
 [[package]]
 name = "egui"
-version = "0.26.2"
+version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "180f595432a5b615fc6b74afef3955249b86cfea72607b40740a4cd60d5297d0"
+checksum = "584c5d1bf9a67b25778a3323af222dbe1a1feb532190e103901187f92c7fe29a"
 dependencies = [
  "ahash",
  "epaint",
@@ -1933,9 +1945,9 @@ checksum = "a47c1c47d2f5964e29c61246e81db715514cd532db6b5116a25ea3c03d6780a2"
 
 [[package]]
 name = "emath"
-version = "0.26.2"
+version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6916301ecf80448f786cdf3eb51d9dbdd831538732229d49119e2d4312eaaf09"
+checksum = "e4c3a552cfca14630702449d35f41c84a0d15963273771c6059175a803620f3f"
 dependencies = [
  "bytemuck",
 ]
@@ -1974,9 +1986,9 @@ dependencies = [
 
 [[package]]
 name = "epaint"
-version = "0.26.2"
+version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77b9fdf617dd7f58b0c8e6e9e4a1281f730cde0831d40547da446b2bb76a47af"
+checksum = "b381f8b149657a4acf837095351839f32cd5c4aec1817fc4df84e18d76334176"
 dependencies = [
  "ab_glyph",
  "ahash",
@@ -2150,27 +2162,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "file-id"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6584280525fb2059cba3db2c04abf947a1a29a45ddae89f3870f8281704fafc9"
-dependencies = [
- "windows-sys 0.48.0",
-]
-
-[[package]]
-name = "filetime"
-version = "0.2.23"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ee447700ac8aa0b2f2bd7bc4462ad686ba06baa6727ac149a2d6277f0d240fd"
-dependencies = [
- "cfg-if",
- "libc",
- "redox_syscall 0.4.1",
- "windows-sys 0.52.0",
-]
-
-[[package]]
 name = "fixedbitset"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2250,15 +2241,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e13624c2627564efccf4934284bdd98cbaa14e79b0b5a141218e507b3a823456"
 dependencies = [
  "percent-encoding",
-]
-
-[[package]]
-name = "fsevent-sys"
-version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76ee7a02da4d231650c7cea31349b889be2f45ddb3ef3032d2ec8185f6313fd2"
-dependencies = [
- "libc",
 ]
 
 [[package]]
@@ -2567,6 +2549,34 @@ name = "glob"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d2fabcfbdc87f4758337ca535fb41a6d701b65693ce38287d856d1674551ec9b"
+
+[[package]]
+name = "gloo-storage"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fbc8031e8c92758af912f9bc08fbbadd3c6f3cfcbf6b64cdf3d6a81f0139277a"
+dependencies = [
+ "gloo-utils",
+ "js-sys",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
+name = "gloo-utils"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0b5555354113b18c547c1d3a98fbf7fb32a9ff4f6fa112ce823a21641a0ba3aa"
+dependencies = [
+ "js-sys",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
+ "web-sys",
+]
 
 [[package]]
 name = "glow"
@@ -2949,17 +2959,6 @@ dependencies = [
 
 [[package]]
 name = "inotify"
-version = "0.9.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8069d3ec154eb856955c1c0fbffefbf5f3c40a104ec912d4797314c1801abff"
-dependencies = [
- "bitflags 1.3.2",
- "inotify-sys",
- "libc",
-]
-
-[[package]]
-name = "inotify"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fdd168d97690d0b8c412d6b6c10360277f4d7ee495c5d0d5d5fe0854923255cc"
@@ -3087,26 +3086,6 @@ name = "khronos_api"
 version = "3.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2db585e1d738fc771bf08a151420d3ed193d9d895a36df7f6f8a9456b911ddc"
-
-[[package]]
-name = "kqueue"
-version = "1.0.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7447f1ca1b7b563588a205fe93dea8df60fd981423a768bc1c0ded35ed147d0c"
-dependencies = [
- "kqueue-sys",
- "libc",
-]
-
-[[package]]
-name = "kqueue-sys"
-version = "1.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed9625ffda8729b85e45cf04090035ac368927b8cebc34898e7c120f52e4838b"
-dependencies = [
- "bitflags 1.3.2",
- "libc",
-]
 
 [[package]]
 name = "ktx2"
@@ -3381,18 +3360,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mio"
-version = "0.8.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4a650543ca06a924e8b371db273b2756685faae30f8487da1b56505a8f78b0c"
-dependencies = [
- "libc",
- "log",
- "wasi",
- "windows-sys 0.48.0",
-]
-
-[[package]]
 name = "muda"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3527,39 +3494,6 @@ name = "noop_proc_macro"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0676bb32a98c1a483ce53e500a81ad9c3d5b3f7c920c28c24e9cb0980d0b5bc8"
-
-[[package]]
-name = "notify"
-version = "6.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6205bd8bb1e454ad2e27422015fb5e4f2bcc7e08fa8f27058670d208324a4d2d"
-dependencies = [
- "bitflags 2.5.0",
- "crossbeam-channel",
- "filetime",
- "fsevent-sys",
- "inotify 0.9.6",
- "kqueue",
- "libc",
- "log",
- "mio",
- "walkdir",
- "windows-sys 0.48.0",
-]
-
-[[package]]
-name = "notify-debouncer-full"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "49f5dab59c348b9b50cf7f261960a20e389feb2713636399cd9082cd4b536154"
-dependencies = [
- "crossbeam-channel",
- "file-id",
- "log",
- "notify",
- "parking_lot",
- "walkdir",
-]
 
 [[package]]
 name = "ntapi"
@@ -4065,11 +3999,13 @@ name = "quin"
 version = "0.2.0"
 dependencies = [
  "bevy",
+ "bevy-persistent",
  "bevy_egui",
  "crossbeam",
  "image 0.25.1",
  "once_cell",
  "rdev",
+ "serde",
  "tray-icon",
 ]
 
@@ -4464,6 +4400,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eb3622f419d1296904700073ea6cc23ad690adbd66f13ea683df73298736f0c1"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "serde_yaml"
+version = "0.9.32"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8fd075d994154d4a774f95b51fb96bdc2832b0ea48425c92546073816cda1f2f"
+dependencies = [
+ "indexmap",
+ "itoa",
+ "ryu",
+ "serde",
+ "unsafe-libyaml",
 ]
 
 [[package]]
@@ -4973,6 +4922,12 @@ name = "unicode-xid"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f962df74c8c05a667b5ee8bcf162993134c104e96440b663c8daa176dc772d8c"
+
+[[package]]
+name = "unsafe-libyaml"
+version = "0.2.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ab4c90930b95a82d00dc9e9ac071b4991924390d46cbd0dfe566148667605e4b"
 
 [[package]]
 name = "url"
