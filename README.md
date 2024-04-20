@@ -15,9 +15,10 @@
 
 ## Plugins
 
-| Plugin                                               | Windows | Linux | MacOS |
-|------------------------------------------------------|---------|-------|-------|
-| [global-input](./src/plugins/global-input/readme.md) | [x]     | []    | []    |
+| Plugin                                             | Windows | Linux | MacOS |
+|----------------------------------------------------|---------|-------|-------|
+| [global-input](src/plugins/global_input/readme.md) | [x]     | []    | []    |
+| [tray](src/plugins/tray/readme.md)                 | [x]     | []    | []    |
 
 ## License
 
