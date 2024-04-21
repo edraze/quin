@@ -1,60 +1,14 @@
 use bevy::prelude::*;
-use bevy::window::{Cursor, WindowLevel};
-use bevy_egui::EguiPlugin;
-use crate::plugins::mouse_emulator::MouseEmulatorPlugin;
 
-use crate::plugins::exit::ExitPlugin;
-use crate::plugins::global_input::GlobalInputPlugin;
-use crate::plugins::gui::{gui_handler, GuiEvent};
-use crate::plugins::input_to_gui::input_to_gui_event;
-use crate::plugins::tray::TrayPlugin;
+use crate::plugins::general::QuinPlugins;
 
 mod plugins;
 
 fn main() {
+    // todo move to plugin (https://bevy-cheatbook.github.io/programming/non-send.html)
     let _tray_icon = plugins::tray::build_tray(&["Exit".to_string()]);
 
     App::new()
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                cursor: Cursor {
-                    hit_test: false,
-                    ..Cursor::default()
-                },
-                transparent: true,
-                decorations: false,
-                // resizable: false,
-                // focused: false,
-                // mode: WindowMode::BorderlessFullscreen,
-                window_level: WindowLevel::AlwaysOnTop,
-                #[cfg(target_os = "macos")]
-                composite_alpha_mode: CompositeAlphaMode::PostMultiplied,
-                ..default()
-            }),
-            ..default()
-        }).set(bevy::log::LogPlugin {
-            // level: bevy::log::Level::TRACE,
-            // filter: "wgpu=warn,bevy_ecs=info".to_string(),
-            ..default()
-        }))
-        .add_plugins(EguiPlugin)
-        .add_plugins(TrayPlugin)
-        .add_plugins(ExitPlugin)
-        .add_plugins(GlobalInputPlugin)
-        .add_plugins(MouseEmulatorPlugin)
-        .insert_resource(ClearColor(Color::NONE))
-        .add_systems(Startup, setup)
-
-        //  todo remove, only for dev
-        .add_event::<GuiEvent>()
-
-        .add_systems(Update, (
-            gui_handler,
-            input_to_gui_event,
-        ))
+        .add_plugins(QuinPlugins)
         .run();
-}
-
-fn setup(mut commands: Commands) {
-    commands.spawn(Camera2dBundle::default());
 }

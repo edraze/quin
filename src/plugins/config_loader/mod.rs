@@ -10,38 +10,25 @@ use serde::Serialize;
 const CONFIG_DIR_NAME: &str = "config";
 const CONFIG_FILE_EXTENSION: &str = ".yml";
 
-// todo tests, watching (hot reload)
+// todo tests, watching (hot reload) [https://github.com/umut-sahin/bevy-persistent/issues/39]
 #[derive(Default)]
-pub struct ConfigLoaderPlugin<T>
-    where T: Resource + Serialize + DeserializeOwned + Default + Config + Send + Sync + 'static {
+pub struct ConfigLoaderPlugin<T: Config> {
     _config: T,
 }
 
-impl<T> Plugin for ConfigLoaderPlugin<T> where
-    T: Resource + Serialize + DeserializeOwned + Default + Config + Send + Sync + 'static {
+impl<T: Config> Plugin for ConfigLoaderPlugin<T> {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup::<T>);
+        app.add_systems(Startup, load_resource::<T>);
     }
 }
 
-fn setup<T>(mut commands: Commands)
-    where T: Resource + Serialize + DeserializeOwned + Default + Config {
-    let config_dir = config_dir_path();
-    let file_name = format!("{}{}", to_formatted_path(&T::name()), CONFIG_FILE_EXTENSION);
-    let config_file_path = config_dir.join(file_name);
-    commands.insert_resource(
-        Persistent::<T>::builder()
-            .name(T::name())
-            .format(StorageFormat::Yaml)
-            .path(config_file_path)
-            .default(Default::default())
-            .build()
-            .expect("failed to initialize config")
-    )
+fn load_resource<T: Config>(mut commands: Commands) {
+    let resource = load_config::<T>();
+    commands.insert_resource(resource);
 }
 
 // todo derive
-pub trait Config {
+pub trait Config: Resource + Serialize + DeserializeOwned + Default + Send + Sync + 'static {
     fn name() -> String {
         std::any::type_name::<Self>().to_string()
     }
@@ -59,4 +46,18 @@ fn to_formatted_path(value: &str) -> String {
     formatted_value = formatted_value.replace('<', "[");
     formatted_value = formatted_value.replace('>', "]");
     formatted_value
+}
+
+pub fn load_config<T: Config>() -> Persistent<T> {
+    let config_dir = config_dir_path();
+    let file_name = format!("{}{}", to_formatted_path(&T::name()), CONFIG_FILE_EXTENSION);
+    let config_file_path = config_dir.join(file_name);
+
+    Persistent::<T>::builder()
+        .name(T::name())
+        .format(StorageFormat::Yaml)
+        .path(config_file_path)
+        .default(Default::default())
+        .build()
+        .expect("failed to initialize config")
 }

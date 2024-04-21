@@ -1,8 +1,25 @@
 // executor
 
+use bevy::app::{App, Plugin, Update};
 use bevy::prelude::{Event, EventReader};
-use bevy_egui::{egui, EguiContexts};
+use bevy_egui::{egui, EguiContexts, EguiPlugin};
 use bevy_egui::egui::{Color32, RichText};
+
+const GUI_PLUGIN_NAME: &str = "gui";
+
+pub struct GuiPlugin;
+
+impl Plugin for GuiPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_plugins(EguiPlugin);
+        app.add_event::<GuiEvent>();
+        app.add_systems(Update, gui_handler);
+    }
+
+    fn name(&self) -> &str {
+        GUI_PLUGIN_NAME
+    }
+}
 
 #[derive(Event, Debug)]
 pub enum GuiEvent {

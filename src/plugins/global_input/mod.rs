@@ -14,6 +14,8 @@ use crate::plugins::global_input::events::{Button, ButtonEvent, InputEvent, Inpu
 
 // emitter
 
+const GLOBAL_INPUT_PLUGIN_NAME: &str = "global-input";
+
 pub struct GlobalInputPlugin;
 
 impl Plugin for GlobalInputPlugin {
@@ -24,6 +26,10 @@ impl Plugin for GlobalInputPlugin {
             .add_event::<InputFilterEvent>()
             .add_systems(Update, global_input_handler)
             .add_systems(Update, handle_input_filter_event);
+    }
+
+    fn name(&self) -> &str {
+        GLOBAL_INPUT_PLUGIN_NAME 
     }
 }
 

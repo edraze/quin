@@ -1,12 +1,11 @@
-use std::thread;
-use std::time::Duration;
-
 use bevy::app::{App, Plugin, Update};
-use bevy::prelude::{EventReader, EventWriter, ResMut, Resource};
+use bevy::prelude::EventWriter;
 use tray_icon::{TrayIcon, TrayIconBuilder, TrayIconEvent};
 use tray_icon::menu::{Menu, MenuEvent, MenuItem};
 
-use crate::plugins::tray::events::{CreateTrayItem, TrayClick, TrayItemClick};
+use crate::plugins::tray::events::{TrayClick, TrayItemClick};
+
+const TRAY_PLUGIN_NAME: &str = "tray";
 
 #[derive(Default)]
 pub struct TrayPlugin;
@@ -23,6 +22,10 @@ impl Plugin for TrayPlugin {
                 emmit_tray_event,
                 emmit_tray_item_event
             ));
+    }
+
+    fn name(&self) -> &str {
+        TRAY_PLUGIN_NAME
     }
 }
 
@@ -80,7 +83,7 @@ fn emmit_tray_item_event(mut tray_item_click: EventWriter<TrayItemClick>) {
 }
 
 pub fn build_tray(items: &[String]) -> TrayIcon {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/src/plugins/tray/icon.png");
+    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/src/plugins/tray/icon.png"); // todo embedded asset
     let icon = load_icon(std::path::Path::new(path));
     let tray_menu = Menu::new();
     for item in items {

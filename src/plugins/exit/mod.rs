@@ -1,8 +1,9 @@
-use bevy::app::{App, Plugin, Startup, Update};
-use bevy::prelude::{EventReader, EventWriter};
+use bevy::app::{App, Plugin, Update};
+use bevy::prelude::EventReader;
 
-use crate::plugins::tray::events::{CreateTrayItem, TrayItemClick};
+use crate::plugins::tray::events::TrayItemClick;
 
+const EXIT_PLUGIN_NAME: &str = "exit";
 const EXIT_TRAY_ITEM_ID: &str = "Exit";
 
 pub struct ExitPlugin;
@@ -12,6 +13,10 @@ impl Plugin for ExitPlugin {
         app
             // .add_systems(Startup, add_exit_tray_item)
             .add_systems(Update, exit);
+    }
+
+    fn name(&self) -> &str {
+        EXIT_PLUGIN_NAME
     }
 }
 
