@@ -7,9 +7,11 @@ use crate::plugins::config_loader::Config;
 use crate::plugins::exit::ExitPlugin;
 use crate::plugins::global_input::GlobalInputPlugin;
 use crate::plugins::gui::GuiPlugin;
+use crate::plugins::input_sequence::InputSequencePlugin;
 use crate::plugins::input_to_gui::InputToGuiPlugin;
 use crate::plugins::mouse_emulator::MouseEmulatorPlugin;
 use crate::plugins::overlay::OverlayPlugin;
+use crate::plugins::sequence_to_log::SequenceToLogPlugin;
 use crate::plugins::tray::TrayPlugin;
 
 const GENERAL_PLUGIN_NAME: &str = "general";
@@ -20,13 +22,17 @@ impl Plugin for QuinPlugins {
     fn build(&self, app: &mut App) {
         let config = config_loader::load_config::<GeneralConfig>();
 
+        // todo only for dev purpose
+        add_plugin_if_enabled(app, &config, InputToGuiPlugin);
+        add_plugin_if_enabled(app, &config, SequenceToLogPlugin);
+        
         add_plugin_if_enabled(app, &config, TrayPlugin);
         add_plugin_if_enabled(app, &config, ExitPlugin);
         add_plugin_if_enabled(app, &config, GlobalInputPlugin);
-        add_plugin_if_enabled(app, &config, OverlayPlugin); 
+        add_plugin_if_enabled(app, &config, InputSequencePlugin);
+        add_plugin_if_enabled(app, &config, OverlayPlugin);
         add_plugin_if_enabled(app, &config, GuiPlugin);
         add_plugin_if_enabled(app, &config, MouseEmulatorPlugin);
-        add_plugin_if_enabled(app, &config, InputToGuiPlugin);
     }
     fn name(&self) -> &str {
         GENERAL_PLUGIN_NAME
@@ -55,10 +61,13 @@ impl Default for GeneralConfig {
                 TrayPlugin.name().to_string(),
                 ExitPlugin.name().to_string(),
                 GlobalInputPlugin.name().to_string(),
+                InputSequencePlugin.name().to_string(),
                 OverlayPlugin.name().to_string(),
                 GuiPlugin.name().to_string(),
                 MouseEmulatorPlugin.name().to_string(),
+                
                 InputToGuiPlugin.name().to_string(),
+                SequenceToLogPlugin.name().to_string(),
             ],
         }
     }

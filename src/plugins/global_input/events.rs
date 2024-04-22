@@ -54,7 +54,7 @@ impl FilterInput {
     }
 }
 
-#[derive(Event, Debug, PartialEq)]
+#[derive(Event, Debug, PartialEq, Clone)]
 pub enum InputEvent {
     Keyboard(KeyEvent),
     MouseButton(ButtonEvent),
@@ -97,7 +97,7 @@ pub enum FilterButtonEvent {
 }
 
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum ButtonEvent {
     Pressed(Button),
     Released(Button),
@@ -122,7 +122,7 @@ impl From<&rdev::Button> for Button {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum KeyEvent {
     Pressed(Key),
     Released(Key),

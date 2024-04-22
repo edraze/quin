@@ -7,3 +7,5 @@ mod exit;
 mod mouse_emulator;
 mod config_loader;
 mod overlay;
+mod input_sequence;
+mod sequence_to_log;

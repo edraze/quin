@@ -1,9 +1,8 @@
-use bevy::app::{App, Plugin, Update};
-use bevy::prelude::{Res, Resource};
-use bevy_persistent::Persistent;
+use bevy::app::{App, Plugin};
+use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
 
-use crate::plugins::config_loader::{ConfigLoaderPlugin, Config};
+use crate::plugins::config_loader::{Config, ConfigLoaderPlugin};
 
 const MOUSE_EMULATOR_PLUGIN_NAME: &str = "mouse_emulator";
 
@@ -12,7 +11,6 @@ pub struct MouseEmulatorPlugin;
 impl Plugin for MouseEmulatorPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins(ConfigLoaderPlugin::<MouseEmulatorConfig>::default());
-        app.add_systems(Update, test);
     }
 
     fn name(&self) -> &str {
@@ -47,8 +45,4 @@ impl Config for MouseEmulatorConfig {
     fn name() -> String {
         MOUSE_EMULATOR_PLUGIN_NAME.to_string()
     }
-}
-
-fn test(config: Res<Persistent<MouseEmulatorConfig>>) {
-    println!("{config:?}")
 }
