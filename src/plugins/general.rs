@@ -2,17 +2,18 @@ use bevy::app::{App, Plugin};
 use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
 
-use crate::plugins::config_loader;
-use crate::plugins::config_loader::Config;
 use crate::plugins::exit::ExitPlugin;
 use crate::plugins::global_input::GlobalInputPlugin;
 use crate::plugins::gui::GuiPlugin;
 use crate::plugins::input_sequence::InputSequencePlugin;
 use crate::plugins::input_to_gui::InputToGuiPlugin;
 use crate::plugins::mouse_emulator::MouseEmulatorPlugin;
+use crate::plugins::output::mouse::plugin::MouseOutputPlugin;
 use crate::plugins::overlay::OverlayPlugin;
 use crate::plugins::sequence_to_log::SequenceToLogPlugin;
 use crate::plugins::tray::TrayPlugin;
+use crate::systems;
+use crate::systems::config_loader::Config;
 
 const GENERAL_PLUGIN_NAME: &str = "general";
 
@@ -20,7 +21,7 @@ pub struct QuinPlugins;
 
 impl Plugin for QuinPlugins {
     fn build(&self, app: &mut App) {
-        let config = config_loader::load_config::<GeneralConfig>();
+        let config = systems::config_loader::load_config::<GeneralConfig>();
 
         // todo only for dev purpose
         add_plugin_if_enabled(app, &config, InputToGuiPlugin);
@@ -33,6 +34,7 @@ impl Plugin for QuinPlugins {
         add_plugin_if_enabled(app, &config, OverlayPlugin);
         add_plugin_if_enabled(app, &config, GuiPlugin);
         add_plugin_if_enabled(app, &config, MouseEmulatorPlugin);
+        add_plugin_if_enabled(app, &config, MouseOutputPlugin);
     }
     fn name(&self) -> &str {
         GENERAL_PLUGIN_NAME
@@ -65,6 +67,7 @@ impl Default for GeneralConfig {
                 OverlayPlugin.name().to_string(),
                 GuiPlugin.name().to_string(),
                 MouseEmulatorPlugin.name().to_string(),
+                MouseOutputPlugin.name().to_string(),
                 
                 InputToGuiPlugin.name().to_string(),
                 SequenceToLogPlugin.name().to_string(),

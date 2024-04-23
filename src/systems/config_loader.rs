@@ -1,7 +1,6 @@
 use std::env;
 use std::path::PathBuf;
 
-use bevy::app::{App, Plugin, Startup};
 use bevy::prelude::{Commands, Resource};
 use bevy_persistent::{Persistent, StorageFormat};
 use serde::de::DeserializeOwned;
@@ -11,20 +10,23 @@ const CONFIG_DIR_NAME: &str = "config";
 const CONFIG_FILE_EXTENSION: &str = ".yml";
 
 // todo tests, watching (hot reload) [https://github.com/umut-sahin/bevy-persistent/issues/39]
-#[derive(Default)]
-pub struct ConfigLoaderPlugin<T: Config> {
-    _config: T,
-}
-
-impl<T: Config> Plugin for ConfigLoaderPlugin<T> {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Startup, load_resource::<T>);
-    }
-}
-
-fn load_resource<T: Config>(mut commands: Commands) {
+pub fn load_resource<T: Config>(mut commands: Commands) {
     let resource = load_config::<T>();
     commands.insert_resource(resource);
+}
+
+pub fn load_config<T: Config>() -> Persistent<T> {
+    let config_dir = config_dir_path();
+    let file_name = format!("{}{}", to_formatted_path(&T::name()), CONFIG_FILE_EXTENSION);
+    let config_file_path = config_dir.join(file_name);
+
+    Persistent::<T>::builder()
+        .name(T::name())
+        .format(StorageFormat::Yaml)
+        .path(config_file_path)
+        .default(Default::default())
+        .build()
+        .expect("failed to initialize config")
 }
 
 // todo derive
@@ -46,18 +48,4 @@ fn to_formatted_path(value: &str) -> String {
     formatted_value = formatted_value.replace('<', "[");
     formatted_value = formatted_value.replace('>', "]");
     formatted_value
-}
-
-pub fn load_config<T: Config>() -> Persistent<T> {
-    let config_dir = config_dir_path();
-    let file_name = format!("{}{}", to_formatted_path(&T::name()), CONFIG_FILE_EXTENSION);
-    let config_file_path = config_dir.join(file_name);
-
-    Persistent::<T>::builder()
-        .name(T::name())
-        .format(StorageFormat::Yaml)
-        .path(config_file_path)
-        .default(Default::default())
-        .build()
-        .expect("failed to initialize config")
 }

@@ -5,7 +5,7 @@ mod global_input;
 mod gui;
 mod exit;
 mod mouse_emulator;
-mod config_loader;
 mod overlay;
-mod input_sequence;
+pub mod input_sequence; // todo private
 mod sequence_to_log;
+mod output;

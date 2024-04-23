@@ -3,6 +3,7 @@ use bevy::prelude::*;
 use crate::plugins::general::QuinPlugins;
 
 mod plugins;
+mod systems;
 
 fn main() {
     // todo move to plugin (https://bevy-cheatbook.github.io/programming/non-send.html)

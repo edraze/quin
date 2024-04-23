@@ -1,5 +1,6 @@
 use bevy::prelude::Event;
 use rdev::EventType;
+
 use crate::plugins::global_input::{all_keyboard_events, all_mouse_events};
 
 #[derive(Event, Debug)]
@@ -118,6 +119,17 @@ impl From<&rdev::Button> for Button {
             rdev::Button::Right => Button::Right,
             rdev::Button::Middle => Button::Middle,
             rdev::Button::Unknown(button) => Button::Unknown(*button),
+        }
+    }
+}
+
+impl From<&Button> for rdev::Button {
+    fn from(value: &Button) -> Self {
+        match value {
+            Button::Left => rdev::Button::Left,
+            Button::Right => rdev::Button::Right,
+            Button::Middle => rdev::Button::Middle,
+            Button::Unknown(button) => rdev::Button::Unknown(*button),
         }
     }
 }
