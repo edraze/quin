@@ -2,10 +2,10 @@ use bevy::app::Update;
 use bevy::prelude::{App, EventReader, Plugin};
 use enigo::{Enigo, MouseControllable};
 use rdev::EventType;
-use global_input_api::Button;
+use input_model::Button;
 use mouse_output_api::{Direction, DragAndDrop, DragAndDropAction, MouseClick, MoveMouseRelatively, MoveMouseToPosition, Scroll};
 
-const MOUSE_OUTPUT_PLUGIN_NAME: &str = "mouse-output";
+const MOUSE_OUTPUT_PLUGIN_NAME: &str = "mouse_output";
 
 pub struct MouseOutputPlugin;
 

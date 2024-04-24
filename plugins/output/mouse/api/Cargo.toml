@@ -1,8 +1,9 @@
 [package]
-name = "mouse-output-api"
+name = "mouse_output_api"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
 bevy = { workspace = true }
-global-input-api = { workspace = true }
+global_input_api = { workspace = true }
+input_model = { workspace = true }

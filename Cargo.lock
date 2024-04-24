@@ -400,7 +400,7 @@ dependencies = [
  "bevy",
  "gloo-storage",
  "serde",
- "serde_yaml",
+ "serde_json",
  "thiserror",
 ]
 
@@ -1590,7 +1590,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "config-loader-plugin"
+name = "config_loader_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
@@ -2580,20 +2580,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d2fabcfbdc87f4758337ca535fb41a6d701b65693ce38287d856d1674551ec9b"
 
 [[package]]
-name = "global-input-api"
+name = "global_input_api"
 version = "0.2.0"
 dependencies = [
  "bevy",
+ "input_model",
  "rdev",
 ]
 
 [[package]]
-name = "global-input-plugin"
+name = "global_input_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
  "crossbeam",
- "global-input-api",
+ "global_input_api",
+ "input_model",
  "once_cell",
  "rdev",
 ]
@@ -2816,7 +2818,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "gui-plugin"
+name = "gui_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
@@ -3034,29 +3036,42 @@ dependencies = [
 ]
 
 [[package]]
-name = "input-sequence-api"
+name = "input_model"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "global-input-api",
+ "rdev",
+ "serde",
 ]
 
 [[package]]
-name = "input-sequence-plugin"
+name = "input_sequence_api"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "global-input-api",
- "input-sequence-api",
+ "global_input_api",
+ "input_model",
+ "serde",
 ]
 
 [[package]]
-name = "input-to-gui-plugin"
+name = "input_sequence_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "global-input-api",
- "gui-plugin",
+ "global_input_api",
+ "input_model",
+ "input_sequence_api",
+]
+
+[[package]]
+name = "input_to_gui_plugin"
+version = "0.2.0"
+dependencies = [
+ "bevy",
+ "global_input_api",
+ "gui_plugin",
+ "input_model",
 ]
 
 [[package]]
@@ -3142,19 +3157,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "keyboard-to-mouse-plugin"
-version = "0.2.0"
-dependencies = [
- "bevy",
- "config-loader-plugin",
- "global-input-api",
- "input-sequence-api",
- "mouse-output-api",
- "sequence-to-event",
- "serde",
-]
-
-[[package]]
 name = "keyboard-types"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3163,6 +3165,20 @@ dependencies = [
  "bitflags 2.5.0",
  "serde",
  "unicode-segmentation",
+]
+
+[[package]]
+name = "keyboard_to_mouse_plugin"
+version = "0.2.0"
+dependencies = [
+ "bevy",
+ "config_loader_plugin",
+ "global_input_api",
+ "input_model",
+ "input_sequence_api",
+ "mouse_output_api",
+ "sequence_to_event",
+ "serde",
 ]
 
 [[package]]
@@ -3455,25 +3471,27 @@ dependencies = [
 ]
 
 [[package]]
-name = "mouse-output-api"
+name = "mouse_output_api"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "global-input-api",
+ "global_input_api",
+ "input_model",
 ]
 
 [[package]]
-name = "mouse-output-core"
+name = "mouse_output_core"
 version = "0.2.0"
 
 [[package]]
-name = "mouse-output-plugin"
+name = "mouse_output_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
  "enigo",
- "global-input-api",
- "mouse-output-api",
+ "global_input_api",
+ "input_model",
+ "mouse_output_api",
  "rdev",
 ]
 
@@ -3840,7 +3858,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "overlay-plugin"
+name = "overlay_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
@@ -4124,17 +4142,17 @@ name = "quin"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "config-loader-plugin",
- "global-input-plugin",
- "gui-plugin",
- "input-sequence-plugin",
- "input-to-gui-plugin",
- "keyboard-to-mouse-plugin",
- "mouse-output-plugin",
- "overlay-plugin",
- "sequence-to-log-plugin",
+ "config_loader_plugin",
+ "global_input_plugin",
+ "gui_plugin",
+ "input_sequence_plugin",
+ "input_to_gui_plugin",
+ "keyboard_to_mouse_plugin",
+ "mouse_output_plugin",
+ "overlay_plugin",
+ "sequence_to_log_plugin",
  "serde",
- "tray-plugin",
+ "tray_plugin",
 ]
 
 [[package]]
@@ -4491,20 +4509,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92d43fe69e652f3df9bdc2b85b2854a0825b86e4fb76bc44d945137d053639ca"
 
 [[package]]
-name = "sequence-to-event"
+name = "sequence_to_event"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "input-sequence-api",
+ "input_sequence_api",
 ]
 
 [[package]]
-name = "sequence-to-log-plugin"
+name = "sequence_to_log_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "global-input-api",
- "input-sequence-api",
+ "global_input_api",
+ "input_model",
+ "input_sequence_api",
 ]
 
 [[package]]
@@ -4545,19 +4564,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eb3622f419d1296904700073ea6cc23ad690adbd66f13ea683df73298736f0c1"
 dependencies = [
  "serde",
-]
-
-[[package]]
-name = "serde_yaml"
-version = "0.9.34+deprecated"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a8b1a1a2ebf674015cc02edccce75287f1a0130d394307b36743c2f5d504b47"
-dependencies = [
- "indexmap",
- "itoa",
- "ryu",
- "serde",
- "unsafe-libyaml",
 ]
 
 [[package]]
@@ -4845,6 +4851,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
+name = "toggle"
+version = "0.2.0"
+
+[[package]]
 name = "toml"
 version = "0.8.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4995,13 +5005,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tray-api"
-version = "0.2.0"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "tray-icon"
 version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5021,13 +5024,20 @@ dependencies = [
 ]
 
 [[package]]
-name = "tray-plugin"
+name = "tray_api"
+version = "0.2.0"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
+name = "tray_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
  "image 0.25.1",
- "tray-api",
  "tray-icon",
+ "tray_api",
 ]
 
 [[package]]
@@ -5084,12 +5094,6 @@ name = "unicode-xid"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f962df74c8c05a667b5ee8bcf162993134c104e96440b663c8daa176dc772d8c"
-
-[[package]]
-name = "unsafe-libyaml"
-version = "0.2.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "673aac59facbab8a9007c7f6108d11f63b603f7cabff99fabf650fea5c32b861"
 
 [[package]]
 name = "url"

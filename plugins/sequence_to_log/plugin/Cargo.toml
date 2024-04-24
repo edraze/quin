@@ -1,9 +1,10 @@
 [package]
-name = "sequence-to-log-plugin"
+name = "sequence_to_log_plugin"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
 bevy = { workspace = true }
-global-input-api = { workspace = true }
-input-sequence-api = { workspace = true }
+global_input_api = { workspace = true }
+input_model = { workspace = true }
+input_sequence_api = { workspace = true }

@@ -1,9 +1,10 @@
 [package]
-name = "input-to-gui-plugin"
+name = "input_to_gui_plugin"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
 bevy = { workspace = true }
-global-input-api = { workspace = true }
-gui-plugin = { workspace = true }
+global_input_api = { workspace = true }
+input_model = { workspace = true }
+gui_plugin = { workspace = true }

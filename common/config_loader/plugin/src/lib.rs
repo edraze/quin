@@ -2,12 +2,13 @@ use std::env;
 use std::path::PathBuf;
 
 use bevy::prelude::{Commands, Resource};
-use bevy_persistent::{Persistent, StorageFormat};
+pub use bevy_persistent::Persistent;
+use bevy_persistent::StorageFormat;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
 const CONFIG_DIR_NAME: &str = "config";
-const CONFIG_FILE_EXTENSION: &str = ".yml";
+const CONFIG_FILE_EXTENSION: &str = ".json";
 
 // todo tests, watching (hot reload) [https://github.com/umut-sahin/bevy-persistent/issues/39]
 pub fn load_resource<T: Config>(mut commands: Commands) {
@@ -22,7 +23,7 @@ pub fn load_config<T: Config>() -> Persistent<T> {
 
     Persistent::<T>::builder()
         .name(T::name())
-        .format(StorageFormat::Yaml)
+        .format(StorageFormat::JsonPretty)
         .path(config_file_path)
         .default(Default::default())
         .build()

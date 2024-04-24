@@ -1,18 +1,20 @@
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::thread::JoinHandle;
-use bevy::app::{App, Plugin, Update};
 
+use bevy::app::{App, Plugin, Update};
 use bevy::prelude::{debug, error, EventReader, EventWriter, Res, Resource};
 use crossbeam::channel::Receiver;
 use crossbeam::channel::unbounded;
 use once_cell::sync::Lazy;
 use rdev::{EventType, grab};
-use global_input_api::{InputEvent, InputFilterEvent};
+
+use global_input_api::{InputFilterEvent};
+use input_model::InputEvent;
 
 // emitter
 
-const GLOBAL_INPUT_PLUGIN_NAME: &str = "global-input";
+const GLOBAL_INPUT_PLUGIN_NAME: &str = "global_input";
 
 pub struct GlobalInputPlugin;
 

@@ -1,5 +1,5 @@
 [package]
-name = "overlay-plugin"
+name = "overlay_plugin"
 version.workspace = true
 edition.workspace = true
 

@@ -1,17 +1,17 @@
 use bevy::app::{App, Plugin};
 use bevy::prelude::{EventReader, EventWriter, ResMut, Resource, Update};
-use global_input_api::InputEvent;
-use input_sequence_api::{Sequence, SubscribeToSequence, Subscription, UnsubscribeToSequence};
+use input_model::InputEvent;
+use input_sequence_api::{Sequence, Subscribe, Subscription, Unsubscribe};
 
-const INPUT_SEQUENCE_PLUGIN_NAME: &str = "input-sequence";
+const INPUT_SEQUENCE_PLUGIN_NAME: &str = "input_sequence";
 
 pub struct InputSequencePlugin;
 
 impl Plugin for InputSequencePlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<InputSequenceState>();
-        app.add_event::<SubscribeToSequence>();
-        app.add_event::<UnsubscribeToSequence>();
+        app.add_event::<Subscribe>();
+        app.add_event::<Unsubscribe>();
         app.add_event::<Sequence>();
         app.add_systems(Update, subscribe_to_sequence);
         app.add_systems(Update, unsubscribe_to_sequence);
@@ -23,14 +23,14 @@ impl Plugin for InputSequencePlugin {
     }
 }
 
-fn subscribe_to_sequence(mut state: ResMut<InputSequenceState>, mut events: EventReader<SubscribeToSequence>) {
+fn subscribe_to_sequence(mut state: ResMut<InputSequenceState>, mut events: EventReader<Subscribe>) {
     for event in events.read().cloned() {
         println!("subscription: {:?}", event.0);
         state.subscribe(event.0)
     }
 }
 
-fn unsubscribe_to_sequence(mut state: ResMut<InputSequenceState>, mut events: EventReader<UnsubscribeToSequence>) {
+fn unsubscribe_to_sequence(mut state: ResMut<InputSequenceState>, mut events: EventReader<Unsubscribe>) {
     for event in events.read().cloned() {
         state.unsubscribe(event.0)
     }

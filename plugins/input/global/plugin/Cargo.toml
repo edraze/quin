@@ -1,5 +1,5 @@
 [package]
-name = "global-input-plugin"
+name = "global_input_plugin"
 version.workspace = true
 edition.workspace = true
 
@@ -8,4 +8,5 @@ bevy = { workspace = true }
 rdev = { workspace = true }
 crossbeam = { workspace = true }
 once_cell = { workspace = true }
-global-input-api = { workspace = true }
+global_input_api = { workspace = true }
+input_model = { workspace = true }

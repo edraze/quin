@@ -6,6 +6,7 @@ edition = "2021"
 members = [
     "app"
     , "common/config_loader/plugin"
+    , "common/input_model"
     , "common/sequence_to_event"
     , "plugins/output/mouse/core"
     , "plugins/output/mouse/api"
@@ -21,38 +22,46 @@ members = [
     , "plugins/sequence_to_log/plugin"
     , "plugins/tray/api"
     , "plugins/tray/plugin"
-]
+    , "common/toggle"]
 
 
 [workspace.dependencies]
-config-loader-plugin = { path = "common/config_loader/plugin" }
-sequence-to-event = { path = "common/sequence_to_event" }
-mouse-output-core = { path = "plugins/output/mouse/core" }
-mouse-output-api = { path = "plugins/output/mouse/api" }
-mouse-output-plugin = { path = "plugins/output/mouse/plugin" }
-global-input-api = { path = "plugins/input/global/api" }
-global-input-plugin = { path = "plugins/input/global/plugin" }
-input-sequence-api = { path = "plugins/input/sequence/api" }
-input-sequence-plugin = { path = "plugins/input/sequence/plugin" }
-overlay-plugin = { path = "plugins/overlay/plugin" }
-keyboard-to-mouse-plugin = { path = "plugins/keyboard_to_mouse/plugin" }
-gui-plugin = { path = "plugins/gui/plugin" }
-input-to-gui-plugin = { path = "plugins/input_to_gui/plugin" }
-sequence-to-log-plugin = { path = "plugins/sequence_to_log/plugin" }
-tray-api = { path = "plugins/tray/api" }
-tray-plugin = { path = "plugins/tray/plugin" }
+config_loader_plugin = { path = "common/config_loader/plugin" }
+input_model = { path = "common/input_model" }
+sequence_to_event = { path = "common/sequence_to_event" }
+toggle = { path = "common/toggle" }
+mouse_output_core = { path = "plugins/output/mouse/core" }
+mouse_output_api = { path = "plugins/output/mouse/api" }
+mouse_output_plugin = { path = "plugins/output/mouse/plugin" }
+global_input_api = { path = "plugins/input/global/api" }
+global_input_plugin = { path = "plugins/input/global/plugin" }
+input_sequence_api = { path = "plugins/input/sequence/api" }
+input_sequence_plugin = { path = "plugins/input/sequence/plugin" }
+overlay_plugin = { path = "plugins/overlay/plugin" }
+keyboard_to_mouse_plugin = { path = "plugins/keyboard_to_mouse/plugin" }
+gui_plugin = { path = "plugins/gui/plugin" }
+input_to_gui_plugin = { path = "plugins/input_to_gui/plugin" }
+sequence_to_log_plugin = { path = "plugins/sequence_to_log/plugin" }
+tray_api = { path = "plugins/tray/api" }
+tray_plugin = { path = "plugins/tray/plugin" }
 
-bevy = { version = "0.13", features = ["dynamic_linking"] }
-bevy_egui = "0.27.0"
-bevy-persistent = { version = "0.5.0", features = ["yaml"] }
-rdev = { version = "0.5.3", features = ["unstable_grab"] }
-tray-icon = "0.13"
+#common
 crossbeam = "0.8.4"
 once_cell = "1.19.0"
-image = "0.25"
 serde = { version = "1.0", features = ["derive"] }
+
+# bevy
+bevy = { version = "0.13", features = ["dynamic_linking"] }
+bevy_egui = "0.27.0"
+bevy-persistent = { version = "0.5.0", features = ["json", "pretty"] }
+
+# input
+rdev = { version = "0.5.3", features = ["unstable_grab"] }
 enigo = "0.1"
 
+# other
+image = "0.25"
+tray-icon = "0.13"
 
 [profile.dev]
 opt-level = 1

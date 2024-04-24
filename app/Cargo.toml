@@ -3,18 +3,17 @@ name = "quin"
 version.workspace = true
 edition.workspace = true
 
-
 [dependencies]
-bevy = { workspace = true }
-serde = { workspace = true }
+config_loader_plugin = { workspace = true }
+input_to_gui_plugin = { workspace = true }
+sequence_to_log_plugin = { workspace = true }
+tray_plugin = { workspace = true }
+global_input_plugin = { workspace = true }
+input_sequence_plugin = { workspace = true }
+overlay_plugin = { workspace = true }
+gui_plugin = { workspace = true }
+keyboard_to_mouse_plugin = { workspace = true }
+mouse_output_plugin = { workspace = true }
 
-config-loader-plugin = { workspace = true }
-input-to-gui-plugin = { workspace = true }
-sequence-to-log-plugin = { workspace = true }
-tray-plugin = { workspace = true }
-global-input-plugin = { workspace = true }
-input-sequence-plugin = { workspace = true }
-overlay-plugin = { workspace = true }
-gui-plugin = { workspace = true }
-keyboard-to-mouse-plugin = { workspace = true }
-mouse-output-plugin = { workspace = true }
+serde = { workspace = true }
+bevy = { workspace = true }

@@ -1,62 +1,123 @@
 use bevy::app::{App, Plugin};
-use bevy::prelude::{EventWriter, Resource, Startup, Update};
+use bevy::prelude::{Event, EventReader, EventWriter, Res, Resource, Startup, Update};
 use serde::{Deserialize, Serialize};
-use config_loader_plugin::Config;
-use global_input_api::{InputEvent, Key, KeyEvent};
-use input_sequence_api::{Sequence, SubscribeToSequence, Subscription};
-use mouse_output_api::MoveMouseRelatively;
-use sequence_to_event::sequence_to_event;
 
-const MOUSE_EMULATOR_PLUGIN_NAME: &str = "mouse_emulator";
+use config_loader_plugin::{Config, Persistent};
+use input_model::{InputEvent, Key, KeyEvent};
+use input_sequence_api::{Sequence, Subscribe, Subscription};
+use mouse_output_api::{Direction, MoveMouseRelatively};
+
+const KEYBOARD_TO_MOUSE_PLUGIN_NAME: &str = "keyboard_to_mouse";
 
 pub struct MouseEmulatorPlugin;
 
 impl Plugin for MouseEmulatorPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, config_loader_plugin::load_resource::<MouseEmulatorConfig>);
-
-        app.add_systems(Startup, |mut event_writer: EventWriter<SubscribeToSequence>| {
-            let subscription = Subscription {
-                subscriber:MOUSE_EMULATOR_PLUGIN_NAME.to_string(),
-                sequence:  Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::UpArrow))]),
-            };
-            let event = SubscribeToSequence(subscription);
-            event_writer.send(event);
-        });
-        app.add_systems(Update, sequence_to_event::<MoveMouseRelatively>(Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::UpArrow))])));
+        let config = config_loader_plugin::load_config::<MouseEmulatorConfig>();
+        app.insert_resource(config);
     }
 
     fn name(&self) -> &str {
-        MOUSE_EMULATOR_PLUGIN_NAME
+        KEYBOARD_TO_MOUSE_PLUGIN_NAME
     }
 }
 
 #[derive(Resource, Serialize, Deserialize, Default, Debug)]
 pub struct MouseEmulatorConfig {
-    key_binding: MouseEmulatorKeyBindings,
-    scroll_speed: i64, // todo i8
+    cursor_speed: i32,
+    scroll_speed: i32,
+    key_bindings: MouseEmulatorKeyBindings,
 }
 
-#[derive(Serialize, Deserialize, Default, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct MouseEmulatorKeyBindings {
-    // activate: , // Vec<Vec<InputEvent>>
-    // deactivate: ,
-    // mouse_move_up: ,
-    // mouse_move_down: ,
-    // mouse_move_left: ,
-    // mouse_move_right: ,
-    // mouse_left_button_click: ,
-    // mouse_right_button_click:,
-    // mouse_middle_button_click:,
-    // mouse_scroll_up:,
-    // mouse_scroll_down: ,
-    // mouse_drag_and_drop_activate: ,
-    // mouse_drag_and_drop_deactivate: ,
+    activate: Vec<Sequence>,
+    deactivate: Vec<Sequence>,
+    mouse_move_up: Vec<Sequence>,
+    mouse_move_down: Vec<Sequence>,
+    mouse_move_left: Vec<Sequence>,
+    mouse_move_right: Vec<Sequence>,
+    mouse_left_button_click: Vec<Sequence>,
+    mouse_right_button_click: Vec<Sequence>,
+    mouse_middle_button_click: Vec<Sequence>,
+    mouse_scroll_up: Vec<Sequence>,
+    mouse_scroll_down: Vec<Sequence>,
+    mouse_drag_and_drop_activate: Vec<Sequence>,
+    mouse_drag_and_drop_deactivate: Vec<Sequence>,
+}
+
+impl Default for MouseEmulatorKeyBindings {
+    fn default() -> Self {
+        Self {
+            activate: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::AltGr))])],
+            deactivate: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Released(Key::AltGr))])],
+            mouse_move_up: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyK))])],
+            mouse_move_down: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyJ))])],
+            mouse_move_left: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyH))])],
+            mouse_move_right: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyL))])],
+            mouse_left_button_click: vec![Sequence::new(vec![
+                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyI)),
+                InputEvent::Keyboard(KeyEvent::Released(Key::KeyI)),
+            ])],
+            mouse_right_button_click: vec![Sequence::new(vec![
+                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyA)),
+                InputEvent::Keyboard(KeyEvent::Released(Key::KeyA)),
+            ])],
+            mouse_middle_button_click: vec![Sequence::new(vec![
+                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyM)),
+                InputEvent::Keyboard(KeyEvent::Released(Key::KeyM)),
+            ])],
+            mouse_scroll_up: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyU))])],
+            mouse_scroll_down: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyD))])],
+            mouse_drag_and_drop_activate: vec![Sequence::new(vec![
+                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyG)),
+                InputEvent::Keyboard(KeyEvent::Released(Key::KeyG)),
+            ])],
+            mouse_drag_and_drop_deactivate: vec![Sequence::new(vec![
+                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyP)),
+                InputEvent::Keyboard(KeyEvent::Released(Key::KeyP)),
+            ])],
+        }
+    }
 }
 
 impl Config for MouseEmulatorConfig {
     fn name() -> String {
-        MOUSE_EMULATOR_PLUGIN_NAME.to_string()
+        KEYBOARD_TO_MOUSE_PLUGIN_NAME.to_string()
     }
 }
+
+// fn bind_sequence_to_event<E: Event>(app: &mut App, sequence: Sequence, mapper: impl Fn(EventReader<Sequence>, EventWriter<E>, Res<Persistent<MouseEmulatorConfig>>)) {
+//     app.add_systems(Startup, {
+//         let sequence = sequence.clone();
+//         move |mut event_writer: EventWriter<Subscribe>| {
+//             let subscription = Subscription {
+//                 subscriber: KEYBOARD_TO_MOUSE_PLUGIN_NAME.to_string(),
+//                 sequence: sequence.clone(),
+//             };
+//             let event = Subscribe(subscription);
+//             event_writer.send(event);
+//         }
+//     });
+//     app.add_systems(Update, mapper::<E>);
+// }
+// 
+// fn sequence_to_event<E>(target_sequence: Sequence, mapper: impl Fn(EventReader<Sequence>, EventWriter<E>, Res<Persistent<MouseEmulatorConfig>>, &Sequence)) -> impl Fn(EventReader<Sequence>, EventWriter<E>, Res<Persistent<MouseEmulatorConfig>>)
+//     where E: Event {
+//     move |sequence_events: EventReader<Sequence>, event_writer: EventWriter<E>, config: Res<Persistent<MouseEmulatorConfig>>| {
+//         mapper(sequence_events, event_writer, config, &target_sequence);
+//     }
+// }
+// 
+// fn sequence_to_mouse_move_relatively_up(mut sequence_events: EventReader<Sequence>, mut event_writer: EventWriter<MoveMouseRelatively>,
+//                                         config: Res<Persistent<MouseEmulatorConfig>>, target_sequence: &Sequence) {
+//     let event = MoveMouseRelatively::new(Direction::Up, config.cursor_speed);
+//     sequence_events
+//         .read()
+//         .for_each(|sequence| {
+//             if target_sequence.eq(sequence) {
+//                 event_writer.send(event.clone());
+//             }
+//         });
+// }
 

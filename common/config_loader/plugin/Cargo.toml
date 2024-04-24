@@ -1,9 +1,9 @@
 [package]
-name = "config-loader-plugin"
+name = "config_loader_plugin"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
+serde = { workspace = true }
 bevy = { workspace = true }
 bevy-persistent = { workspace = true }
-serde = { workspace = true }

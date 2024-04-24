@@ -2,8 +2,8 @@
 
 use bevy::app::{App, Plugin, Update};
 use bevy::prelude::{EventReader, EventWriter, Startup};
-use global_input_api::{InputEvent, Key, KeyEvent};
-use input_sequence_api::{Sequence, SubscribeToSequence, Subscription};
+use input_model::{InputEvent, Key, KeyEvent};
+use input_sequence_api::{Sequence, Subscribe, Subscription};
 
 const SEQUENCE_TO_LOG_PLUGIN_NAME: &str = "sequence_to_log";
 
@@ -20,7 +20,7 @@ impl Plugin for SequenceToLogPlugin {
     }
 }
 
-fn subscribe_to_sequence(mut event_writer: EventWriter<SubscribeToSequence>) {
+fn subscribe_to_sequence(mut event_writer: EventWriter<Subscribe>) {
     let sequence = Sequence::new(vec![
         InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyJ)),
         InputEvent::Keyboard(KeyEvent::Released(Key::KeyJ)),
@@ -31,7 +31,7 @@ fn subscribe_to_sequence(mut event_writer: EventWriter<SubscribeToSequence>) {
         subscriber: SEQUENCE_TO_LOG_PLUGIN_NAME.to_string(),
         sequence,
     };
-    let event = SubscribeToSequence(subscription);
+    let event = Subscribe(subscription);
     event_writer.send(event);
 
 
@@ -49,7 +49,7 @@ fn subscribe_to_sequence(mut event_writer: EventWriter<SubscribeToSequence>) {
         subscriber: SEQUENCE_TO_LOG_PLUGIN_NAME.to_string(),
         sequence,
     };
-    let event = SubscribeToSequence(subscription);
+    let event = Subscribe(subscription);
     event_writer.send(event);
 }
 

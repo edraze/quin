@@ -1,5 +1,5 @@
 [package]
-name = "mouse_output_core"
+name = "toggle"
 version.workspace = true
 edition.workspace = true
 

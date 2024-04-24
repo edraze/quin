@@ -1,17 +1,18 @@
 use bevy::prelude::Event;
-use global_input_api::Button;
 
-#[derive(Event, Debug)]
+use input_model::Button;
+
+#[derive(Event, Debug, Clone)]
 pub struct MoveMouseRelatively {
     pub direction: Direction,
     pub distance: i32,
 }
 
-impl Default for MoveMouseRelatively {
-    fn default() -> Self {
-        Self{
-            direction: Direction::Up,
-            distance: 50,
+impl MoveMouseRelatively {
+    pub fn new(direction: Direction, distance: i32) -> Self {
+        Self {
+            direction,
+            distance,
         }
     }
 }
@@ -19,7 +20,7 @@ impl Default for MoveMouseRelatively {
 #[derive(Event, Debug)]
 pub struct MoveMouseToPosition {
     pub x: f64,
-    pub y: f64
+    pub y: f64,
 }
 
 #[derive(Event, Debug)]
@@ -28,7 +29,7 @@ pub struct Scroll {
     pub distance: i64,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Direction {
     Up,
     Down,

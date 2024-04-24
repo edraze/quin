@@ -1,11 +1,12 @@
 use bevy::prelude::Event;
-use global_input_api::InputEvent;
+use serde::{Deserialize, Serialize};
+use input_model::InputEvent;
 
 #[derive(Event, Debug, Clone)]
-pub struct SubscribeToSequence(pub Subscription);
+pub struct Subscribe(pub Subscription);
 
 #[derive(Event, Debug, Clone)]
-pub struct UnsubscribeToSequence(pub Subscription);
+pub struct Unsubscribe(pub Subscription);
 
 #[derive(Debug, Clone)]
 pub struct Subscription {
@@ -13,7 +14,7 @@ pub struct Subscription {
     pub sequence: Sequence,
 }
 
-#[derive(Event, Debug, PartialEq, Clone)]
+#[derive(Event, Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Sequence {
     pub sequence: Vec<InputEvent>,
 }
