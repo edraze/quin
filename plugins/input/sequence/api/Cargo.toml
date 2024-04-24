@@ -1,0 +1,8 @@
+[package]
+name = "input-sequence-api"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace = true }
+global-input-api = { workspace = true }

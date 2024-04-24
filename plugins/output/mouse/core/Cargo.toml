@@ -1,0 +1,6 @@
+[package]
+name = "mouse-output-core"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

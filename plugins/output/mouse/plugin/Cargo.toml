@@ -1,0 +1,11 @@
+[package]
+name = "mouse-output-plugin"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace = true }
+rdev = { workspace = true }
+enigo = { workspace = true }
+global-input-api = { workspace = true }
+mouse-output-api = { workspace = true }

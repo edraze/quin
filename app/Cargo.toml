@@ -1,0 +1,20 @@
+[package]
+name = "quin"
+version.workspace = true
+edition.workspace = true
+
+
+[dependencies]
+bevy = { workspace = true }
+serde = { workspace = true }
+
+config-loader-plugin = { workspace = true }
+input-to-gui-plugin = { workspace = true }
+sequence-to-log-plugin = { workspace = true }
+tray-plugin = { workspace = true }
+global-input-plugin = { workspace = true }
+input-sequence-plugin = { workspace = true }
+overlay-plugin = { workspace = true }
+gui-plugin = { workspace = true }
+keyboard-to-mouse-plugin = { workspace = true }
+mouse-output-plugin = { workspace = true }

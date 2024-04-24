@@ -1,0 +1,8 @@
+[package]
+name = "global-input-api"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace = true }
+rdev = { workspace = true }

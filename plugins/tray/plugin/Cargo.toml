@@ -1,0 +1,10 @@
+[package]
+name = "tray-plugin"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace = true }
+tray-api = { workspace = true }
+tray-icon = { workspace = true }
+image = { workspace = true }

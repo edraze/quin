@@ -1,0 +1,13 @@
+[package]
+name = "keyboard-to-mouse-plugin"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace = true }
+serde = { workspace = true }
+global-input-api = { workspace = true }
+config-loader-plugin = { workspace = true }
+input-sequence-api = { workspace = true }
+mouse-output-api = { workspace = true }
+sequence-to-event = { workspace = true }

@@ -1,9 +1,47 @@
-[package]
-name = "quin"
+[workspace.package]
 version = "0.2.0"
 edition = "2021"
 
-[dependencies]
+[workspace]
+members = [
+    "app"
+    , "common/config_loader/plugin"
+    , "common/sequence_to_event"
+    , "plugins/output/mouse/core"
+    , "plugins/output/mouse/api"
+    , "plugins/output/mouse/plugin"
+    , "plugins/input/global/api"
+    , "plugins/input/global/plugin"
+    , "plugins/input/sequence/api"
+    , "plugins/input/sequence/plugin"
+    , "plugins/overlay/plugin"
+    , "plugins/keyboard_to_mouse/plugin"
+    , "plugins/gui/plugin"
+    , "plugins/input_to_gui/plugin"
+    , "plugins/sequence_to_log/plugin"
+    , "plugins/tray/api"
+    , "plugins/tray/plugin"
+]
+
+
+[workspace.dependencies]
+config-loader-plugin = { path = "common/config_loader/plugin" }
+sequence-to-event = { path = "common/sequence_to_event" }
+mouse-output-core = { path = "plugins/output/mouse/core" }
+mouse-output-api = { path = "plugins/output/mouse/api" }
+mouse-output-plugin = { path = "plugins/output/mouse/plugin" }
+global-input-api = { path = "plugins/input/global/api" }
+global-input-plugin = { path = "plugins/input/global/plugin" }
+input-sequence-api = { path = "plugins/input/sequence/api" }
+input-sequence-plugin = { path = "plugins/input/sequence/plugin" }
+overlay-plugin = { path = "plugins/overlay/plugin" }
+keyboard-to-mouse-plugin = { path = "plugins/keyboard_to_mouse/plugin" }
+gui-plugin = { path = "plugins/gui/plugin" }
+input-to-gui-plugin = { path = "plugins/input_to_gui/plugin" }
+sequence-to-log-plugin = { path = "plugins/sequence_to_log/plugin" }
+tray-api = { path = "plugins/tray/api" }
+tray-plugin = { path = "plugins/tray/plugin" }
+
 bevy = { version = "0.13", features = ["dynamic_linking"] }
 bevy_egui = "0.27.0"
 bevy-persistent = { version = "0.5.0", features = ["yaml"] }
@@ -14,6 +52,7 @@ once_cell = "1.19.0"
 image = "0.25"
 serde = { version = "1.0", features = ["derive"] }
 enigo = "0.1"
+
 
 [profile.dev]
 opt-level = 1
