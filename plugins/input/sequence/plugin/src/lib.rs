@@ -1,5 +1,5 @@
 use bevy::app::{App, Plugin};
-use bevy::prelude::{Added, Changed, Component, DetectChanges, Event, EventReader, Events, EventWriter, IntoSystemConfigs, Or, Query, Res, ResMut, Resource, Update, World};
+use bevy::prelude::{Added, Changed, Component, DetectChanges, Event, EventReader, Events, EventWriter, Or, Query, Res, ResMut, Resource, Update, World};
 
 use global_input_api::input::InputEvent;
 use input_sequence_api::Sequence;
@@ -20,22 +20,20 @@ impl Plugin for InputSequencePlugin {
     }
 }
 
-pub fn listen_sequences<E: Event + Clone, M>(app: &mut App, sequences: Vec<Sequence>, event: ToEvent<E>, handler: impl IntoSystemConfigs<M>) {
+pub fn listen_sequences<E: Event + Clone>(app: &mut App, sequences: Vec<Sequence>, event: ToEvent<E>) {
     if !app.world.contains_resource::<Events<E>>() {
         app.add_event::<E>();
         app.add_systems(Update, check_sequence::<E>);
-        app.add_systems(Update, handler.after(check_sequence::<E>));
     }
     for sequence in sequences {
         subscribe(&mut app.world, sequence, event.clone());
     }
 }
 
-pub fn listen_sequence<E: Event + Clone, M>(app: &mut App, sequence: Sequence, event: ToEvent<E>, handler: impl IntoSystemConfigs<M>) {
+pub fn listen_sequence<E: Event + Clone>(app: &mut App, sequence: Sequence, event: ToEvent<E>) {
     if !app.world.contains_resource::<Events<E>>() {
         app.add_event::<E>();
         app.add_systems(Update, check_sequence::<E>);
-        app.add_systems(Update, handler.after(check_sequence::<E>));
     }
     subscribe(&mut app.world, sequence, event);
 }

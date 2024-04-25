@@ -1,5 +1,5 @@
 use bevy::app::{App, Plugin};
-use bevy::prelude::{Event, EventReader, EventWriter, Res, Resource};
+use bevy::prelude::{Event, EventReader, EventWriter, in_state, IntoSystemConfigs, NextState, Res, ResMut, Resource, States, Update};
 use serde::{Deserialize, Serialize};
 
 use config_loader::Config;
@@ -19,26 +19,42 @@ impl Plugin for KeyboardToMousePlugin {
     fn build(&self, app: &mut App) {
         let config = config_loader::load::<KeyboardToMouse>();
         app.insert_resource(config.clone());
+        app.init_state::<KeyboardToMouseState>();
 
-        listen_sequences(app, config.key_bindings.activate.clone(), ToEvent::from_event(ActivateKeyboardToMouse), on_activate_keyboard_to_mouse);
-        listen_sequences(app, config.key_bindings.deactivate.clone(), ToEvent::from_event(DeactivateKeyboardToMouse), on_deactivate_keyboard_to_mouse);
-        
-        listen_sequences(app, config.key_bindings.mouse_move_up.clone(), ToEvent::from_event(MoveMouseRelativelyUp), on_move_mouse_relatively_up);
-        listen_sequences(app, config.key_bindings.mouse_move_down.clone(), ToEvent::from_event(MoveMouseRelativelyDown), on_move_mouse_relatively_down);
-        listen_sequences(app, config.key_bindings.mouse_move_left.clone(), ToEvent::from_event(MoveMouseRelativelyLeft), on_move_mouse_relatively_left);
-        listen_sequences(app, config.key_bindings.mouse_move_right.clone(), ToEvent::from_event(MoveMouseRelativelyRight), on_move_mouse_relatively_right);
+        listen_sequences(app, config.key_bindings.activate.clone(), ToEvent::from_event(ActivateKeyboardToMouse));
+        app.add_systems(Update, on_activate_keyboard_to_mouse.run_if(in_state(KeyboardToMouseState::Inactive)));
+        listen_sequences(app, config.key_bindings.deactivate.clone(), ToEvent::from_event(DeactivateKeyboardToMouse));
+        app.add_systems(Update, on_deactivate_keyboard_to_mouse.run_if(in_state(KeyboardToMouseState::Active)));
 
-        listen_sequences(app, config.key_bindings.mouse_scroll_up.clone(), ToEvent::from_event(ScrollUp), on_scroll_up);
-        listen_sequences(app, config.key_bindings.mouse_scroll_down.clone(), ToEvent::from_event(ScrollDown), on_scroll_down);
-        listen_sequences(app, config.key_bindings.mouse_scroll_left.clone(), ToEvent::from_event(ScrollLeft), on_scroll_left);
-        listen_sequences(app, config.key_bindings.mouse_scroll_right.clone(), ToEvent::from_event(ScrollRight), on_scroll_right);
+        listen_sequences(app, config.key_bindings.mouse_move_up.clone(), ToEvent::from_event(MoveMouseRelativelyUp));
+        app.add_systems(Update, on_move_mouse_relatively_up.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_move_down.clone(), ToEvent::from_event(MoveMouseRelativelyDown));
+        app.add_systems(Update, on_move_mouse_relatively_down.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_move_left.clone(), ToEvent::from_event(MoveMouseRelativelyLeft));
+        app.add_systems(Update, on_move_mouse_relatively_left.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_move_right.clone(), ToEvent::from_event(MoveMouseRelativelyRight));
+        app.add_systems(Update, on_move_mouse_relatively_right.run_if(in_state(KeyboardToMouseState::Active)));
 
-        listen_sequences(app, config.key_bindings.mouse_left_button_click.clone(), ToEvent::from_event(MouseLeftButtonClick), on_mouse_left_button_click);
-        listen_sequences(app, config.key_bindings.mouse_middle_button_click.clone(), ToEvent::from_event(MouseMiddleButtonClick), on_mouse_middle_button_click);
-        listen_sequences(app, config.key_bindings.mouse_right_button_click.clone(), ToEvent::from_event(MouseRightButtonClick), on_mouse_right_button_click);
+        listen_sequences(app, config.key_bindings.mouse_scroll_up.clone(), ToEvent::from_event(ScrollUp));
+        app.add_systems(Update, on_scroll_up.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_scroll_down.clone(), ToEvent::from_event(ScrollDown));
+        app.add_systems(Update, on_scroll_down.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_scroll_left.clone(), ToEvent::from_event(ScrollLeft));
+        app.add_systems(Update, on_scroll_left.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_scroll_right.clone(), ToEvent::from_event(ScrollRight));
+        app.add_systems(Update, on_scroll_right.run_if(in_state(KeyboardToMouseState::Active)));
 
-        listen_sequences(app, config.key_bindings.mouse_drag_and_drop_activate.clone(), ToEvent::from_event(DragAndDropStart), on_drag_and_drop_start);
-        listen_sequences(app, config.key_bindings.mouse_drag_and_drop_deactivate.clone(), ToEvent::from_event(DragAndDropEnd), on_drag_and_drop_end);
+        listen_sequences(app, config.key_bindings.mouse_left_button_click.clone(), ToEvent::from_event(MouseLeftButtonClick));
+        app.add_systems(Update, on_mouse_left_button_click.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_middle_button_click.clone(), ToEvent::from_event(MouseMiddleButtonClick));
+        app.add_systems(Update, on_mouse_middle_button_click.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_right_button_click.clone(), ToEvent::from_event(MouseRightButtonClick));
+        app.add_systems(Update, on_mouse_right_button_click.run_if(in_state(KeyboardToMouseState::Active)));
+
+        listen_sequences(app, config.key_bindings.mouse_drag_and_drop_activate.clone(), ToEvent::from_event(DragAndDropStart));
+        app.add_systems(Update, on_drag_and_drop_start.run_if(in_state(KeyboardToMouseState::Active)));
+        listen_sequences(app, config.key_bindings.mouse_drag_and_drop_deactivate.clone(), ToEvent::from_event(DragAndDropEnd));
+        app.add_systems(Update, on_drag_and_drop_end.run_if(in_state(KeyboardToMouseState::Active)));
     }
 
     fn name(&self) -> &str {
@@ -125,21 +141,32 @@ impl Config for KeyboardToMouse {
     }
 }
 
+#[derive(States, Default, Debug, Clone, PartialEq, Eq, Hash)]
+enum KeyboardToMouseState {
+    Active,
+    #[default]
+    Inactive,
+}
+
 #[derive(Event, Debug, Clone)]
 struct ActivateKeyboardToMouse;
 
-fn on_activate_keyboard_to_mouse(mut events: EventReader<ActivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>) {
+fn on_activate_keyboard_to_mouse(mut events: EventReader<ActivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>, 
+                                 mut state: ResMut<NextState<KeyboardToMouseState>>) {
     if events.read().count() > 0 {
-       writer.send(InputFilterEvent::Block(FilterInput::FullKeyboardPress));
+        writer.send(InputFilterEvent::Block(FilterInput::FullKeyboardPress));
+        state.set(KeyboardToMouseState::Active);
     }
 }
 
 #[derive(Event, Debug, Clone)]
 struct DeactivateKeyboardToMouse;
 
-fn on_deactivate_keyboard_to_mouse(mut events: EventReader<DeactivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>) {
+fn on_deactivate_keyboard_to_mouse(mut events: EventReader<DeactivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>, 
+                                   mut state: ResMut<NextState<KeyboardToMouseState>>) {
     if events.read().count() > 0 {
         writer.send(InputFilterEvent::Unblock(FilterInput::FullKeyboardPress));
+        state.set(KeyboardToMouseState::Inactive);
     }
 }
 
