@@ -11,7 +11,7 @@ const CONFIG_DIR_NAME: &str = "config";
 const CONFIG_FILE_EXTENSION: &str = ".json";
 
 // todo tests, watching (hot reload) [https://github.com/umut-sahin/bevy-persistent/issues/39]
-pub fn load_resource<T: Config>(mut commands: Commands) {
+pub fn load_config_system<T: Config>(mut commands: Commands) {
     let resource = load_config::<T>();
     commands.insert_resource(resource);
 }

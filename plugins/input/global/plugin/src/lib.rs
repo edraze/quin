@@ -8,14 +8,14 @@ use crossbeam::channel::Receiver;
 use crossbeam::channel::unbounded;
 use once_cell::sync::Lazy;
 use rdev::{EventType, grab};
-
-use global_input_api::{InputFilterEvent};
-use input_model::InputEvent;
+use global_input_api::filter::InputFilterEvent;
+use global_input_api::input::InputEvent;
 
 // emitter
 
 const GLOBAL_INPUT_PLUGIN_NAME: &str = "global_input";
 
+// todo divide core
 pub struct GlobalInputPlugin;
 
 impl Plugin for GlobalInputPlugin {

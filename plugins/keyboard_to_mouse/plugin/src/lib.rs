@@ -1,19 +1,19 @@
 use bevy::app::{App, Plugin};
-use bevy::prelude::{Event, EventReader, EventWriter, Res, Resource, Startup, Update};
+use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
 
-use config_loader_plugin::{Config, Persistent};
-use input_model::{InputEvent, Key, KeyEvent};
-use input_sequence_api::{Sequence, Subscribe, Subscription};
-use mouse_output_api::{Direction, MoveMouseRelatively};
+use config_loader::Config;
+use global_input_api::input::InputEvent;
+use global_input_api::keyboard::{Key, KeyEvent};
+use input_sequence_api::Sequence;
 
 const KEYBOARD_TO_MOUSE_PLUGIN_NAME: &str = "keyboard_to_mouse";
 
-pub struct MouseEmulatorPlugin;
+pub struct KeyboardToMousePlugin;
 
-impl Plugin for MouseEmulatorPlugin {
+impl Plugin for KeyboardToMousePlugin {
     fn build(&self, app: &mut App) {
-        let config = config_loader_plugin::load_config::<MouseEmulatorConfig>();
+        let config = config_loader::load_config::<MouseEmulatorConfig>();
         app.insert_resource(config);
     }
 

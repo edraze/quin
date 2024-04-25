@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-config_loader_plugin = { workspace = true }
+config_loader = { workspace = true }
 input_to_gui_plugin = { workspace = true }
 sequence_to_log_plugin = { workspace = true }
 tray_plugin = { workspace = true }

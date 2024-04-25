@@ -1,16 +1,16 @@
 use bevy::app::{App, Plugin};
 use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
-use config_loader_plugin::Config;
+use config_loader::Config;
 use global_input_plugin::GlobalInputPlugin;
-use input_sequence_plugin::InputSequencePlugin;
 use input_to_gui_plugin::InputToGuiPlugin;
-use keyboard_to_mouse_plugin::MouseEmulatorPlugin;
+use keyboard_to_mouse_plugin::KeyboardToMousePlugin;
 use mouse_output_plugin::MouseOutputPlugin;
 use overlay_plugin::OverlayPlugin;
 use sequence_to_log_plugin::SequenceToLogPlugin;
 use tray_plugin::TrayPlugin;
 use gui_plugin::GuiPlugin;
+use input_sequence_plugin::InputSequencePlugin;
 
 const GENERAL_PLUGIN_NAME: &str = "general";
 
@@ -18,19 +18,19 @@ pub struct QuinPlugins;
 
 impl Plugin for QuinPlugins {
     fn build(&self, app: &mut App) {
-        let config = config_loader_plugin::load_config::<GeneralConfig>();
+        let config = config_loader::load_config::<GeneralConfig>();
 
-        // todo only for dev purpose
-        add_plugin_if_enabled(app, &config, InputToGuiPlugin);
-        add_plugin_if_enabled(app, &config, SequenceToLogPlugin);
-        
         add_plugin_if_enabled(app, &config, TrayPlugin);
         add_plugin_if_enabled(app, &config, GlobalInputPlugin);
         add_plugin_if_enabled(app, &config, InputSequencePlugin);
         add_plugin_if_enabled(app, &config, OverlayPlugin);
         add_plugin_if_enabled(app, &config, GuiPlugin);
-        add_plugin_if_enabled(app, &config, MouseEmulatorPlugin);
+        add_plugin_if_enabled(app, &config, KeyboardToMousePlugin);
         add_plugin_if_enabled(app, &config, MouseOutputPlugin);
+        
+        // todo only for dev purpose
+        add_plugin_if_enabled(app, &config, InputToGuiPlugin);
+        add_plugin_if_enabled(app, &config, SequenceToLogPlugin);
     }
     fn name(&self) -> &str {
         GENERAL_PLUGIN_NAME
@@ -61,7 +61,7 @@ impl Default for GeneralConfig {
                 InputSequencePlugin.name().to_string(),
                 OverlayPlugin.name().to_string(),
                 GuiPlugin.name().to_string(),
-                MouseEmulatorPlugin.name().to_string(),
+                KeyboardToMousePlugin.name().to_string(),
                 MouseOutputPlugin.name().to_string(),
                 
                 InputToGuiPlugin.name().to_string(),

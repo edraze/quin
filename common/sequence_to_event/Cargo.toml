@@ -1,9 +1,0 @@
-[package]
-name = "sequence_to_event"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]
-# todo common crate should not depend on plugin crate
-input_sequence_api = { workspace = true }
-bevy = { workspace = true }

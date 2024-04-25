@@ -5,10 +5,8 @@ edition = "2021"
 [workspace]
 members = [
     "app"
-    , "common/config_loader/plugin"
-    , "common/input_model"
-    , "common/sequence_to_event"
-    , "plugins/output/mouse/core"
+    , "common/config_loader"
+    , "common/toggle"
     , "plugins/output/mouse/api"
     , "plugins/output/mouse/plugin"
     , "plugins/input/global/api"
@@ -22,15 +20,12 @@ members = [
     , "plugins/sequence_to_log/plugin"
     , "plugins/tray/api"
     , "plugins/tray/plugin"
-    , "common/toggle"]
+]
 
 
 [workspace.dependencies]
-config_loader_plugin = { path = "common/config_loader/plugin" }
-input_model = { path = "common/input_model" }
-sequence_to_event = { path = "common/sequence_to_event" }
+config_loader = { path = "common/config_loader" }
 toggle = { path = "common/toggle" }
-mouse_output_core = { path = "plugins/output/mouse/core" }
 mouse_output_api = { path = "plugins/output/mouse/api" }
 mouse_output_plugin = { path = "plugins/output/mouse/plugin" }
 global_input_api = { path = "plugins/input/global/api" }
@@ -55,7 +50,7 @@ bevy = { version = "0.13", features = ["dynamic_linking"] }
 bevy_egui = "0.27.0"
 bevy-persistent = { version = "0.5.0", features = ["json", "pretty"] }
 
-# input
+# input/output
 rdev = { version = "0.5.3", features = ["unstable_grab"] }
 enigo = "0.1"
 

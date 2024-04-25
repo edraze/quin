@@ -1,9 +1,13 @@
 // middleware/handler
 
-use bevy::app::{App, Plugin, Update};
-use bevy::prelude::{EventReader, EventWriter, Startup};
-use input_model::{InputEvent, Key, KeyEvent};
-use input_sequence_api::{Sequence, Subscribe, Subscription};
+use std::fmt::Debug;
+
+use bevy::app::{App, Plugin};
+use bevy::prelude::{Event, EventReader, Update};
+use global_input_api::input::InputEvent;
+use global_input_api::keyboard::{Key, KeyEvent};
+use input_sequence_api::Sequence;
+use input_sequence_plugin::{listen_sequence, ToEvent};
 
 const SEQUENCE_TO_LOG_PLUGIN_NAME: &str = "sequence_to_log";
 
@@ -11,7 +15,17 @@ pub struct SequenceToLogPlugin;
 
 impl Plugin for SequenceToLogPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, subscribe_to_sequence);
+        let sequence = Sequence::new(vec![
+            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyC)),
+            InputEvent::Keyboard(KeyEvent::Released(Key::KeyC)),
+            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyO)),
+            InputEvent::Keyboard(KeyEvent::Released(Key::KeyO)),
+            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyD)),
+            InputEvent::Keyboard(KeyEvent::Released(Key::KeyD)),
+            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)),
+            InputEvent::Keyboard(KeyEvent::Released(Key::KeyE)),
+        ]);
+        listen_sequence(app, sequence, ToEvent::from_event(SequenceToLog));
         app.add_systems(Update, input_to_log);
     }
 
@@ -20,41 +34,11 @@ impl Plugin for SequenceToLogPlugin {
     }
 }
 
-fn subscribe_to_sequence(mut event_writer: EventWriter<Subscribe>) {
-    let sequence = Sequence::new(vec![
-        InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyJ)),
-        InputEvent::Keyboard(KeyEvent::Released(Key::KeyJ)),
-        InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyK)),
-        InputEvent::Keyboard(KeyEvent::Released(Key::KeyK)),
-    ]);
-    let subscription = Subscription {
-        subscriber: SEQUENCE_TO_LOG_PLUGIN_NAME.to_string(),
-        sequence,
-    };
-    let event = Subscribe(subscription);
-    event_writer.send(event);
-
-
-    let sequence = Sequence::new(vec![
-        InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyC)),
-        InputEvent::Keyboard(KeyEvent::Released(Key::KeyC)),
-        InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyO)),
-        InputEvent::Keyboard(KeyEvent::Released(Key::KeyO)),
-        InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyD)),
-        InputEvent::Keyboard(KeyEvent::Released(Key::KeyD)),
-        InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)),
-        InputEvent::Keyboard(KeyEvent::Released(Key::KeyE)),
-    ]);
-    let subscription = Subscription {
-        subscriber: SEQUENCE_TO_LOG_PLUGIN_NAME.to_string(),
-        sequence,
-    };
-    let event = Subscribe(subscription);
-    event_writer.send(event);
-}
-
-fn input_to_log(mut events: EventReader<Sequence>) {
+fn input_to_log(mut events: EventReader<SequenceToLog>) {
     for event in events.read() {
         println!("{event:?}");
     }
 }
+
+#[derive(Event, Clone, Debug)]
+struct SequenceToLog;

@@ -1,20 +1,10 @@
-use bevy::prelude::Event;
+use std::fmt::Debug;
+
+use bevy::prelude::{Component};
 use serde::{Deserialize, Serialize};
-use input_model::InputEvent;
+use global_input_api::input::InputEvent;
 
-#[derive(Event, Debug, Clone)]
-pub struct Subscribe(pub Subscription);
-
-#[derive(Event, Debug, Clone)]
-pub struct Unsubscribe(pub Subscription);
-
-#[derive(Debug, Clone)]
-pub struct Subscription {
-    pub subscriber: String,
-    pub sequence: Sequence,
-}
-
-#[derive(Event, Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Component, Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Sequence {
     pub sequence: Vec<InputEvent>,
 }

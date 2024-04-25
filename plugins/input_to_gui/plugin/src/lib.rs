@@ -2,9 +2,9 @@
 
 use bevy::app::{App, Plugin, Update};
 use bevy::prelude::{EventReader, EventWriter};
+use global_input_api::input::InputEvent;
 
 use gui_plugin::GuiEvent;
-use input_model::InputEvent;
 
 const INPUT_TO_GUI_PLUGIN_NAME: &str = "input_to_gui";
 

@@ -9,4 +9,3 @@ rdev = { workspace = true }
 crossbeam = { workspace = true }
 once_cell = { workspace = true }
 global_input_api = { workspace = true }
-input_model = { workspace = true }

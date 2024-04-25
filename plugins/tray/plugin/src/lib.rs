@@ -1,4 +1,4 @@
-use bevy::app::{App, Plugin, Update};
+use bevy::app::{App, AppExit, Plugin, Update};
 use bevy::prelude::{EventReader, EventWriter};
 use tray_api::{TrayClick, TrayItemClick};
 use tray_icon::{TrayIcon, TrayIconBuilder, TrayIconEvent};
@@ -83,10 +83,10 @@ fn emmit_tray_item_event(mut tray_item_click: EventWriter<TrayItemClick>) {
     }
 }
 
-fn exit(mut events: EventReader<TrayItemClick>) {
+fn exit(mut events: EventReader<TrayItemClick>, mut exit: EventWriter<AppExit>) {
     for event in events.read() {
         if event.id == EXIT_TRAY_ITEM_ID {
-            std::process::exit(0);
+            exit.send(AppExit);
         }
     }
 }

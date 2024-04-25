@@ -1,9 +1,0 @@
-[package]
-name = "input_model"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]
-bevy = { workspace = true }
-rdev = { workspace = true }
-serde = { workspace = true }

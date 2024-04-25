@@ -1590,7 +1590,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "config_loader_plugin"
+name = "config_loader"
 version = "0.2.0"
 dependencies = [
  "bevy",
@@ -2584,8 +2584,8 @@ name = "global_input_api"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "input_model",
  "rdev",
+ "serde",
 ]
 
 [[package]]
@@ -2595,7 +2595,6 @@ dependencies = [
  "bevy",
  "crossbeam",
  "global_input_api",
- "input_model",
  "once_cell",
  "rdev",
 ]
@@ -3036,21 +3035,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "input_model"
-version = "0.2.0"
-dependencies = [
- "bevy",
- "rdev",
- "serde",
-]
-
-[[package]]
 name = "input_sequence_api"
 version = "0.2.0"
 dependencies = [
  "bevy",
  "global_input_api",
- "input_model",
  "serde",
 ]
 
@@ -3060,7 +3049,6 @@ version = "0.2.0"
 dependencies = [
  "bevy",
  "global_input_api",
- "input_model",
  "input_sequence_api",
 ]
 
@@ -3071,7 +3059,6 @@ dependencies = [
  "bevy",
  "global_input_api",
  "gui_plugin",
- "input_model",
 ]
 
 [[package]]
@@ -3172,12 +3159,10 @@ name = "keyboard_to_mouse_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "config_loader_plugin",
+ "config_loader",
  "global_input_api",
- "input_model",
  "input_sequence_api",
  "mouse_output_api",
- "sequence_to_event",
  "serde",
 ]
 
@@ -3476,12 +3461,7 @@ version = "0.2.0"
 dependencies = [
  "bevy",
  "global_input_api",
- "input_model",
 ]
-
-[[package]]
-name = "mouse_output_core"
-version = "0.2.0"
 
 [[package]]
 name = "mouse_output_plugin"
@@ -3490,7 +3470,6 @@ dependencies = [
  "bevy",
  "enigo",
  "global_input_api",
- "input_model",
  "mouse_output_api",
  "rdev",
 ]
@@ -4142,7 +4121,7 @@ name = "quin"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "config_loader_plugin",
+ "config_loader",
  "global_input_plugin",
  "gui_plugin",
  "input_sequence_plugin",
@@ -4509,21 +4488,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92d43fe69e652f3df9bdc2b85b2854a0825b86e4fb76bc44d945137d053639ca"
 
 [[package]]
-name = "sequence_to_event"
-version = "0.2.0"
-dependencies = [
- "bevy",
- "input_sequence_api",
-]
-
-[[package]]
 name = "sequence_to_log_plugin"
 version = "0.2.0"
 dependencies = [
  "bevy",
  "global_input_api",
- "input_model",
  "input_sequence_api",
+ "input_sequence_plugin",
 ]
 
 [[package]]

@@ -6,5 +6,4 @@ edition.workspace = true
 [dependencies]
 bevy = { workspace = true }
 global_input_api = { workspace = true }
-input_model = { workspace = true }
 gui_plugin = { workspace = true }
