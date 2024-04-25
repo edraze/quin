@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use config_loader::Config;
 use global_input_api::input::InputEvent;
-use global_input_api::keyboard::{Key, KeyEvent};
+use global_input_api::input_model::keyboard::{Key, KeyEvent};
 use input_sequence_api::Sequence;
 
 const KEYBOARD_TO_MOUSE_PLUGIN_NAME: &str = "keyboard_to_mouse";

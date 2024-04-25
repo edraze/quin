@@ -5,5 +5,4 @@ edition.workspace = true
 
 [dependencies]
 bevy = { workspace = true }
-# todo depends on common crate
-global_input_api = { workspace = true }
+input_model = { workspace = true }

@@ -1,7 +1,7 @@
 use bevy::prelude::Event;
+use input_model::keyboard::{Key, KeyEvent};
+use input_model::mouse::{Button, ButtonEvent};
 use crate::input::InputEvent;
-use crate::keyboard::{Key, KeyEvent};
-use crate::mouse::{Button, ButtonEvent};
 
 #[derive(Event, Debug)]
 pub enum InputFilterEvent {

@@ -5,7 +5,7 @@ use std::fmt::Debug;
 use bevy::app::{App, Plugin};
 use bevy::prelude::{Event, EventReader, Update};
 use global_input_api::input::InputEvent;
-use global_input_api::keyboard::{Key, KeyEvent};
+use global_input_api::input_model::keyboard::{Key, KeyEvent};
 use input_sequence_api::Sequence;
 use input_sequence_plugin::{listen_sequence, ToEvent};
 

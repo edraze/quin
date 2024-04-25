@@ -1,8 +1,8 @@
 use bevy::prelude::Event;
 use rdev::EventType;
 use serde::{Deserialize, Serialize};
-use crate::keyboard::KeyEvent;
-use crate::mouse::ButtonEvent;
+use input_model::keyboard::KeyEvent;
+use input_model::mouse::ButtonEvent;
 
 #[derive(Event, Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub enum InputEvent {

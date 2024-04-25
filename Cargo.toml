@@ -6,6 +6,7 @@ edition = "2021"
 members = [
     "app"
     , "common/config_loader"
+    , "common/input_model"
     , "common/toggle"
     , "plugins/output/mouse/api"
     , "plugins/output/mouse/plugin"
@@ -25,6 +26,7 @@ members = [
 
 [workspace.dependencies]
 config_loader = { path = "common/config_loader" }
+input_model = { path = "common/input_model" }
 toggle = { path = "common/toggle" }
 mouse_output_api = { path = "plugins/output/mouse/api" }
 mouse_output_plugin = { path = "plugins/output/mouse/plugin" }

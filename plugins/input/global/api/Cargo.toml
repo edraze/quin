@@ -7,3 +7,4 @@ edition.workspace = true
 bevy = { workspace = true }
 rdev = { workspace = true }
 serde = { workspace = true }
+input_model = { workspace = true }

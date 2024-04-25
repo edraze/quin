@@ -2584,6 +2584,7 @@ name = "global_input_api"
 version = "0.2.0"
 dependencies = [
  "bevy",
+ "input_model",
  "rdev",
  "serde",
 ]
@@ -3035,6 +3036,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "input_model"
+version = "0.2.0"
+dependencies = [
+ "rdev",
+ "serde",
+]
+
+[[package]]
 name = "input_sequence_api"
 version = "0.2.0"
 dependencies = [
@@ -3460,7 +3469,7 @@ name = "mouse_output_api"
 version = "0.2.0"
 dependencies = [
  "bevy",
- "global_input_api",
+ "input_model",
 ]
 
 [[package]]
@@ -3469,7 +3478,6 @@ version = "0.2.0"
 dependencies = [
  "bevy",
  "enigo",
- "global_input_api",
  "mouse_output_api",
  "rdev",
 ]

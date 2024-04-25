@@ -1,5 +1,5 @@
 pub mod filter;
-pub mod keyboard;
-pub mod mouse;
 pub mod input;
+
+pub use input_model;
 
