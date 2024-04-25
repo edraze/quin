@@ -3,7 +3,7 @@ use std::thread;
 use std::thread::JoinHandle;
 
 use bevy::app::{App, Plugin, Update};
-use bevy::prelude::{debug, error, EventReader, EventWriter, Res, Resource};
+use bevy::prelude::{error, EventReader, EventWriter, Res, Resource};
 use crossbeam::channel::Receiver;
 use crossbeam::channel::unbounded;
 use once_cell::sync::Lazy;
@@ -57,18 +57,18 @@ impl Default for GlobalInputState {
         let _grabbing_thead = thread::spawn(move || {
             grab(move |raw_event| {
                 // todo filter mouse move events by time delta, send event every second
-                if let EventType::MouseMove { .. } = raw_event.event_type {
+            if let EventType::MouseMove { .. } = raw_event.event_type {
                     return Some(raw_event);
                 }
-                let event = (&raw_event).into();
+                let event: InputEvent = (&raw_event).into();
                 let blocked_events = blocked_events.lock().unwrap();
+                s_chan
+                    .send(event.clone())
+                    .unwrap_or_else(|e| error!("Could not send event {:?}", e));
                 if is_event_blocked(blocked_events.as_slice(), &event) {
-                    debug!("Global input event blocked: {event:?}");
+                    println!("Global input event blocked: {event:?}");
                     None
                 } else {
-                    s_chan
-                        .send(event)
-                        .unwrap_or_else(|e| error!("Could not send event {:?}", e));
                     Some(raw_event)
                 }
             }).expect("Could not listen");

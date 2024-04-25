@@ -3,6 +3,7 @@ use bevy::prelude::{Event, EventReader, EventWriter, Res, Resource};
 use serde::{Deserialize, Serialize};
 
 use config_loader::Config;
+use global_input_api::filter::{FilterInput, InputFilterEvent};
 use global_input_api::input::InputEvent;
 use global_input_api::input_model::keyboard::{Key, KeyEvent};
 use global_input_api::input_model::mouse::Button;
@@ -19,6 +20,9 @@ impl Plugin for KeyboardToMousePlugin {
         let config = config_loader::load::<KeyboardToMouse>();
         app.insert_resource(config.clone());
 
+        listen_sequences(app, config.key_bindings.activate.clone(), ToEvent::from_event(ActivateKeyboardToMouse), on_activate_keyboard_to_mouse);
+        listen_sequences(app, config.key_bindings.deactivate.clone(), ToEvent::from_event(DeactivateKeyboardToMouse), on_deactivate_keyboard_to_mouse);
+        
         listen_sequences(app, config.key_bindings.mouse_move_up.clone(), ToEvent::from_event(MoveMouseRelativelyUp), on_move_mouse_relatively_up);
         listen_sequences(app, config.key_bindings.mouse_move_down.clone(), ToEvent::from_event(MoveMouseRelativelyDown), on_move_mouse_relatively_down);
         listen_sequences(app, config.key_bindings.mouse_move_left.clone(), ToEvent::from_event(MoveMouseRelativelyLeft), on_move_mouse_relatively_left);
@@ -81,8 +85,8 @@ pub struct KeyboardToMouseKeyBindings {
 impl Default for KeyboardToMouseKeyBindings {
     fn default() -> Self {
         Self {
-            activate: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::AltGr))])],
-            deactivate: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Released(Key::AltGr))])],
+            activate: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::ControlRight))])],
+            deactivate: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Released(Key::ControlRight))])],
             mouse_move_up: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyK))])],
             mouse_move_down: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyJ))])],
             mouse_move_left: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyH))])],
@@ -118,6 +122,24 @@ impl Default for KeyboardToMouseKeyBindings {
 impl Config for KeyboardToMouse {
     fn name() -> String {
         KEYBOARD_TO_MOUSE_PLUGIN_NAME.to_string()
+    }
+}
+
+#[derive(Event, Debug, Clone)]
+struct ActivateKeyboardToMouse;
+
+fn on_activate_keyboard_to_mouse(mut events: EventReader<ActivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>) {
+    if events.read().count() > 0 {
+       writer.send(InputFilterEvent::Block(FilterInput::FullKeyboardPress));
+    }
+}
+
+#[derive(Event, Debug, Clone)]
+struct DeactivateKeyboardToMouse;
+
+fn on_deactivate_keyboard_to_mouse(mut events: EventReader<DeactivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>) {
+    if events.read().count() > 0 {
+        writer.send(InputFilterEvent::Unblock(FilterInput::FullKeyboardPress));
     }
 }
 
