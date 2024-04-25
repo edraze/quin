@@ -9,4 +9,5 @@ serde = { workspace = true }
 global_input_api = { workspace = true }
 config_loader = { workspace = true }
 input_sequence_api = { workspace = true }
+input_sequence_plugin = { workspace = true }
 mouse_output_api = { workspace = true }

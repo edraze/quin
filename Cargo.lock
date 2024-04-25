@@ -400,8 +400,8 @@ dependencies = [
  "bevy",
  "gloo-storage",
  "serde",
- "serde_json",
  "thiserror",
+ "toml",
 ]
 
 [[package]]
@@ -3171,6 +3171,7 @@ dependencies = [
  "config_loader",
  "global_input_api",
  "input_sequence_api",
+ "input_sequence_plugin",
  "mouse_output_api",
  "serde",
 ]

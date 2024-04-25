@@ -1,29 +1,25 @@
 use std::env;
 use std::path::PathBuf;
 
-use bevy::prelude::{Commands, Resource};
+use bevy::prelude::Resource;
 pub use bevy_persistent::Persistent;
 use bevy_persistent::StorageFormat;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
 const CONFIG_DIR_NAME: &str = "config";
-const CONFIG_FILE_EXTENSION: &str = ".json";
+const CONFIG_FILE_EXTENSION: &str = ".toml";
 
 // todo tests, watching (hot reload) [https://github.com/umut-sahin/bevy-persistent/issues/39]
-pub fn load_config_system<T: Config>(mut commands: Commands) {
-    let resource = load_config::<T>();
-    commands.insert_resource(resource);
-}
 
-pub fn load_config<T: Config>() -> Persistent<T> {
+pub fn load<T: Config>() -> Persistent<T> {
     let config_dir = config_dir_path();
     let file_name = format!("{}{}", to_formatted_path(&T::name()), CONFIG_FILE_EXTENSION);
     let config_file_path = config_dir.join(file_name);
 
     Persistent::<T>::builder()
         .name(T::name())
-        .format(StorageFormat::JsonPretty)
+        .format(StorageFormat::TomlPretty)
         .path(config_file_path)
         .default(Default::default())
         .build()

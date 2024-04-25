@@ -30,6 +30,15 @@ pub struct Scroll {
     pub distance: i64,
 }
 
+impl Scroll {
+    pub fn new(direction: Direction, distance: i64) -> Self {
+        Self {
+            direction,
+            distance,
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub enum Direction {
     Up,
@@ -40,14 +49,30 @@ pub enum Direction {
 
 #[derive(Event, Debug)]
 pub struct MouseClick {
-    // todo move keyboard & mouse model to common module
     pub button: Button,
+}
+
+impl MouseClick {
+    pub fn new(button: Button) -> Self {
+        Self {
+            button
+        }
+    }
 }
 
 #[derive(Event, Debug)]
 pub struct DragAndDrop {
     pub action: DragAndDropAction,
     pub button: Button,
+}
+
+impl DragAndDrop {
+    pub fn new(action: DragAndDropAction, button: Button) -> Self {
+        Self {
+            action,
+            button,
+        }
+    }
 }
 
 #[derive(Debug)]

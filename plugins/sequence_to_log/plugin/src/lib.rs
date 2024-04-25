@@ -25,8 +25,7 @@ impl Plugin for SequenceToLogPlugin {
             InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)),
             InputEvent::Keyboard(KeyEvent::Released(Key::KeyE)),
         ]);
-        listen_sequence(app, sequence, ToEvent::from_event(SequenceToLog));
-        app.add_systems(Update, input_to_log);
+        listen_sequence(app, sequence, ToEvent::from_event(SequenceToLog), input_to_log);
     }
 
     fn name(&self) -> &str {

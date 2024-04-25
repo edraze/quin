@@ -62,8 +62,8 @@ fn move_mouse_to_position(move_mouse: &MoveMouseToPosition){
 fn move_mouse_relatively(move_mouse: &MoveMouseRelatively) {
     let distance = move_mouse.distance;
     match move_mouse.direction {
-        Direction::Up => Enigo.mouse_move_relative(0, distance),
-        Direction::Down => Enigo.mouse_move_relative(0, -distance),
+        Direction::Up => Enigo.mouse_move_relative(0, -distance),
+        Direction::Down => Enigo.mouse_move_relative(0, distance),
         Direction::Left => Enigo.mouse_move_relative(-distance, 0),
         Direction::Right => Enigo.mouse_move_relative(distance, 0),
     }
@@ -72,8 +72,8 @@ fn move_mouse_relatively(move_mouse: &MoveMouseRelatively) {
 fn scroll(scroll: &Scroll) {
     let distance = scroll.distance;
     match scroll.direction {
-        Direction::Up => rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: -distance }).unwrap(),
-        Direction::Down => rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: distance }).unwrap(),
+        Direction::Up => rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: distance }).unwrap(),
+        Direction::Down => rdev::simulate(&EventType::Wheel { delta_x: 0, delta_y: -distance }).unwrap(),
         Direction::Left => rdev::simulate(&EventType::Wheel { delta_x: -distance, delta_y: 0 }).unwrap(),
         Direction::Right => rdev::simulate(&EventType::Wheel { delta_x: distance, delta_y: 0 }).unwrap()
     }

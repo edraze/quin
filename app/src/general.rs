@@ -18,7 +18,7 @@ pub struct QuinPlugins;
 
 impl Plugin for QuinPlugins {
     fn build(&self, app: &mut App) {
-        let config = config_loader::load_config::<GeneralConfig>();
+        let config = config_loader::load::<GeneralConfig>();
 
         add_plugin_if_enabled(app, &config, TrayPlugin);
         add_plugin_if_enabled(app, &config, GlobalInputPlugin);
