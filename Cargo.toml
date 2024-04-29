@@ -8,6 +8,7 @@ members = [
     , "common/config_loader"
     , "common/input_model"
     , "common/toggle"
+    , "common/keyboard_layout"
     , "plugins/output/mouse/api"
     , "plugins/output/mouse/plugin"
     , "plugins/input/global/api"
@@ -28,6 +29,7 @@ members = [
 config_loader = { path = "common/config_loader" }
 input_model = { path = "common/input_model" }
 toggle = { path = "common/toggle" }
+keyboard_layout = { path = "common/keyboard_layout" }
 mouse_output_api = { path = "plugins/output/mouse/api" }
 mouse_output_plugin = { path = "plugins/output/mouse/plugin" }
 global_input_api = { path = "plugins/input/global/api" }

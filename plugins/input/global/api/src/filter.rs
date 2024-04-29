@@ -1,6 +1,8 @@
 use bevy::prelude::Event;
+
 use input_model::keyboard::{Key, KeyEvent};
 use input_model::mouse::{Button, ButtonEvent};
+
 use crate::input::InputEvent;
 
 #[derive(Event, Debug)]

@@ -3164,6 +3164,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "keyboard_layout"
+version = "0.2.0"
+dependencies = [
+ "bevy",
+ "input_sequence_plugin",
+ "toggle",
+]
+
+[[package]]
 name = "keyboard_to_mouse_plugin"
 version = "0.2.0"
 dependencies = [
@@ -3172,8 +3181,10 @@ dependencies = [
  "global_input_api",
  "input_sequence_api",
  "input_sequence_plugin",
+ "keyboard_layout",
  "mouse_output_api",
  "serde",
+ "toggle",
 ]
 
 [[package]]
@@ -4833,6 +4844,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 [[package]]
 name = "toggle"
 version = "0.2.0"
+dependencies = [
+ "bevy",
+]
 
 [[package]]
 name = "toml"

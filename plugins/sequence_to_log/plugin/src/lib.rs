@@ -7,7 +7,7 @@ use bevy::prelude::{Event, EventReader, Update};
 use global_input_api::input::InputEvent;
 use global_input_api::input_model::keyboard::{Key, KeyEvent};
 use input_sequence_api::Sequence;
-use input_sequence_plugin::{listen_sequence, ToEvent};
+use input_sequence_plugin::listen_sequences;
 
 const SEQUENCE_TO_LOG_PLUGIN_NAME: &str = "sequence_to_log";
 
@@ -25,7 +25,7 @@ impl Plugin for SequenceToLogPlugin {
             InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)),
             InputEvent::Keyboard(KeyEvent::Released(Key::KeyE)),
         ]);
-        listen_sequence(app, sequence, ToEvent::from_event(SequenceToLog));
+        listen_sequences(app, (sequence, SequenceToLog));
         app.add_systems(Update, input_to_log);
     }
 

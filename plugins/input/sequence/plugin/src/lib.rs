@@ -2,7 +2,7 @@ use bevy::app::{App, Plugin};
 use bevy::prelude::{Added, Changed, Component, DetectChanges, Event, EventReader, Events, EventWriter, Or, Query, Res, ResMut, Resource, Update, World};
 
 use global_input_api::input::InputEvent;
-use input_sequence_api::Sequence;
+pub use input_sequence_api::{Sequence, SequencesToEvent};
 
 const INPUT_SEQUENCE_PLUGIN_NAME: &str = "input_sequence";
 
@@ -20,26 +20,19 @@ impl Plugin for InputSequencePlugin {
     }
 }
 
-pub fn listen_sequences<E: Event + Clone>(app: &mut App, sequences: Vec<Sequence>, event: ToEvent<E>) {
+pub fn listen_sequences<E: Event + Clone>(app: &mut App, binding: impl Into<SequencesToEvent<E>>) {
     if !app.world.contains_resource::<Events<E>>() {
         app.add_event::<E>();
         app.add_systems(Update, check_sequence::<E>);
     }
-    for sequence in sequences {
-        subscribe(&mut app.world, sequence, event.clone());
+    let sequence_to_event = binding.into();
+    for sequence in sequence_to_event.sequences{
+        subscribe(&mut app.world, sequence, sequence_to_event.event.clone());
     }
 }
 
-pub fn listen_sequence<E: Event + Clone>(app: &mut App, sequence: Sequence, event: ToEvent<E>) {
-    if !app.world.contains_resource::<Events<E>>() {
-        app.add_event::<E>();
-        app.add_systems(Update, check_sequence::<E>);
-    }
-    subscribe(&mut app.world, sequence, event);
-}
-
-pub fn subscribe<E: Event + Clone>(world: &mut World, sequence: Sequence, event: ToEvent<E>) {
-    world.spawn((sequence, event));
+pub fn subscribe<E: Event + Clone>(world: &mut World, sequence: Sequence, event: E) {
+    world.spawn((sequence, ToEvent::from_event(event)));
 }
 
 // todo implements unsubscribe (remove entity with Sequence and ToEvent components)
@@ -106,7 +99,7 @@ impl SequenceBuffer {
 }
 
 #[derive(Component, Clone)]
-pub struct ToEvent<E: Event + Clone> {
+struct ToEvent<E: Event + Clone> {
     pub event: E,
 }
 
