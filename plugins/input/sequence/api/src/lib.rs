@@ -4,20 +4,49 @@ use bevy::prelude::{Component, Event};
 use serde::{Deserialize, Serialize};
 
 use global_input_api::input::InputEvent;
+use global_input_api::input_model::keyboard::{Key, KeyEvent};
 
 #[derive(Component, Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Sequence {
-    pub sequence: Vec<InputEvent>,
+    pub input_events: Vec<InputEvent>,
 }
 
 impl Sequence {
     pub fn new(input_sequence: Vec<InputEvent>) -> Self {
         Self {
-            sequence: input_sequence
+            input_events: input_sequence
         }
     }
     pub fn len(&self) -> usize {
-        self.sequence.len()
+        self.input_events.len()
+    }
+}
+
+impl TryFrom<char> for Sequence {
+    type Error = String;
+
+    fn try_from(value: char) -> Result<Self, Self::Error> {
+        let key = Key::try_from(value);
+        Result::and_then(key, |key| {
+            let input = vec![
+                InputEvent::Keyboard(KeyEvent::Pressed(key)),
+                InputEvent::Keyboard(KeyEvent::Released(key)),
+            ];
+            Ok(Sequence::new(input))
+        })
+    }
+}
+
+#[derive(Component, Clone)]
+pub struct ToEvent<E: Event + Clone> {
+    pub event: E,
+}
+
+impl<E: Event + Clone> ToEvent<E> {
+    pub fn from_event(event: E) -> Self {
+        Self {
+            event
+        }
     }
 }
 

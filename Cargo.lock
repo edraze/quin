@@ -3555,6 +3555,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "navigation_grid"
+version = "0.2.0"
+dependencies = [
+ "bevy",
+ "config_loader",
+ "global_input_api",
+ "input_sequence_api",
+ "itertools",
+ "keyboard_layout",
+ "keyboard_to_mouse_plugin",
+ "mouse_output_api",
+ "overlay_plugin",
+ "serde",
+ "toggle",
+]
+
+[[package]]
 name = "ndk"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4148,6 +4165,7 @@ dependencies = [
  "input_to_gui_plugin",
  "keyboard_to_mouse_plugin",
  "mouse_output_plugin",
+ "navigation_grid",
  "overlay_plugin",
  "sequence_to_log_plugin",
  "serde",

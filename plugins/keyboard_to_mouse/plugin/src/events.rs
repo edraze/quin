@@ -7,40 +7,40 @@ pub struct ActivateKeyboardToMouse;
 pub struct DeactivateKeyboardToMouse;
 
 #[derive(Event, Debug, Clone)]
-pub struct MoveMouseRelativelyUp;
+pub(crate) struct MoveMouseRelativelyUp;
 
 #[derive(Event, Debug, Clone)]
-pub struct MoveMouseRelativelyDown;
+pub(crate) struct MoveMouseRelativelyDown;
 
 #[derive(Event, Debug, Clone)]
-pub struct MoveMouseRelativelyLeft;
+pub(crate) struct MoveMouseRelativelyLeft;
 
 #[derive(Event, Debug, Clone)]
-pub struct MoveMouseRelativelyRight;
+pub(crate) struct MoveMouseRelativelyRight;
 
 #[derive(Event, Debug, Clone)]
-pub struct ScrollUp;
+pub(crate) struct ScrollUp;
 
 #[derive(Event, Debug, Clone)]
-pub struct ScrollDown;
+pub(crate) struct ScrollDown;
 
 #[derive(Event, Debug, Clone)]
-pub struct ScrollLeft;
+pub(crate) struct ScrollLeft;
 
 #[derive(Event, Debug, Clone)]
-pub struct ScrollRight;
+pub(crate) struct ScrollRight;
 
 #[derive(Event, Debug, Clone)]
-pub struct MouseLeftButtonClick;
+pub(crate) struct MouseLeftButtonClick;
 
 #[derive(Event, Debug, Clone)]
-pub struct MouseMiddleButtonClick;
+pub(crate) struct MouseMiddleButtonClick;
 
 #[derive(Event, Debug, Clone)]
-pub struct MouseRightButtonClick;
+pub(crate) struct MouseRightButtonClick;
 
 #[derive(Event, Debug, Clone)]
-pub struct DragAndDropStart;
+pub(crate) struct DragAndDropStart;
 
 #[derive(Event, Debug, Clone)]
-pub struct DragAndDropEnd;
+pub(crate) struct DragAndDropEnd;

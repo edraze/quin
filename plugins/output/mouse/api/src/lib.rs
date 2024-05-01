@@ -24,6 +24,15 @@ pub struct MoveMouseToPosition {
     pub y: f64,
 }
 
+impl MoveMouseToPosition {
+    pub fn new(x: f64, y: f64) -> Self {
+        Self {
+            x,
+            y,
+        }
+    }
+}
+
 #[derive(Event, Debug)]
 pub struct Scroll {
     pub direction: Direction,

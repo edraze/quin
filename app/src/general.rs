@@ -11,6 +11,7 @@ use sequence_to_log_plugin::SequenceToLogPlugin;
 use tray_plugin::TrayPlugin;
 use gui_plugin::GuiPlugin;
 use input_sequence_plugin::InputSequencePlugin;
+use navigation_grid::NavigationGridPlugin;
 
 const GENERAL_PLUGIN_NAME: &str = "general";
 
@@ -26,6 +27,7 @@ impl Plugin for QuinPlugins {
         add_plugin_if_enabled(app, &config, OverlayPlugin);
         add_plugin_if_enabled(app, &config, GuiPlugin);
         add_plugin_if_enabled(app, &config, KeyboardToMousePlugin);
+        add_plugin_if_enabled(app, &config, NavigationGridPlugin);
         add_plugin_if_enabled(app, &config, MouseOutputPlugin);
         
         // todo only for dev purpose
@@ -62,6 +64,7 @@ impl Default for GeneralConfig {
                 OverlayPlugin.name().to_string(),
                 GuiPlugin.name().to_string(),
                 KeyboardToMousePlugin.name().to_string(),
+                NavigationGridPlugin.name().to_string(),
                 MouseOutputPlugin.name().to_string(),
                 
                 InputToGuiPlugin.name().to_string(),

@@ -1,8 +1,9 @@
 use bevy::app::{App, Plugin};
-use bevy::prelude::{Added, Changed, Component, DetectChanges, Event, EventReader, Events, EventWriter, Or, Query, Res, ResMut, Resource, Update, World};
+use bevy::prelude::{Added, Changed, DetectChanges, Event, EventReader, Events, EventWriter, Or, Query, Res, ResMut, Resource, Update, World};
 
 use global_input_api::input::InputEvent;
 pub use input_sequence_api::{Sequence, SequencesToEvent};
+use input_sequence_api::ToEvent;
 
 const INPUT_SEQUENCE_PLUGIN_NAME: &str = "input_sequence";
 
@@ -94,19 +95,6 @@ impl SequenceBuffer {
     }
 
     pub fn ends_with(&self, sequence: &Sequence) -> bool {
-        self.buffer.ends_with(&sequence.sequence)
-    }
-}
-
-#[derive(Component, Clone)]
-struct ToEvent<E: Event + Clone> {
-    pub event: E,
-}
-
-impl<E: Event + Clone> ToEvent<E> {
-    pub fn from_event(event: E) -> Self {
-        Self {
-            event
-        }
+        self.buffer.ends_with(&sequence.input_events)
     }
 }

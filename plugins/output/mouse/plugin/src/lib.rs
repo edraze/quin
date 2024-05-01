@@ -54,6 +54,7 @@ fn on_drag_and_drop_event(mut events: EventReader<DragAndDrop>) {
 }
 
 fn move_mouse_to_position(move_mouse: &MoveMouseToPosition){
+    println!("mouse move absolutely");
     let (x,y) = (move_mouse.x, move_mouse.y);
     rdev::simulate(&EventType::MouseMove { x, y }).unwrap();
 }

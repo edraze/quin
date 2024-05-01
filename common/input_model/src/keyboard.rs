@@ -6,7 +6,7 @@ pub enum KeyEvent {
     Released(Key),
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Key {
     Alt,
     AltGr,
@@ -225,6 +225,80 @@ impl From<&rdev::Key> for Key {
             rdev::Key::KpDelete => Key::KpDelete,
             rdev::Key::Function => Key::Function,
             rdev::Key::Unknown(key) => Key::Unknown(*key),
+        }
+    }
+}
+
+impl TryFrom<char> for Key {
+    type Error = String;
+
+    fn try_from(value: char) -> Result<Self, Self::Error> {
+        match value {
+            // todo support upper case 
+            'q' =>  Ok(Key::KeyQ),
+            'w' =>  Ok(Key::KeyW),
+            'e' =>  Ok(Key::KeyE),
+            'r' =>  Ok(Key::KeyR),
+            't' =>  Ok(Key::KeyT),
+            'y' =>  Ok(Key::KeyY),
+            'u' =>  Ok(Key::KeyU),
+            'i' =>  Ok(Key::KeyI),
+            'o' =>  Ok(Key::KeyO),
+            'p' =>  Ok(Key::KeyP),
+            'a' =>  Ok(Key::KeyA),
+            's' =>  Ok(Key::KeyS),
+            'd' =>  Ok(Key::KeyD),
+            'f' =>  Ok(Key::KeyF),
+            'g' =>  Ok(Key::KeyG),
+            'h' =>  Ok(Key::KeyH),
+            'j' =>  Ok(Key::KeyJ),
+            'k' =>  Ok(Key::KeyK),
+            'l' =>  Ok(Key::KeyL),
+            'z' =>  Ok(Key::KeyZ),
+            'x' =>  Ok(Key::KeyX),
+            'c' =>  Ok(Key::KeyC),
+            'v' =>  Ok(Key::KeyV),
+            'b' =>  Ok(Key::KeyB),
+            'n' =>  Ok(Key::KeyN),
+            'm' =>  Ok(Key::KeyM),
+            value => Err(format!("Fail to parse Key from unsupported char: '{value}'"))
+        }
+    }
+}
+
+impl TryFrom<Key> for char {
+    type Error = String;
+
+    fn try_from(value: Key) -> Result<Self, Self::Error> {
+        match value {
+            // todo support upper case 
+            Key::KeyQ =>Ok('q'),
+            Key::KeyW =>Ok('w'),
+            Key::KeyE =>Ok('e'),
+            Key::KeyR =>Ok('r'), 
+            Key::KeyT =>Ok('t'),
+            Key::KeyY =>Ok('y'),
+            Key::KeyU =>Ok('u'),
+            Key::KeyI =>Ok('i'), 
+            Key::KeyO =>Ok('o'),
+            Key::KeyP =>Ok('p'),
+            Key::KeyA =>Ok('a'),
+            Key::KeyS =>Ok('s'),
+            Key::KeyD =>Ok('d'),
+            Key::KeyF =>Ok('f'),
+            Key::KeyG =>Ok('g'),
+            Key::KeyH =>Ok('h'),
+            Key::KeyJ =>Ok('j'), 
+            Key::KeyK =>Ok('k'),
+            Key::KeyL =>Ok('l'),
+            Key::KeyZ =>Ok('z'),
+            Key::KeyX =>Ok('x'),
+            Key::KeyC =>Ok('c'),
+            Key::KeyV =>Ok('v'),
+            Key::KeyB =>Ok('b'),
+            Key::KeyN =>Ok('n'),
+            Key::KeyM =>Ok('m'),
+            value => Err(format!("Fail to parse char from unsupported key: '{value:?}'"))
         }
     }
 }

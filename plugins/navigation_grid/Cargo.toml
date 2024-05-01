@@ -1,0 +1,17 @@
+[package]
+name = "navigation_grid"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace = true }
+serde = { workspace = true }
+toggle = { workspace = true }
+config_loader = { workspace = true }
+keyboard_layout = { workspace = true }
+global_input_api = { workspace = true }
+input_sequence_api = { workspace = true }
+mouse_output_api = { workspace = true }
+keyboard_to_mouse_plugin = { workspace = true }
+itertools = { workspace = true }
+overlay_plugin = { workspace = true }

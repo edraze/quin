@@ -22,7 +22,6 @@ pub fn on_deactivate_keyboard_to_mouse(mut events: EventReader<DeactivateKeyboar
 }
 
 pub fn on_move_mouse_relatively_up(mut events: EventReader<Active<MoveMouseRelativelyUp>>, config: Res<KeyboardToMouseConfig>, mut writer: EventWriter<MoveMouseRelatively>) {
-    println!("receive active event MoveUp");
     let mouse_speed = config.mouse_speed;
     writer.send_batch(events.read()
         .map(|_| MoveMouseRelatively::new(Direction::Up, mouse_speed)));

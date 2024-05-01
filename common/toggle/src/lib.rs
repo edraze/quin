@@ -1,3 +1,4 @@
+use std::any::type_name;
 use std::marker::PhantomData;
 use bevy::app::App;
 use bevy::prelude::{Event, EventReader, Events, EventWriter, Res, ResMut, Resource, Update};
@@ -25,9 +26,11 @@ pub fn add_toggle_event<A: Event + Clone, D: Event + Clone, E: Event + Clone>(ap
 fn toggle<A: Event + Clone, D: Event + Clone>(mut activate_events: EventReader<A>, mut deactivate_events: EventReader<D>,
                                               mut toggle: ResMut<Toggle<A, D>>) {
     if activate_events.read().count() > 0 {
+        println!("Set toggle: '{}' active", type_name::<Toggle<A, D>>());
         toggle.is_active = true;
     }
     if deactivate_events.read().count() > 0 {
+        println!("Set toggle: '{}' inactive", type_name::<Toggle<A, D>>());
         toggle.is_active = false;
     }
 }
@@ -38,8 +41,10 @@ fn mapper<A: Event + Clone, D: Event + Clone, E: Event + Clone>(mut in_events: E
                                                                 mut inactive_events_writer: EventWriter<Inactive<E>>) {
     for event in in_events.read().cloned() {
         if toggle.is_active {
+            println!("Send active event: {}", type_name::<E>());
             active_events_writer.send(Active(event));
         } else {
+            println!("Send inactive event: {}", type_name::<E>());
             inactive_events_writer.send(Inactive(event));
         }
     }
@@ -63,7 +68,7 @@ impl <A: Event + Clone, D: Event + Clone>Default for Toggle<A,D> {
 }
 
 #[derive(Event)]
-pub struct Active<E: Event>(E);
+pub struct Active<E: Event>(pub E);
 
 #[derive(Event)]
-pub struct Inactive<E: Event>(E);
+pub struct Inactive<E: Event>(pub E);
