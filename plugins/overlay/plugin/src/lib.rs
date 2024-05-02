@@ -48,7 +48,7 @@ impl Plugin for OverlayPlugin {
 }
 
 // set windowed fullscreen manually
-// because of bevy crash in case of transparent & borderless & fullscreen
+// because of bevy crash in case of transparent & borderless & fullscreen window
 fn setup_window(winit_windows: NonSend<WinitWindows>, mut windows: Query<(Entity, &mut Window)>) {
     let overlay = windows.iter_mut()
         .find(|(_, window)| window.name == Some(OVERLAY_PLUGIN_NAME.to_string()));

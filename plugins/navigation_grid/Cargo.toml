@@ -7,6 +7,7 @@ edition.workspace = true
 bevy = { workspace = true }
 serde = { workspace = true }
 toggle = { workspace = true }
+ui_elements = { workspace = true }
 config_loader = { workspace = true }
 keyboard_layout = { workspace = true }
 global_input_api = { workspace = true }

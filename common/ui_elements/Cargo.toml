@@ -1,9 +1,8 @@
 [package]
-name = "input_to_gui_plugin"
+name = "ui_elements"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
 bevy = { workspace = true }
-global_input_api = { workspace = true }
-gui_plugin = { workspace = true }
+bevy_egui = { workspace = true }

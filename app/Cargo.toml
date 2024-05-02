@@ -5,7 +5,6 @@ edition.workspace = true
 
 [dependencies]
 config_loader = { workspace = true }
-input_to_gui_plugin = { workspace = true }
 sequence_to_log_plugin = { workspace = true }
 tray_plugin = { workspace = true }
 global_input_plugin = { workspace = true }

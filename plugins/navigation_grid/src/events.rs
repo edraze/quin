@@ -8,7 +8,7 @@ pub struct DeactivateNavigationGrid;
 
 #[derive(Event, Clone, Eq, PartialEq, Debug)]
 pub struct NavigateToLabel{
-    label: String
+    pub label: String
 }
 
 impl NavigateToLabel {

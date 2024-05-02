@@ -3,7 +3,6 @@ use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
 use config_loader::Config;
 use global_input_plugin::GlobalInputPlugin;
-use input_to_gui_plugin::InputToGuiPlugin;
 use keyboard_to_mouse_plugin::KeyboardToMousePlugin;
 use mouse_output_plugin::MouseOutputPlugin;
 use overlay_plugin::OverlayPlugin;
@@ -21,17 +20,16 @@ impl Plugin for QuinPlugins {
     fn build(&self, app: &mut App) {
         let config = config_loader::load::<GeneralConfig>();
 
+        add_plugin_if_enabled(app, &config, OverlayPlugin);
         add_plugin_if_enabled(app, &config, TrayPlugin);
         add_plugin_if_enabled(app, &config, GlobalInputPlugin);
         add_plugin_if_enabled(app, &config, InputSequencePlugin);
-        add_plugin_if_enabled(app, &config, OverlayPlugin);
         add_plugin_if_enabled(app, &config, GuiPlugin);
         add_plugin_if_enabled(app, &config, KeyboardToMousePlugin);
         add_plugin_if_enabled(app, &config, NavigationGridPlugin);
         add_plugin_if_enabled(app, &config, MouseOutputPlugin);
         
         // todo only for dev purpose
-        add_plugin_if_enabled(app, &config, InputToGuiPlugin);
         add_plugin_if_enabled(app, &config, SequenceToLogPlugin);
     }
     fn name(&self) -> &str {
@@ -67,7 +65,6 @@ impl Default for GeneralConfig {
                 NavigationGridPlugin.name().to_string(),
                 MouseOutputPlugin.name().to_string(),
                 
-                InputToGuiPlugin.name().to_string(),
                 SequenceToLogPlugin.name().to_string(),
             ],
         }

@@ -2823,6 +2823,7 @@ version = "0.2.0"
 dependencies = [
  "bevy",
  "bevy_egui",
+ "ui_elements",
 ]
 
 [[package]]
@@ -3059,15 +3060,6 @@ dependencies = [
  "bevy",
  "global_input_api",
  "input_sequence_api",
-]
-
-[[package]]
-name = "input_to_gui_plugin"
-version = "0.2.0"
-dependencies = [
- "bevy",
- "global_input_api",
- "gui_plugin",
 ]
 
 [[package]]
@@ -3569,6 +3561,7 @@ dependencies = [
  "overlay_plugin",
  "serde",
  "toggle",
+ "ui_elements",
 ]
 
 [[package]]
@@ -4162,7 +4155,6 @@ dependencies = [
  "global_input_plugin",
  "gui_plugin",
  "input_sequence_plugin",
- "input_to_gui_plugin",
  "keyboard_to_mouse_plugin",
  "mouse_output_plugin",
  "navigation_grid",
@@ -5066,6 +5058,14 @@ checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
  "cfg-if",
  "static_assertions",
+]
+
+[[package]]
+name = "ui_elements"
+version = "0.2.0"
+dependencies = [
+ "bevy",
+ "bevy_egui",
 ]
 
 [[package]]

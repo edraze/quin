@@ -38,10 +38,9 @@ impl Default for NavigationGridBindings {
                     InputEvent::Keyboard(KeyEvent::Released(Key::AltGr)),
                 ])],
             deactivate: vec![
-               /* Sequence::new(vec![
-                    InputEvent::Keyboard(KeyEvent::Pressed(Key::AltGr)),
-                    InputEvent::Keyboard(KeyEvent::Released(Key::AltGr)),
-                ])*/],
+               Sequence::new(vec![
+                    InputEvent::Keyboard(KeyEvent::Pressed(Key::Escape))
+                ])],
         }
     }
 }

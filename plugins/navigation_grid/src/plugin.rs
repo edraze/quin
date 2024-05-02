@@ -1,6 +1,6 @@
 use bevy::app::{App, Plugin, Startup};
 use bevy::prelude::Update;
-use itertools::{all, Itertools};
+use itertools::Itertools;
 
 use global_input_api::input::InputEvent;
 use global_input_api::input_model::keyboard::{Key, KeyEvent};
@@ -37,7 +37,6 @@ impl Plugin for NavigationGridPlugin {
             let label_sequence = keys_to_sequences(keys.clone()); // todo remove this clone
             let label_text = keys_to_string(keys);
             let event = NavigateToLabel::new(&label_text);
-            dbg!(&event);
             layout = layout.bind((label_sequence, event));
         }
 
