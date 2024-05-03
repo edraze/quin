@@ -26,7 +26,7 @@ impl Plugin for SequenceToLogPlugin {
             InputEvent::Keyboard(KeyEvent::Released(Key::KeyE)),
         ]);
         listen_sequences(app, (sequence, SequenceToLog));
-        app.add_systems(Update, input_to_log);
+        app.add_systems(Update, input_to_log_system);
     }
 
     fn name(&self) -> &str {
@@ -34,7 +34,7 @@ impl Plugin for SequenceToLogPlugin {
     }
 }
 
-fn input_to_log(mut events: EventReader<SequenceToLog>) {
+fn input_to_log_system(mut events: EventReader<SequenceToLog>) {
     for event in events.read() {
         println!("{event:?}");
     }

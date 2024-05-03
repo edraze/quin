@@ -18,6 +18,12 @@ impl UiLabel {
             text: text.to_string(),
         }
     }
+
+    pub fn set_position(&mut self, x: f32, y: f32) {
+        self.position.x = x;
+        self.position.y = y;
+    }
+
     fn draw(&self, ui: &mut Ui) {
         if self.visible {
             let painter = ui.painter();

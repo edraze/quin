@@ -1,4 +1,4 @@
-use bevy::prelude::{Commands, Entity, EventReader, EventWriter, Query, Window, With};
+use bevy::prelude::{Commands, Entity, EventReader, EventWriter, Query, ResMut, Window, With};
 
 use global_input_api::filter::{FilterInput, InputFilterEvent};
 use input_sequence_api::{ResetSequenceBuffer, ToEvent};
@@ -8,7 +8,7 @@ use overlay_plugin::OVERLAY_PLUGIN_NAME;
 use toggle::Active;
 use ui_elements::UiLabel;
 
-use crate::components::NavigationPoint;
+use crate::components::{NavigationPoint, SubGrid};
 use crate::events::{ActivateMainGrid, ActivateNavigationGrid, ActivateSubGrid, DeactivateMainGrid, DeactivateNavigationGrid, DeactivateSubGrid, NavigateToLabel, NavigateToSubLabel, UpdateSubGridPosition};
 
 pub fn init_labels_system(windows: Query<&Window>,
@@ -46,10 +46,13 @@ pub fn init_labels_system(windows: Query<&Window>,
             }
         }
 
-        let sub_grid_width = x_padding * 2.;
-        let sub_grid_height = y_padding * 2.;
+        let sub_grid_width = x_padding * 1.5;
+        let sub_grid_height = y_padding * 1.5;
+        
         let sub_grid_density = 20.;
         let navigation_sub_points = build_navigation_for_rect(sub_grid_width, sub_grid_height, sub_grid_density, sub_grid_density);
+
+        commands.insert_resource(SubGrid::new(sub_grid_width, sub_grid_height, sub_grid_width / 2., sub_grid_height / 2.));
 
         let mut sub_labels = sub_labels.iter();
         for point in navigation_sub_points {
@@ -72,8 +75,8 @@ fn build_navigation_for_rect(width: f32, height: f32, x_padding: f32, y_padding:
     let x_points_count = width / x_padding;
     let y_points_count = height / y_padding;
 
-    for y_index in 0..y_points_count as i32 {
-        for x_index in 0..x_points_count as i32 {
+    for y_index in 0..=y_points_count as i32 {
+        for x_index in 0..=x_points_count as i32 {
             let x = x_index as f32 * x_padding;
             let y = y_index as f32 * y_padding;
 
@@ -84,14 +87,15 @@ fn build_navigation_for_rect(width: f32, height: f32, x_padding: f32, y_padding:
     result
 }
 
-// todo rename all systems *_system
 pub fn activate_plugin_system(mut activate_plugin_reader: EventReader<ActivateNavigationGrid>,
                               mut input_filter_writer: EventWriter<InputFilterEvent>,
+                              mut deactivate_sub_grid_writer: EventWriter<DeactivateSubGrid>,
                               mut activate_main_grid_writer: EventWriter<ActivateMainGrid>,
                               mut activate_keyboard_to_mouse_writer: EventWriter<ActivateKeyboardToMouse>,
 ) {
     if activate_plugin_reader.read().count() > 0 {
         input_filter_writer.send(InputFilterEvent::Block(FilterInput::FullKeyboardPress));
+        deactivate_sub_grid_writer.send(DeactivateSubGrid);
         activate_main_grid_writer.send(ActivateMainGrid);
         activate_keyboard_to_mouse_writer.send(ActivateKeyboardToMouse); // todo fix keyboard_to_mouse plugin can be disabled by own activation/deactivation sequences
     }
@@ -163,7 +167,23 @@ pub fn deactivate_sub_grid_system(mut deactivate_sub_grid_reader: EventReader<De
     }
 }
 
-pub fn update_sub_grid_position(mut update_sub_grid_reader: EventReader<UpdateSubGridPosition>) {}
+pub fn update_sub_grid_position(mut update_sub_grid_reader: EventReader<UpdateSubGridPosition>,
+                                mut labels: Query<(&ToEvent<NavigateToSubLabel>, &mut NavigationPoint, &mut UiLabel)>,
+                                mut sub_grid: ResMut<SubGrid>,
+) {
+    if let Some(event) = update_sub_grid_reader.read().last() {
+        let x_offset = event.x - sub_grid.center.x;
+        let y_offset = event.y - sub_grid.center.y;
+        dbg!(x_offset);
+        dbg!(y_offset);
+        for (_, mut navigation_point, mut ui_label) in labels.iter_mut() {
+            navigation_point.offset(x_offset, y_offset);
+            ui_label.set_position(navigation_point.x, navigation_point.y);
+        }
+        sub_grid.center.x = event.x;
+        sub_grid.center.y = event.y;
+    }
+}
 
 pub fn navigate_to_sub_label_system(mut navigate_sub_label_reader: EventReader<Active<NavigateToSubLabel>>,
                                     labels: Query<(&ToEvent<NavigateToSubLabel>, &NavigationPoint)>,

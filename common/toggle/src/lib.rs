@@ -11,7 +11,7 @@ pub fn add_toggle<A: Event + Clone, D: Event + Clone>(app: &mut App) {
         app.add_event::<D>();
     }
     app.init_resource::<Toggle<A,D>>();
-    app.add_systems(Update, toggle::<A, D>);
+    app.add_systems(Update, toggle_system::<A, D>);
 }
 
 pub fn add_toggle_event<A: Event + Clone, D: Event + Clone, E: Event + Clone>(app: &mut App) {
@@ -20,11 +20,11 @@ pub fn add_toggle_event<A: Event + Clone, D: Event + Clone, E: Event + Clone>(ap
     }
     app.add_event::<Active<E>>();
     app.add_event::<Inactive<E>>();
-    app.add_systems(Update, mapper::<A,D,E>);
+    app.add_systems(Update, mapper_system::<A,D,E>);
 }
 
-fn toggle<A: Event + Clone, D: Event + Clone>(mut activate_events: EventReader<A>, mut deactivate_events: EventReader<D>,
-                                              mut toggle: ResMut<Toggle<A, D>>) {
+fn toggle_system<A: Event + Clone, D: Event + Clone>(mut activate_events: EventReader<A>, mut deactivate_events: EventReader<D>,
+                                                     mut toggle: ResMut<Toggle<A, D>>) {
     if activate_events.read().count() > 0 {
         println!("Set toggle: '{}' active", type_name::<Toggle<A, D>>());
         toggle.is_active = true;
@@ -35,10 +35,10 @@ fn toggle<A: Event + Clone, D: Event + Clone>(mut activate_events: EventReader<A
     }
 }
 
-fn mapper<A: Event + Clone, D: Event + Clone, E: Event + Clone>(mut in_events: EventReader<E>,
-                                                                toggle: Res<Toggle<A, D>>,
-                                                                mut active_events_writer: EventWriter<Active<E>>,
-                                                                mut inactive_events_writer: EventWriter<Inactive<E>>) {
+fn mapper_system<A: Event + Clone, D: Event + Clone, E: Event + Clone>(mut in_events: EventReader<E>,
+                                                                       toggle: Res<Toggle<A, D>>,
+                                                                       mut active_events_writer: EventWriter<Active<E>>,
+                                                                       mut inactive_events_writer: EventWriter<Inactive<E>>) {
     for event in in_events.read().cloned() {
         if toggle.is_active {
             println!("Send active event: {}", type_name::<E>());

@@ -4,7 +4,7 @@ use input_sequence_plugin::listen_sequences;
 use keyboard_layout::Layout;
 use crate::config::KeyboardToMouseConfig;
 use crate::events::{ActivateKeyboardToMouse, DeactivateKeyboardToMouse, DragAndDropEnd, DragAndDropStart, MouseLeftButtonClick, MouseMiddleButtonClick, MouseRightButtonClick, MoveMouseRelativelyDown, MoveMouseRelativelyLeft, MoveMouseRelativelyRight, MoveMouseRelativelyUp, ScrollDown, ScrollLeft, ScrollRight, ScrollUp};
-use crate::systems::{on_activate_keyboard_to_mouse, on_deactivate_keyboard_to_mouse, on_drag_and_drop_end, on_drag_and_drop_start, on_mouse_left_button_click, on_mouse_middle_button_click, on_mouse_right_button_click, on_move_mouse_relatively_down, on_move_mouse_relatively_left, on_move_mouse_relatively_right, on_move_mouse_relatively_up, on_scroll_down, on_scroll_left, on_scroll_right, on_scroll_up};
+use crate::systems::{on_activate_keyboard_to_mouse_system, on_deactivate_keyboard_to_mouse_system, on_drag_and_drop_end_system, on_drag_and_drop_start_system, on_mouse_left_button_click_system, on_mouse_middle_button_click_system, on_mouse_right_button_click_system, on_move_mouse_relatively_down_system, on_move_mouse_relatively_left_system, on_move_mouse_relatively_right_system, on_move_mouse_relatively_up_system, on_scroll_down_system, on_scroll_left_system, on_scroll_right_system, on_scroll_up_system};
 
 pub(crate) const KEYBOARD_TO_MOUSE_PLUGIN_NAME: &str = "keyboard_to_mouse";
 
@@ -38,21 +38,21 @@ impl Plugin for KeyboardToMousePlugin {
             .bind((config.key_bindings.mouse_drag_and_drop_deactivate.clone(), DragAndDropEnd));
 
         app.add_systems(Update, (
-            on_activate_keyboard_to_mouse,
-            on_deactivate_keyboard_to_mouse,
-            on_move_mouse_relatively_up,
-            on_move_mouse_relatively_down,
-            on_move_mouse_relatively_left,
-            on_move_mouse_relatively_right,
-            on_scroll_up,
-            on_scroll_down,
-            on_scroll_left,
-            on_scroll_right,
-            on_mouse_left_button_click,
-            on_mouse_middle_button_click,
-            on_mouse_right_button_click,
-            on_drag_and_drop_start,
-            on_drag_and_drop_end
+            on_activate_keyboard_to_mouse_system,
+            on_deactivate_keyboard_to_mouse_system,
+            on_move_mouse_relatively_up_system,
+            on_move_mouse_relatively_down_system,
+            on_move_mouse_relatively_left_system,
+            on_move_mouse_relatively_right_system,
+            on_scroll_up_system,
+            on_scroll_down_system,
+            on_scroll_left_system,
+            on_scroll_right_system,
+            on_mouse_left_button_click_system,
+            on_mouse_middle_button_click_system,
+            on_mouse_right_button_click_system,
+            on_drag_and_drop_start_system,
+            on_drag_and_drop_end_system
         ));
     }
 

@@ -24,8 +24,8 @@ impl Plugin for GlobalInputPlugin {
             .init_resource::<GlobalInputState>()
             .add_event::<InputEvent>()
             .add_event::<InputFilterEvent>()
-            .add_systems(Update, global_input_handler)
-            .add_systems(Update, handle_input_filter_event);
+            .add_systems(Update, global_input_handler_system)
+            .add_systems(Update, handle_input_filter_event_system);
     }
 
     fn name(&self) -> &str {
@@ -80,13 +80,13 @@ impl Default for GlobalInputState {
     }
 }
 
-pub fn global_input_handler(global_input_state: Res<GlobalInputState>, mut input_event: EventWriter<InputEvent>) {
+pub fn global_input_handler_system(global_input_state: Res<GlobalInputState>, mut input_event: EventWriter<InputEvent>) {
     if let Ok(event) = global_input_state.input_channel.try_recv() {
         input_event.send(event);
     }
 }
 
-pub fn handle_input_filter_event(mut events: EventReader<InputFilterEvent>) {
+pub fn handle_input_filter_event_system(mut events: EventReader<InputFilterEvent>) {
     for filter in events.read() {
         apply_input_filter(filter);
     }

@@ -37,8 +37,8 @@ impl Plugin for OverlayPlugin {
         }))
             .insert_resource(ClearColor(Color::NONE))
             .add_systems(Startup, (
-                setup_window,
-                setup_camera,
+                setup_window_system,
+                setup_camera_system,
             ));
     }
 
@@ -48,8 +48,8 @@ impl Plugin for OverlayPlugin {
 }
 
 // set windowed fullscreen manually
-// because of bevy crash in case of transparent & borderless & fullscreen window
-fn setup_window(winit_windows: NonSend<WinitWindows>, mut windows: Query<(Entity, &mut Window)>) {
+// because of bevy error in case of enables transparent & borderless & fullscreen properties
+fn setup_window_system(winit_windows: NonSend<WinitWindows>, mut windows: Query<(Entity, &mut Window)>) {
     let overlay = windows.iter_mut()
         .find(|(_, window)| window.name == Some(OVERLAY_PLUGIN_NAME.to_string()));
     if let Some((entity, mut window)) = overlay {
@@ -66,6 +66,6 @@ fn setup_window(winit_windows: NonSend<WinitWindows>, mut windows: Query<(Entity
     }
 }
 
-fn setup_camera(mut commands: Commands) {
+fn setup_camera_system(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 }

@@ -19,9 +19,9 @@ impl Plugin for TrayPlugin {
             // .add_event::<CreateTrayItem>()
             .add_systems(Update, (
                 // create_tray,
-                emmit_tray_event,
-                emmit_tray_item_event,
-                exit,
+                emmit_tray_event_system,
+                emmit_tray_item_event_system,
+                exit_system,
             ));
     }
 
@@ -68,14 +68,14 @@ impl Plugin for TrayPlugin {
 //     }
 // }
 
-fn emmit_tray_event(mut tray_click: EventWriter<TrayClick>) {
+fn emmit_tray_event_system(mut tray_click: EventWriter<TrayClick>) {
     if let Ok(_event) = TrayIconEvent::receiver().try_recv() {
         println!("{_event:?}");
         tray_click.send(TrayClick);
     }
 }
 
-fn emmit_tray_item_event(mut tray_item_click: EventWriter<TrayItemClick>) {
+fn emmit_tray_item_event_system(mut tray_item_click: EventWriter<TrayItemClick>) {
     if let Ok(event) = MenuEvent::receiver().try_recv() {
         println!("{event:?}");
         let event = TrayItemClick::new(&event.id.0);
@@ -83,7 +83,7 @@ fn emmit_tray_item_event(mut tray_item_click: EventWriter<TrayItemClick>) {
     }
 }
 
-fn exit(mut events: EventReader<TrayItemClick>, mut exit: EventWriter<AppExit>) {
+fn exit_system(mut events: EventReader<TrayItemClick>, mut exit: EventWriter<AppExit>) {
     for event in events.read() {
         if event.id == EXIT_TRAY_ITEM_ID {
             exit.send(AppExit);

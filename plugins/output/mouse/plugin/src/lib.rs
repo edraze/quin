@@ -16,11 +16,11 @@ impl Plugin for MouseOutputPlugin {
         app.add_event::<Scroll>();
         app.add_event::<MouseClick>();
         app.add_event::<DragAndDrop>();
-        app.add_systems(Update, on_move_mouse_relatively_event);
-        app.add_systems(Update, on_move_mouse_to_position_event);
-        app.add_systems(Update, on_scroll_event);
-        app.add_systems(Update, on_click_event);
-        app.add_systems(Update, on_drag_and_drop_event);
+        app.add_systems(Update, on_move_mouse_relatively_event_system);
+        app.add_systems(Update, on_move_mouse_to_position_event_system);
+        app.add_systems(Update, on_scroll_event_system);
+        app.add_systems(Update, on_click_event_system);
+        app.add_systems(Update, on_drag_and_drop_event_system);
     }
 
     fn name(&self) -> &str {
@@ -28,27 +28,27 @@ impl Plugin for MouseOutputPlugin {
     }
 }
 
-fn on_move_mouse_relatively_event(mut events: EventReader<MoveMouseRelatively>) {
+fn on_move_mouse_relatively_event_system(mut events: EventReader<MoveMouseRelatively>) {
     events.read()
         .for_each(move_mouse_relatively);
 }
 
-fn on_move_mouse_to_position_event(mut events: EventReader<MoveMouseToPosition>) {
+fn on_move_mouse_to_position_event_system(mut events: EventReader<MoveMouseToPosition>) {
     events.read()
         .for_each(move_mouse_to_position);
 }
 
-fn on_scroll_event(mut events: EventReader<Scroll>) {
+fn on_scroll_event_system(mut events: EventReader<Scroll>) {
     events.read()
         .for_each(scroll);
 }
 
-fn on_click_event(mut events: EventReader<MouseClick>) {
+fn on_click_event_system(mut events: EventReader<MouseClick>) {
     events.read()
         .for_each(|event| click(&event.button))
 }
 
-fn on_drag_and_drop_event(mut events: EventReader<DragAndDrop>) {
+fn on_drag_and_drop_event_system(mut events: EventReader<DragAndDrop>) {
     events.read()
         .for_each(drag_and_drop);
 }

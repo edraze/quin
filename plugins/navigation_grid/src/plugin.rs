@@ -27,7 +27,7 @@ impl Plugin for NavigationGridPlugin {
         let deactivation_binding: SequencesToEvent<_> = (config.key_bindings.deactivate.clone(), DeactivateNavigationGrid).into();
         listen_sequences(app, activation_binding);
         listen_sequences(app, deactivation_binding);
-        
+
         let allowed_keys = config.allowed_label_key.chars().flat_map(Key::try_from);
         let forbidden_keys = get_keyboard_to_mouse_keys(app);
 
@@ -36,14 +36,14 @@ impl Plugin for NavigationGridPlugin {
             .permutations(2)
             .collect();
 
-        build_main_layout(app, &label_keys); 
+        build_main_layout(app, &label_keys);
        build_sub_layout(app, &label_keys);
 
         app.add_systems(Startup, init_labels_system);
         app.add_systems(Update, activate_plugin_system);
         app.add_systems(Update, activate_main_grid_system.after(activate_plugin_system));
         app.add_systems(Update, navigate_to_label_system.after(activate_main_grid_system));
-        // app.add_systems(Update, update_sub_grid_position.after(navigate_to_label_system));
+        app.add_systems(Update, update_sub_grid_position.after(navigate_to_label_system));
         app.add_systems(Update, deactivate_main_grid_system.after(update_sub_grid_position));
         app.add_systems(Update, activate_sub_grid_system.after(deactivate_main_grid_system));
         app.add_systems(Update, navigate_to_sub_label_system.after(activate_sub_grid_system));
