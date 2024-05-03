@@ -81,10 +81,8 @@ impl Default for GlobalInputState {
 }
 
 pub fn global_input_handler(global_input_state: Res<GlobalInputState>, mut input_event: EventWriter<InputEvent>) {
-    if let Ok(event) = global_input_state.input_channel.recv() {
+    if let Ok(event) = global_input_state.input_channel.try_recv() {
         input_event.send(event);
-    } else {
-        error!("Error during receiving input event from channel")
     }
 }
 

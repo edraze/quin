@@ -73,3 +73,6 @@ impl<E: Event + Clone> From<(Sequence, E)> for SequencesToEvent<E> {
         }
     }
 }
+
+#[derive(Event)]
+pub struct ResetSequenceBuffer;

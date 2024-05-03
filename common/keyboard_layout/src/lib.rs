@@ -15,11 +15,7 @@ pub struct Layout<'a, A: Event + Clone, D: Event + Clone> {
 }
 
 impl<'a, A: Event + Clone, D: Event + Clone> Layout<'a, A, D> {
-    pub fn new(app: &'a mut App,
-               activation_binding: SequencesToEvent<A>,
-               deactivation_binding: SequencesToEvent<D>) -> Self {
-        listen_sequences(app, activation_binding);
-        listen_sequences(app, deactivation_binding);
+    pub fn new(app: &'a mut App) -> Self {
         add_toggle::<A, D>(app);
         Self {
             app,

@@ -12,6 +12,7 @@ config_loader = { workspace = true }
 keyboard_layout = { workspace = true }
 global_input_api = { workspace = true }
 input_sequence_api = { workspace = true }
+input_sequence_plugin = { workspace = true }
 mouse_output_api = { workspace = true }
 keyboard_to_mouse_plugin = { workspace = true }
 itertools = { workspace = true }

@@ -1,4 +1,6 @@
 use bevy::app::{App, Plugin, Update};
+use input_sequence_api::SequencesToEvent;
+use input_sequence_plugin::listen_sequences;
 use keyboard_layout::Layout;
 use crate::config::KeyboardToMouseConfig;
 use crate::events::{ActivateKeyboardToMouse, DeactivateKeyboardToMouse, DragAndDropEnd, DragAndDropStart, MouseLeftButtonClick, MouseMiddleButtonClick, MouseRightButtonClick, MoveMouseRelativelyDown, MoveMouseRelativelyLeft, MoveMouseRelativelyRight, MoveMouseRelativelyUp, ScrollDown, ScrollLeft, ScrollRight, ScrollUp};
@@ -13,9 +15,11 @@ impl Plugin for KeyboardToMousePlugin {
         let config = config_loader::load::<KeyboardToMouseConfig>();
         app.insert_resource(config.clone());
 
-        let activation_binding = (config.key_bindings.activate.clone(), ActivateKeyboardToMouse).into();
-        let deactivation_binding = (config.key_bindings.deactivate.clone(), DeactivateKeyboardToMouse).into();
-        Layout::new(app, activation_binding, deactivation_binding)
+        let activation_binding: SequencesToEvent<_> = (config.key_bindings.activate.clone(), ActivateKeyboardToMouse).into();
+        let deactivation_binding: SequencesToEvent<_> = (config.key_bindings.deactivate.clone(), DeactivateKeyboardToMouse).into();
+        listen_sequences(app, activation_binding);
+        listen_sequences(app, deactivation_binding);
+        Layout::<ActivateKeyboardToMouse, DeactivateKeyboardToMouse>::new(app)
             .bind((config.key_bindings.mouse_move_up.clone(), MoveMouseRelativelyUp))
             .bind((config.key_bindings.mouse_move_down.clone(), MoveMouseRelativelyDown))
             .bind((config.key_bindings.mouse_move_left.clone(), MoveMouseRelativelyLeft))

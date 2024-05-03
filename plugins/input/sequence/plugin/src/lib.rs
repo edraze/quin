@@ -3,7 +3,7 @@ use bevy::prelude::{Added, Changed, DetectChanges, Event, EventReader, Events, E
 
 use global_input_api::input::InputEvent;
 pub use input_sequence_api::{Sequence, SequencesToEvent};
-use input_sequence_api::ToEvent;
+use input_sequence_api::{ResetSequenceBuffer, ToEvent};
 
 const INPUT_SEQUENCE_PLUGIN_NAME: &str = "input_sequence";
 
@@ -12,8 +12,10 @@ pub struct InputSequencePlugin;
 impl Plugin for InputSequencePlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<SequenceBuffer>();
-        app.add_systems(Update, on_input_event);
-        app.add_systems(Update, update_buffer);
+        app.add_event::<ResetSequenceBuffer>();
+        app.add_systems(Update, handle_input_event_system);
+        app.add_systems(Update, update_buffer_system);
+        app.add_systems(Update, reset_sequence_buffer_system);
     }
 
     fn name(&self) -> &str {
@@ -24,7 +26,7 @@ impl Plugin for InputSequencePlugin {
 pub fn listen_sequences<E: Event + Clone>(app: &mut App, binding: impl Into<SequencesToEvent<E>>) {
     if !app.world.contains_resource::<Events<E>>() {
         app.add_event::<E>();
-        app.add_systems(Update, check_sequence::<E>);
+        app.add_systems(Update, check_sequence_system::<E>);
     }
     let sequence_to_event = binding.into();
     for sequence in sequence_to_event.sequences{
@@ -38,14 +40,14 @@ pub fn subscribe<E: Event + Clone>(world: &mut World, sequence: Sequence, event:
 
 // todo implements unsubscribe (remove entity with Sequence and ToEvent components)
 
-fn on_input_event(mut buffer: ResMut<SequenceBuffer>, mut events: EventReader<InputEvent>) {
+fn handle_input_event_system(mut buffer: ResMut<SequenceBuffer>, mut events: EventReader<InputEvent>) {
     for event in events.read().cloned() {
         println!("input: {event:?}");
         add_input_to_buffer(&mut buffer, event);
     }
 }
 
-fn check_sequence<E: Event + Clone>(mut query: Query<(&Sequence, &ToEvent<E>)>, buffer: Res<SequenceBuffer>, mut writer: EventWriter<E>) {
+fn check_sequence_system<E: Event + Clone>(mut query: Query<(&Sequence, &ToEvent<E>)>, buffer: Res<SequenceBuffer>, mut writer: EventWriter<E>) {
     if buffer.is_changed() {
         for (sequence, event) in &mut query {
             if buffer.ends_with(sequence) {
@@ -56,14 +58,22 @@ fn check_sequence<E: Event + Clone>(mut query: Query<(&Sequence, &ToEvent<E>)>, 
     }
 }
 
-fn update_buffer(query: Query<&Sequence, Or<(Added<Sequence>, Changed<Sequence>)>>,
-                 mut buffer: ResMut<SequenceBuffer>) {
+fn update_buffer_system(query: Query<&Sequence, Or<(Added<Sequence>, Changed<Sequence>)>>,
+                        mut buffer: ResMut<SequenceBuffer>) {
     let capacity = query.iter()
         .map(|sequence| sequence.len())
         .max();
     if let Some(size) = capacity {
         println!("Resize sequence buffer: {size}");
         buffer.resize(size);
+    }
+}
+
+fn reset_sequence_buffer_system(mut reset_sequence_buffer_reader: EventReader<ResetSequenceBuffer>,
+                                mut buffer: ResMut<SequenceBuffer>){
+    if reset_sequence_buffer_reader.read().count() > 0 {
+        println!("reset sequence buffer");
+        buffer.reset();
     }
 }
 
@@ -96,5 +106,9 @@ impl SequenceBuffer {
 
     pub fn ends_with(&self, sequence: &Sequence) -> bool {
         self.buffer.ends_with(&sequence.input_events)
+    }
+    
+    pub fn reset(&mut self){
+        self.buffer.clear();
     }
 }

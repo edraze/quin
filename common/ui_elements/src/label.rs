@@ -24,19 +24,19 @@ impl UiLabel {
             let position = self.position;
             let text = self.text.clone();
 
-            painter.add(egui::epaint::CircleShape::filled(position, -1.0, Color32::RED));
+            painter.add(egui::epaint::CircleShape::filled(position, -1., Color32::RED));
 
             let galley = painter.layout(
                 text,
-                FontId::proportional(8.0),
+                FontId::proportional(10.),
                 Color32::YELLOW,
                 f32::INFINITY,
             );
             let text_shape = egui::epaint::TextShape::new(position, galley, Color32::RED);
 
             let text_background = Shape::Rect(RectShape::new(
-                text_shape.visual_bounding_rect().expand(-1.),
-                1.,
+                text_shape.visual_bounding_rect().expand(1.),
+                2.,
                 Color32::from_rgb(30, 31, 34),
                 Stroke::NONE,
             ));

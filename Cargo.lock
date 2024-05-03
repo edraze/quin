@@ -3554,6 +3554,7 @@ dependencies = [
  "config_loader",
  "global_input_api",
  "input_sequence_api",
+ "input_sequence_plugin",
  "itertools",
  "keyboard_layout",
  "keyboard_to_mouse_plugin",
