@@ -13,12 +13,20 @@
 | Feature | Plugin | Description |
 |---------|--------|-------------|
 
+[//]: # (todo)
+
 ## Plugins
 
-| Plugin                                             | Windows | Linux | MacOS |
-|----------------------------------------------------|---------|-------|-------|
-| [global-input](src/plugins/global_input/readme.md) | [x]     | []    | []    |
-| [tray](src/plugins/tray/readme.md)                 | [x]     | []    | []    |
+| Plugin                | Windows | Linux | MacOS |
+|-----------------------|---------|-------|-------|
+| [tray]()              | [x]     | []    | []    |
+| [global-input]()      | [x]     | []    | []    |
+| [input_sequence]()    | [x]     | []    | []    |
+| [gui]()               | [x]     | []    | []    |
+| [overlay]()           | [x]     | []    | []    |
+| [keyboard_to_mouse]() | [x]     | []    | []    |
+| [navigation_grid]()   | [x]     | []    | []    |
+| [mouse_output]()      | [x]     | []    | []    |
 
 ## License
 

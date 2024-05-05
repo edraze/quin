@@ -6,7 +6,7 @@ use input_model::mouse::ButtonEvent;
 
 #[derive(Event, Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub enum InputEvent {
-    // todo remove indirection
+    // todo remove indirection if it possible
     Keyboard(KeyEvent),
     MouseButton(ButtonEvent),
     MouseMove {

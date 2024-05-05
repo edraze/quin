@@ -1,4 +1,4 @@
-use bevy::prelude::{EventReader, EventWriter, Res};
+use bevy::prelude::{EventReader, EventWriter, Res, ResMut};
 
 use global_input_api::filter::{FilterInput, InputFilterEvent};
 use mouse_output_api::{Direction, DragAndDrop, DragAndDropAction, MouseClick, MoveMouseRelatively, Scroll};
@@ -7,6 +7,7 @@ use toggle::Active;
 
 use crate::config::KeyboardToMouseConfig;
 use crate::events::{ActivateKeyboardToMouse, DeactivateKeyboardToMouse, DragAndDropEnd, DragAndDropStart, MouseLeftButtonClick, MouseMiddleButtonClick, MouseRightButtonClick, MoveMouseRelativelyDown, MoveMouseRelativelyLeft, MoveMouseRelativelyRight, MoveMouseRelativelyUp, ScrollDown, ScrollLeft, ScrollRight, ScrollUp};
+use crate::state::KeyboardToMouseState;
 
 pub fn on_activate_keyboard_to_mouse_system(mut events: EventReader<ActivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>) {
     if events.read().count() > 0 {
@@ -14,10 +15,15 @@ pub fn on_activate_keyboard_to_mouse_system(mut events: EventReader<ActivateKeyb
     }
 }
 
-// todo end drag&drop if started but not finished
-pub fn on_deactivate_keyboard_to_mouse_system(mut events: EventReader<DeactivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>) {
+pub fn on_deactivate_keyboard_to_mouse_system(mut events: EventReader<DeactivateKeyboardToMouse>,
+                                              state: ResMut<KeyboardToMouseState>,
+                                              mut drag_and_drop_end_writer: EventWriter<DragAndDropEnd>, 
+                                              mut input_filter_writer: EventWriter<InputFilterEvent>) {
     if events.read().count() > 0 {
-        writer.send(InputFilterEvent::Unblock(FilterInput::FullKeyboardPress));
+        if state.drag_and_drop_active {
+           drag_and_drop_end_writer.send(DragAndDropEnd); 
+        }
+        input_filter_writer.send(InputFilterEvent::Unblock(FilterInput::FullKeyboardPress));
     }
 }
 
@@ -84,12 +90,22 @@ pub fn on_mouse_right_button_click_system(mut events: EventReader<Active<MouseRi
         .map(|_| MouseClick::new(Button::Right)));
 }
 
-pub fn on_drag_and_drop_start_system(mut events: EventReader<Active<DragAndDropStart>>, mut writer: EventWriter<DragAndDrop>) {
+pub fn on_drag_and_drop_start_system(mut events: EventReader<Active<DragAndDropStart>>, 
+                                     mut state: ResMut<KeyboardToMouseState>,
+                                     mut writer: EventWriter<DragAndDrop>) {
     writer.send_batch(events.read()
-        .map(|_| DragAndDrop::new(DragAndDropAction::Start, Button::Left)));
+        .map(|_| {
+            state.drag_and_drop_active = true;
+            DragAndDrop::new(DragAndDropAction::Start, Button::Left)
+        }));
 }
 
-pub fn on_drag_and_drop_end_system(mut events: EventReader<Active<DragAndDropEnd>>, mut writer: EventWriter<DragAndDrop>) {
+pub fn on_drag_and_drop_end_system(mut events: EventReader<Active<DragAndDropEnd>>,
+                                   mut state: ResMut<KeyboardToMouseState>,
+                                   mut writer: EventWriter<DragAndDrop>) {
     writer.send_batch(events.read()
-        .map(|_| DragAndDrop::new(DragAndDropAction::End, Button::Left)));
+        .map(|_| {
+            state.drag_and_drop_active = false;
+            DragAndDrop::new(DragAndDropAction::End, Button::Left)
+        }));
 }

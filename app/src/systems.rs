@@ -5,7 +5,7 @@ use bevy::prelude::Res;
 
 use crate::config::GeneralConfig;
 
-// todo remove panics
+// todo notification plugin(notify about errors)
 pub fn auto_startup_system(config: Res<GeneralConfig>) {
     if let Ok(exe) = env::current_exe() {
         if let Some(exe) = exe.to_str() {

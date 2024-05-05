@@ -29,8 +29,7 @@ impl Default for Tray {
 }
 
 pub fn build_tray(items: &[String]) -> TrayIcon {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/src/icon.png"); // todo embedded asset
-    let icon = load_icon(std::path::Path::new(path));
+    let icon = load_icon();
     let tray_menu = Menu::new();
     for item in items {
         tray_menu.append(&MenuItem::with_id(item, item, true, None)).unwrap();
@@ -43,14 +42,14 @@ pub fn build_tray(items: &[String]) -> TrayIcon {
         .unwrap()
 }
 
-fn load_icon(path: &std::path::Path) -> tray_icon::Icon {
+fn load_icon() -> tray_icon::Icon {
     let (icon_rgba, icon_width, icon_height) = {
-        let image = image::open(path)
-            .expect("Failed to open icon path")
+        let image = image::load_from_memory(include_bytes!("../assets/icon.png"))
+            .expect("Failed to load icon from bytes")
             .into_rgba8();
         let (width, height) = image.dimensions();
         let rgba = image.into_raw();
         (rgba, width, height)
     };
-    tray_icon::Icon::from_rgba(icon_rgba, icon_width, icon_height).expect("Failed to open icon")
+    tray_icon::Icon::from_rgba(icon_rgba, icon_width, icon_height).expect("Failed to load icon")
 }

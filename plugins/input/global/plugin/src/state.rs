@@ -24,7 +24,7 @@ impl Default for GlobalInputState {
         let blocked_events = BLOCKED_EVENTS.clone();
         let _grabbing_thead = thread::spawn(move || {
             grab(move |raw_event| {
-                // todo filter mouse move events by time delta, send event every second
+                // todo filter mouse move events by time delta
                 if let EventType::MouseMove { .. } = raw_event.event_type {
                     return Some(raw_event);
                 }

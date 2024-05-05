@@ -64,8 +64,8 @@ impl Default for KeyboardToMouseKeyBindings {
                 InputEvent::Keyboard(KeyEvent::Released(Key::KeyA)),
             ])],
             mouse_middle_button_click: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyR)),
-                InputEvent::Keyboard(KeyEvent::Released(Key::KeyR)),
+                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyC)),
+                InputEvent::Keyboard(KeyEvent::Released(Key::KeyC)),
             ])],
             mouse_drag_and_drop_activate: vec![Sequence::new(vec![
                 InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyG)),

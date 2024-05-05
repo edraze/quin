@@ -4,6 +4,7 @@ use input_sequence_plugin::listen_sequences;
 use keyboard_layout::Layout;
 use crate::config::KeyboardToMouseConfig;
 use crate::events::{ActivateKeyboardToMouse, DeactivateKeyboardToMouse, DragAndDropEnd, DragAndDropStart, MouseLeftButtonClick, MouseMiddleButtonClick, MouseRightButtonClick, MoveMouseRelativelyDown, MoveMouseRelativelyLeft, MoveMouseRelativelyRight, MoveMouseRelativelyUp, ScrollDown, ScrollLeft, ScrollRight, ScrollUp};
+use crate::state::KeyboardToMouseState;
 use crate::systems::{on_activate_keyboard_to_mouse_system, on_deactivate_keyboard_to_mouse_system, on_drag_and_drop_end_system, on_drag_and_drop_start_system, on_mouse_left_button_click_system, on_mouse_middle_button_click_system, on_mouse_right_button_click_system, on_move_mouse_relatively_down_system, on_move_mouse_relatively_left_system, on_move_mouse_relatively_right_system, on_move_mouse_relatively_up_system, on_scroll_down_system, on_scroll_left_system, on_scroll_right_system, on_scroll_up_system};
 
 pub(crate) const KEYBOARD_TO_MOUSE_PLUGIN_NAME: &str = "keyboard_to_mouse";
@@ -14,6 +15,7 @@ impl Plugin for KeyboardToMousePlugin {
     fn build(&self, app: &mut App) {
         let config = config_loader::load::<KeyboardToMouseConfig>();
         app.insert_resource(config.clone());
+        app.init_resource::<KeyboardToMouseState>();
 
         let activation_binding: SequencesToEvent<_> = (config.key_bindings.activate.clone(), ActivateKeyboardToMouse).into();
         let deactivation_binding: SequencesToEvent<_> = (config.key_bindings.deactivate.clone(), DeactivateKeyboardToMouse).into();
