@@ -1,8 +1,9 @@
 use bevy::prelude::App;
-
 use crate::general::QuinPlugins;
 
-mod general;
+pub(crate) mod config;
+pub(crate) mod general;
+pub(crate) mod systems;
 
 fn main() {
     App::new()

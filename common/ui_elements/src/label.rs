@@ -30,8 +30,6 @@ impl UiLabel {
             let position = self.position;
             let text = self.text.clone();
 
-            painter.add(egui::epaint::CircleShape::filled(position, -1., Color32::RED));
-
             let galley = painter.layout(
                 text,
                 FontId::proportional(10.),
@@ -48,6 +46,7 @@ impl UiLabel {
             ));
             painter.add(text_background);
             painter.add(text_shape);
+            painter.add(egui::epaint::CircleShape::filled(position, 0.5 , Color32::RED));
         }
     }
 }
