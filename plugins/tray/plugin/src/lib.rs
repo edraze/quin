@@ -1,8 +1,9 @@
-use bevy::app::{App, AppExit, Plugin, Update};
-use bevy::prelude::{EventReader, EventWriter};
-use tray_api::{TrayClick, TrayItemClick};
+use bevy::app::{App, AppExit, Plugin, Startup, Update};
+use bevy::prelude::{EventReader, EventWriter, NonSendMut, World};
 use tray_icon::{TrayIcon, TrayIconBuilder, TrayIconEvent};
 use tray_icon::menu::{Menu, MenuEvent, MenuItem};
+
+use tray_api::{CreateTrayItem, TrayClick, TrayItemClick};
 
 const TRAY_PLUGIN_NAME: &str = "tray";
 const EXIT_TRAY_ITEM_ID: &str = "Exit";
@@ -13,12 +14,13 @@ pub struct TrayPlugin;
 impl Plugin for TrayPlugin {
     fn build(&self, app: &mut App) {
         app
-            // .init_resource::<Tray>()
             .add_event::<TrayClick>()
             .add_event::<TrayItemClick>()
-            // .add_event::<CreateTrayItem>()
+            .add_event::<CreateTrayItem>()
+
+            .add_systems(Startup, init_tray_system)
             .add_systems(Update, (
-                // create_tray,
+                create_tray_system,
                 emmit_tray_event_system,
                 emmit_tray_item_event_system,
                 exit_system,
@@ -30,43 +32,42 @@ impl Plugin for TrayPlugin {
     }
 }
 
-// #[derive(Resource)]
-// pub struct Tray {
-//     items: Vec<String>,
-// }
-// 
-// impl Tray {
-//     fn add_item(&mut self, item: &str) {
-//         self.items.push(item.into());
-//     }
-// 
-//     fn update(&mut self) {
-//         // let (s_chan, r_chan) = unbounded();
-//         let items = self.items.clone();
-//         println!("{items:?}"); 
-//         let _tray_thread = thread::spawn(move|| {
-//             let tray_icon = build_tray(&items);
-//             loop {}
-//         });
-//     }
-// }
+pub struct Tray {
+    items: Vec<String>,
+    icon: TrayIcon,
+}
 
-// impl Default for Tray {
-//     fn default() -> Self {
-//         let mut tray = Self {
-//             items: Vec::new()
-//         };
-//         // tray.update();
-//         tray
-//     }
-// }
+impl Tray {
+    fn add_item(&mut self, item: &str) {
+        self.items.push(item.into());
+    }
 
-// fn create_tray(mut create_tray_item: EventReader<CreateTrayItem>, mut tray: ResMut<Tray>) {
-//     for item in create_tray_item.read() {
-//         tray.add_item(&item.id);
-//         tray.update();
-//     }
-// }
+    fn update(&mut self) {
+        let items = self.items.clone();
+        self.icon = build_tray(&items);
+    }
+}
+
+impl Default for Tray {
+    fn default() -> Self {
+        Self {
+            items: Vec::new(),
+            icon: build_tray(&[EXIT_TRAY_ITEM_ID.to_string()]),
+        }
+    }
+}
+
+fn init_tray_system(world: &mut World) {
+    let tray = Tray::default();
+    world.insert_non_send_resource(tray)
+}
+
+fn create_tray_system(mut create_tray_item: EventReader<CreateTrayItem>, mut tray: NonSendMut<Tray>) {
+    for item in create_tray_item.read() {
+        tray.add_item(&item.id);
+        tray.update();
+    }
+}
 
 fn emmit_tray_event_system(mut tray_click: EventWriter<TrayClick>) {
     if let Ok(_event) = TrayIconEvent::receiver().try_recv() {

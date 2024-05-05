@@ -18,7 +18,6 @@ members = [
     , "plugins/overlay/plugin"
     , "plugins/keyboard_to_mouse/plugin"
     , "plugins/gui/plugin"
-    , "plugins/sequence_to_log/plugin"
     , "plugins/tray/api"
     , "plugins/tray/plugin"
     , "plugins/navigation_grid"
@@ -39,7 +38,6 @@ input_sequence_plugin = { path = "plugins/input/sequence/plugin" }
 overlay_plugin = { path = "plugins/overlay/plugin" }
 keyboard_to_mouse_plugin = { path = "plugins/keyboard_to_mouse/plugin" }
 gui_plugin = { path = "plugins/gui/plugin" }
-sequence_to_log_plugin = { path = "plugins/sequence_to_log/plugin" }
 tray_api = { path = "plugins/tray/api" }
 tray_plugin = { path = "plugins/tray/plugin" }
 navigation_grid = { path = "plugins/navigation_grid" }

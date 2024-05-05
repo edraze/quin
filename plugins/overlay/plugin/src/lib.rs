@@ -25,6 +25,8 @@ impl Plugin for OverlayPlugin {
                 resolution: WindowResolution::new(2560., 1440.),
                 position: WindowPosition::At(IVec2::ZERO),
                 window_level: WindowLevel::AlwaysOnTop,
+                // todo uncomment with bevy 0.14 (https://github.com/bevyengine/bevy/pull/12450)
+                // skip_taskbar: true,
                 #[cfg(target_os = "macos")]
                 composite_alpha_mode: CompositeAlphaMode::PostMultiplied,
                 ..default()
