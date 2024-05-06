@@ -5,9 +5,10 @@
     <div>
         Keep in mind the project is unstable and under development. Only Windows is currently supported. 
         If you encounter a problem or have an idea for improvement,
-        feel free to [create issue](https://github.com/lkaratl/quin/issues/new).
+        feel free to <a href="https://github.com/lkaratl/quin/issues/new">create issue</a>.
     </div>
 </div>
+<br>
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
