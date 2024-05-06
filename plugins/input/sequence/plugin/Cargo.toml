@@ -1,0 +1,9 @@
+[package]
+name = "input_sequence_plugin"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace = true }
+global_input_api = { workspace = true }
+input_sequence_api = { workspace = true }

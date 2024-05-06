@@ -1,0 +1,9 @@
+[package]
+name = "config_loader"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+bevy = { workspace = true }
+bevy-persistent = { workspace = true }

@@ -1,0 +1,9 @@
+[package]
+name = "keyboard_layout"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace= true}
+toggle = { workspace = true}
+input_sequence_plugin = { workspace = true}

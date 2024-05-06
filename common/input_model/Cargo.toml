@@ -1,0 +1,8 @@
+[package]
+name = "input_model"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+rdev = { workspace = true }

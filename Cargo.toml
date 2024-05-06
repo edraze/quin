@@ -1,27 +1,70 @@
-[package]
-name = "quin"
-version = "0.1.0"
+[workspace.package]
+version = "0.2.0"
 edition = "2021"
 
-[dependencies]
-egui_backend = { version = "0.2.0" }
-egui_window_glfw_passthrough = { version = "0.2.1" }
-egui_render_wgpu = { version = "0.3.0" }
-image = "0.24.6"
-serde = { version = "1.0.160", features = ["derive"] }
-toml = "0.7.3"
-enigo = "0.1.2"
-rdev = "0.5.2"
-sysinfo = "0.28.4"
-once_cell = "1.17.1"
-winapi = "0.3.9"
+[workspace]
+members = [
+    "app"
+    , "common/config_loader"
+    , "common/input_model"
+    , "common/toggle"
+    , "common/keyboard_layout"
+    , "plugins/output/mouse/api"
+    , "plugins/output/mouse/plugin"
+    , "plugins/input/global/api"
+    , "plugins/input/global/plugin"
+    , "plugins/input/sequence/api"
+    , "plugins/input/sequence/plugin"
+    , "plugins/overlay/plugin"
+    , "plugins/keyboard_to_mouse/plugin"
+    , "plugins/gui/plugin"
+    , "plugins/tray/api"
+    , "plugins/tray/plugin"
+    , "plugins/navigation_grid"
+    , "common/ui_elements"]
 
-[dependencies.windows]
-version = "0.48"
-features = [
-    "Win32_Foundation",
-    "Win32_UI_WindowsAndMessaging",
-    "Win32_System_SystemServices",
-    "Win32_System_Threading",
-    "Win32_System_ProcessStatus"
-]
+[workspace.dependencies]
+config_loader = { path = "common/config_loader" }
+ui_elements = { path = "common/ui_elements" }
+input_model = { path = "common/input_model" }
+toggle = { path = "common/toggle" }
+keyboard_layout = { path = "common/keyboard_layout" }
+mouse_output_api = { path = "plugins/output/mouse/api" }
+mouse_output_plugin = { path = "plugins/output/mouse/plugin" }
+global_input_api = { path = "plugins/input/global/api" }
+global_input_plugin = { path = "plugins/input/global/plugin" }
+input_sequence_api = { path = "plugins/input/sequence/api" }
+input_sequence_plugin = { path = "plugins/input/sequence/plugin" }
+overlay_plugin = { path = "plugins/overlay/plugin" }
+keyboard_to_mouse_plugin = { path = "plugins/keyboard_to_mouse/plugin" }
+gui_plugin = { path = "plugins/gui/plugin" }
+tray_api = { path = "plugins/tray/api" }
+tray_plugin = { path = "plugins/tray/plugin" }
+navigation_grid = { path = "plugins/navigation_grid" }
+
+#common
+crossbeam = "0.8.4"
+once_cell = "1.19.0"
+serde = { version = "1.0", features = ["derive"] }
+itertools = "0.12"
+
+# bevy
+bevy = "0.13"
+bevy_egui = "0.27.0"
+bevy-persistent = { version = "0.5.0", features = ["toml", "pretty"] }
+
+# input/output
+rdev = { version = "0.5.3", features = ["unstable_grab"] }
+enigo = "0.1"
+
+# other
+image = "0.25"
+tray-icon = "0.13"
+auto-launch = "0.5.0"
+
+[profile.dev]
+deps = ["bevy/dynamic_linking"]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3

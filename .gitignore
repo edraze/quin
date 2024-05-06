@@ -1,6 +1,2 @@
 .idea/
-.fleet/
-debug/
 target/
-
-**/*.rs.bk
