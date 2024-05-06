@@ -6,6 +6,7 @@ pub enum KeyEvent {
     Released(Key),
 }
 
+// todo align namings
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Key {
     Alt,

@@ -42,6 +42,7 @@ pub fn build_tray(items: &[String]) -> TrayIcon {
         .unwrap()
 }
 
+// todo remove panics
 fn load_icon() -> tray_icon::Icon {
     let (icon_rgba, icon_width, icon_height) = {
         let image = image::load_from_memory(include_bytes!("../assets/icon.png"))

@@ -11,7 +11,7 @@ use keyboard_to_mouse_plugin::config::KeyboardToMouseConfig;
 
 use crate::config::NavigationGridConfig;
 use crate::events::{ActivateMainGrid, ActivateNavigationGrid, ActivateSubGrid, DeactivateMainGrid, DeactivateNavigationGrid, DeactivateSubGrid, NavigateToLabel, NavigateToSubLabel, UpdateSubGridPosition};
-use crate::systems::{init_labels_system, deactivate_plugin_system, navigate_to_label_system, activate_plugin_system, activate_main_grid_system, deactivate_main_grid_system, activate_sub_grid_system, update_sub_grid_position, navigate_to_sub_label_system, deactivate_sub_grid_system};
+use crate::systems::{activate_main_grid_system, activate_plugin_system, activate_sub_grid_system, deactivate_main_grid_system, deactivate_plugin_system, deactivate_sub_grid_system, init_labels_system, navigate_to_label_system, navigate_to_sub_label_system, update_sub_grid_position};
 
 pub(crate) const NAVIGATION_GRID_PLUGIN_NAME: &str = "navigation_grid";
 
@@ -134,6 +134,6 @@ fn keys_to_sequences(keys: Vec<Key>) -> Sequence {
 
 fn keys_to_string(keys: Vec<Key>) -> String {
     keys.into_iter()
-        .flat_map(|key| char::try_from(key))
+        .flat_map(char::try_from)
         .collect()
 }

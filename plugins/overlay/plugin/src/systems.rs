@@ -1,9 +1,10 @@
 use bevy::prelude::{Camera2dBundle, Commands, Entity, NonSend, Query, Window};
 use bevy::winit::WinitWindows;
+
 use crate::OVERLAY_PLUGIN_NAME;
 
 // set windowed fullscreen manually
-// because of bevy error in case of enables transparent & borderless & fullscreen properties
+// because of bevy error in case of enabled transparent & borderless & fullscreen properties
 pub fn setup_window_system(winit_windows: NonSend<WinitWindows>, mut windows: Query<(Entity, &mut Window)>) {
     let overlay = windows.iter_mut()
         .find(|(_, window)| window.name == Some(OVERLAY_PLUGIN_NAME.to_string()));

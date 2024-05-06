@@ -1,5 +1,6 @@
 use std::any::type_name;
 use std::marker::PhantomData;
+
 use bevy::app::App;
 use bevy::prelude::{Event, EventReader, Events, EventWriter, Res, ResMut, Resource, Update};
 
@@ -10,7 +11,7 @@ pub fn add_toggle<A: Event + Clone, D: Event + Clone>(app: &mut App) {
     if !app.world.contains_resource::<Events<D>>() {
         app.add_event::<D>();
     }
-    app.init_resource::<Toggle<A,D>>();
+    app.init_resource::<Toggle<A, D>>();
     app.add_systems(Update, toggle_system::<A, D>);
 }
 
@@ -20,7 +21,7 @@ pub fn add_toggle_event<A: Event + Clone, D: Event + Clone, E: Event + Clone>(ap
     }
     app.add_event::<Active<E>>();
     app.add_event::<Inactive<E>>();
-    app.add_systems(Update, mapper_system::<A,D,E>);
+    app.add_systems(Update, mapper_system::<A, D, E>);
 }
 
 fn toggle_system<A: Event + Clone, D: Event + Clone>(mut activate_events: EventReader<A>, mut deactivate_events: EventReader<D>,
@@ -57,12 +58,12 @@ struct Toggle<A: Event + Clone, D: Event + Clone> {
     is_active: bool,
 }
 
-impl <A: Event + Clone, D: Event + Clone>Default for Toggle<A,D> {
+impl<A: Event + Clone, D: Event + Clone> Default for Toggle<A, D> {
     fn default() -> Self {
-        Self{
+        Self {
             _activation_event: PhantomData,
             _deactivation_event: PhantomData,
-            is_active: false
+            is_active: false,
         }
     }
 }

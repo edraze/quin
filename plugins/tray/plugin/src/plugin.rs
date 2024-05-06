@@ -1,5 +1,4 @@
 use bevy::app::{App, Plugin, Startup, Update};
-use bevy::asset::embedded_asset;
 
 use tray_api::{CreateTrayItem, TrayClick, TrayItemClick};
 

@@ -18,6 +18,7 @@ pub struct GlobalInputState {
     _grabbing_thead: JoinHandle<()>,
 }
 
+// todo remove panics
 impl Default for GlobalInputState {
     fn default() -> Self {
         let (s_chan, r_chan) = unbounded();
