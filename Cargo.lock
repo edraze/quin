@@ -3080,6 +3080,7 @@ version = "0.2.0"
 dependencies = [
  "bevy",
  "global_input_api",
+ "global_input_plugin",
  "input_sequence_api",
 ]
 
