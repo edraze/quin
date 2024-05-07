@@ -2645,6 +2645,8 @@ dependencies = [
  "global_input_api",
  "once_cell",
  "rdev",
+ "serial_test",
+ "test_utils",
 ]
 
 [[package]]
