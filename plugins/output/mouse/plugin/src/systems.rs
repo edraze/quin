@@ -37,6 +37,7 @@ fn move_mouse_to_position(move_mouse: &MoveMouseToPosition) {
 }
 
 // todo use one crate for global and relative mouse movements
+// todo obliquely movements
 fn move_mouse_relatively(move_mouse: &MoveMouseRelatively) {
     let distance = move_mouse.distance;
     match move_mouse.direction {

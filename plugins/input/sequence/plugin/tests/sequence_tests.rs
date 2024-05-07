@@ -11,7 +11,7 @@ mod test {
     struct TestEvent;
 
     #[test]
-    fn subscribe_to_single_key_sequence() {
+    fn subscribe_to_single_key_sequence_test() {
         let test_sequence = vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT))])];
         let test_binding: SequencesToEvent<_> = (test_sequence, TestEvent).into();
 
@@ -59,7 +59,7 @@ mod test {
     }
 
     #[test]
-    fn subscribe_to_word_sequence() {
+    fn subscribe_to_word_sequence_test() {
         let test_sequence = vec![Sequence::new(vec![
             InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)),
             InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)),
@@ -120,7 +120,7 @@ mod test {
     }
 
     #[test]
-    fn reset_sequence_buffer() {
+    fn reset_sequence_buffer_test() {
         let test_sequence = vec![Sequence::new(vec![
             InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)),
             InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)),
@@ -149,12 +149,18 @@ mod test {
             input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)));
         }
 
+        app.update();
+        app.update();
+
         {
             let reset_buffer_events = app.world.get_resource_mut::<Events<ResetSequenceBuffer>>();
             assert!(reset_buffer_events.is_some());
             let mut reset_buffer_events = reset_buffer_events.unwrap();
             reset_buffer_events.send(ResetSequenceBuffer);
         }
+
+        app.update();
+        app.update();
 
         {
             let input_events = app.world.get_resource_mut::<Events<InputEvent>>();

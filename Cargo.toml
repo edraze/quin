@@ -43,14 +43,14 @@ tray_plugin = { path = "plugins/tray/plugin" }
 navigation_grid = { path = "plugins/navigation_grid" }
 
 #common
-crossbeam = "0.8.4"
-once_cell = "1.19.0"
+crossbeam = "0.8"
+once_cell = "1.19"
 serde = { version = "1.0", features = ["derive"] }
 itertools = "0.12"
 
 # bevy
 bevy = "0.13"
-bevy_egui = "0.27.0"
+bevy_egui = "0.27"
 bevy-persistent = { version = "0.5.0", features = ["toml", "pretty"] }
 
 # input/output
@@ -60,11 +60,21 @@ enigo = "0.1"
 # other
 image = "0.25"
 tray-icon = "0.13"
-auto-launch = "0.5.0"
+auto-launch = "0.5"
+
+# tests
+serial_test = "3.1"
 
 [profile.dev]
 deps = ["bevy/dynamic_linking"]
 opt-level = 1
 
 [profile.dev.package."*"]
+opt-level = 3
+
+[profile.test]
+deps = ["bevy/dynamic_linking"]
+opt-level = 1
+
+[profile.test.package."*"]
 opt-level = 3

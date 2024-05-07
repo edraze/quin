@@ -8,3 +8,6 @@ bevy = { workspace = true }
 rdev = { workspace = true }
 enigo = { workspace = true }
 mouse_output_api = { workspace = true }
+
+[dev-dependencies]
+serial_test = { workspace = true }
