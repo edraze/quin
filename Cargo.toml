@@ -3,8 +3,7 @@ version = "0.2.0"
 edition = "2021"
 
 [workspace]
-members = [
-    "app"
+members = ["app"
     , "common/config_loader"
     , "common/input_model"
     , "common/toggle"
@@ -21,7 +20,8 @@ members = [
     , "plugins/tray/api"
     , "plugins/tray/plugin"
     , "plugins/navigation_grid"
-    , "common/ui_elements"]
+    , "common/ui_elements"
+    , "common/test_utils"]
 
 [workspace.dependencies]
 config_loader = { path = "common/config_loader" }
@@ -29,6 +29,7 @@ ui_elements = { path = "common/ui_elements" }
 input_model = { path = "common/input_model" }
 toggle = { path = "common/toggle" }
 keyboard_layout = { path = "common/keyboard_layout" }
+test_utils = { path = "common/test_utils" }
 mouse_output_api = { path = "plugins/output/mouse/api" }
 mouse_output_plugin = { path = "plugins/output/mouse/plugin" }
 global_input_api = { path = "plugins/input/global/api" }
