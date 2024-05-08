@@ -1,0 +1,58 @@
+steps:
+  - key: "check"
+    label: ":mag: Check"
+    commands:
+      - "cargo clippy --tests -- -D warnings"
+    plugins:
+      - nienbo/cache#v2.4.16:
+          backend: rsync
+          rsync:
+            path: "/tmp/pipeline-caches"
+          key: "$BUILDKITE_REPO"
+          restore-keys:
+            - "$BUILDKITE_REPO"
+          paths:
+            - "target"
+          continue_on_error: true
+  - wait: ~
+  - key: "build_binaries"
+    label: ":hammer_and_wrench: Build binaries"
+    commands:
+      - "cargo build --release"
+    artifact_paths:
+      - "target/release/quin"
+    plugins:
+      - nienbo/cache#v2.4.16:
+          backend: rsync
+          rsync:
+            path: "/tmp/pipeline-caches"
+          key: "$BUILDKITE_REPO"
+          restore-keys:
+            - "$BUILDKITE_REPO"
+          paths:
+            - "target"
+          continue_on_error: true
+  - wait: ~
+  - key: "test"
+    label: ":clipboard: Test"
+    commands:
+      - "cargo nextest run --release"
+    plugins:
+      - nienbo/cache#v2.4.16:
+          backend: rsync
+          rsync:
+            path: "/tmp/pipeline-caches"
+          key: "$BUILDKITE_REPO"
+          restore-keys:
+            - "$BUILDKITE_REPO"
+          paths:
+            - "target"
+          continue_on_error: true
+  - wait: ~
+  - key: "upload_artifacts"
+    label: ":file_cabinet: Upload artifacts"
+    commands:
+      - "buildkite-agent artifact download 'target/release/quin' ."
+      - "rclone sync ./target/release/quin drive:/Managed/Quin/build/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER"
+    plugins:
+      - "uber-workflow/run-without-clone": ~
