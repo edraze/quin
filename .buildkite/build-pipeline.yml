@@ -18,9 +18,9 @@ steps:
   - key: "build_binaries"
     label: ":hammer_and_wrench: Build binaries"
     commands:
-      - "cargo build --release"
+      - "cargo build --release --target x86_64-pc-windows-gnu"
     artifact_paths:
-      - "target/release/quin"
+      - "target/release/*.exe"
     plugins:
       - nienbo/cache#v2.4.16:
           backend: rsync
@@ -36,7 +36,7 @@ steps:
   - key: "test"
     label: ":clipboard: Test"
     commands:
-      - "cargo nextest run --release"
+      - "cargo nextest run --release --target x86_64-pc-windows-gnu"
     plugins:
       - nienbo/cache#v2.4.16:
           backend: rsync
@@ -52,7 +52,7 @@ steps:
   - key: "upload_artifacts"
     label: ":file_cabinet: Upload artifacts"
     commands:
-      - "buildkite-agent artifact download 'target/release/quin' ."
-      - "rclone sync ./target/release/quin drive:/Managed/Quin/build/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER"
+      - "buildkite-agent artifact download 'target/release/*.exe' ."
+      - "rclone sync ./target/release/*.exe drive:/Managed/Quin/build/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER"
     plugins:
       - "uber-workflow/run-without-clone": ~
