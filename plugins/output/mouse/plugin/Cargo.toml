@@ -10,5 +10,4 @@ enigo = { workspace = true }
 mouse_output_api = { workspace = true }
 
 [dev-dependencies]
-serial_test = { workspace = true }
 test_utils = { workspace = true }

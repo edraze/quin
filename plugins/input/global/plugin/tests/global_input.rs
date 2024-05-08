@@ -4,7 +4,6 @@ mod test {
     use bevy::app::App;
     use bevy::prelude::Events;
     use rdev::EventType;
-    use serial_test::serial;
 
     use global_input_api::filter::{FilterInput, FilterKeyEvent, InputFilterEvent};
     use global_input_api::input::InputEvent;
@@ -14,7 +13,6 @@ mod test {
     use test_utils::InputStream;
 
     #[test]
-    #[serial]
     fn listen_keyboard_input_test() {
         let mut app = App::new();
         app.add_plugins(GlobalInputPlugin);
@@ -35,7 +33,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn listen_mouse_buttons_input_test() {
         let mut app = App::new();
         app.add_plugins(GlobalInputPlugin);
@@ -56,7 +53,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn block_keyboard_key_input_test() {
         let mut app = App::new();
         app.add_plugins(GlobalInputPlugin);
@@ -90,8 +86,8 @@ mod test {
         assert!(input_event.is_none());
     }
 
+    #[ignore = "not compatible with nextest"]
     #[test]
-    #[serial]
     fn unblock_keyboard_key_input_test() {
         let mut app = App::new();
         app.add_plugins(GlobalInputPlugin);

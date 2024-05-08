@@ -63,9 +63,6 @@ image = "0.25"
 tray-icon = "0.13"
 auto-launch = "0.5"
 
-# tests
-serial_test = "3.1"
-
 [profile.dev]
 deps = ["bevy/dynamic_linking"]
 opt-level = 1

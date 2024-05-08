@@ -5,7 +5,6 @@ mod test {
     use bevy::prelude::Events;
     use enigo::{Enigo, MouseControllable};
     use rdev::EventType;
-    use serial_test::serial;
 
     use mouse_output_api::{Direction, DragAndDrop, DragAndDropAction, MouseClick, MoveMouseRelatively, MoveMouseToPosition, Scroll};
     use mouse_output_api::mouse::Button;
@@ -13,7 +12,6 @@ mod test {
     use test_utils::InputStream;
 
     #[test]
-    #[serial]
     fn move_mouse_relatively_up_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -33,7 +31,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn move_mouse_relatively_down_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -53,7 +50,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn move_mouse_relatively_left_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -73,7 +69,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn move_mouse_relatively_right_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -93,7 +88,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn move_mouse_to_position_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -114,7 +108,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn scroll_mouse_up_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -135,7 +128,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn scroll_mouse_down_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -156,7 +148,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn scroll_mouse_left_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -177,7 +168,6 @@ mod test {
     }
 
     #[test]
-    #[serial]
     fn scroll_mouse_right_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -199,7 +189,6 @@ mod test {
 
     #[ignore = "bug in rdev crate"]
     #[test]
-    #[serial]
     fn left_click_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -226,7 +215,6 @@ mod test {
 
     #[ignore = "bug in rdev crate"]
     #[test]
-    #[serial]
     fn middle_click_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -253,7 +241,6 @@ mod test {
 
     #[ignore = "bug in rdev crate"]
     #[test]
-    #[serial]
     fn right_click_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -280,7 +267,6 @@ mod test {
 
     #[ignore = "bug in rdev crate"]
     #[test]
-    #[serial]
     fn drag_and_drop_start_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
@@ -304,7 +290,6 @@ mod test {
 
     #[ignore = "bug in rdev crate"]
     #[test]
-    #[serial]
     fn drag_and_drop_end_test() {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
