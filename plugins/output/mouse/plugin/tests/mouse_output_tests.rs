@@ -26,7 +26,7 @@ mod test {
         app.update();
         app.update();
 
-        let new_mouse_location = Enigo.mouse_location();
+        let new_mouse_location = Enigo::new().mouse_location();
         assert_eq!(new_mouse_location, (mouse_location.0, mouse_location.1 - 50))
     }
 
@@ -35,7 +35,7 @@ mod test {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
 
-        let mouse_location = Enigo.mouse_location();
+        let mouse_location = Enigo::new().mouse_location();
 
         let move_mouse_events = app.world.get_resource_mut::<Events<MoveMouseRelatively>>();
         assert!(move_mouse_events.is_some());
@@ -45,7 +45,7 @@ mod test {
         app.update();
         app.update();
 
-        let new_mouse_location = Enigo.mouse_location();
+        let new_mouse_location = Enigo::new().mouse_location();
         assert_eq!(new_mouse_location, (mouse_location.0, mouse_location.1 + 50))
     }
 
@@ -54,7 +54,7 @@ mod test {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
 
-        let mouse_location = Enigo.mouse_location();
+        let mouse_location = Enigo::new().mouse_location();
 
         let move_mouse_events = app.world.get_resource_mut::<Events<MoveMouseRelatively>>();
         assert!(move_mouse_events.is_some());
@@ -64,7 +64,7 @@ mod test {
         app.update();
         app.update();
 
-        let new_mouse_location = Enigo.mouse_location();
+        let new_mouse_location = Enigo::new().mouse_location();
         assert_eq!(new_mouse_location, (mouse_location.0 - 50, mouse_location.1))
     }
 
@@ -73,7 +73,7 @@ mod test {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
 
-        let mouse_location = Enigo.mouse_location();
+        let mouse_location = Enigo::new().mouse_location();
 
         let move_mouse_events = app.world.get_resource_mut::<Events<MoveMouseRelatively>>();
         assert!(move_mouse_events.is_some());
@@ -83,7 +83,7 @@ mod test {
         app.update();
         app.update();
 
-        let new_mouse_location = Enigo.mouse_location();
+        let new_mouse_location = Enigo::new().mouse_location();
         assert_eq!(new_mouse_location, (mouse_location.0 + 50, mouse_location.1))
     }
 
@@ -92,7 +92,7 @@ mod test {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
 
-        let mouse_location = Enigo.mouse_location();
+        let mouse_location = Enigo::new().mouse_location();
 
         let move_mouse_events = app.world.get_resource_mut::<Events<MoveMouseToPosition>>();
         assert!(move_mouse_events.is_some());
@@ -102,7 +102,7 @@ mod test {
         app.update();
         app.update();
 
-        let new_mouse_location = Enigo.mouse_location();
+        let new_mouse_location = Enigo::new().mouse_location();
         assert_ne!(new_mouse_location, mouse_location);
         assert_eq!(new_mouse_location, (100, 100))
     }
