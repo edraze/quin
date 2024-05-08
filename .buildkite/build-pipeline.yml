@@ -2,7 +2,7 @@ steps:
   - key: "check"
     label: ":mag: Check"
     commands:
-      - "clippy --tests -- -D warnings"
+      - "cargo clippy --tests -- -D warnings"
     plugins:
       - nienbo/cache#v2.4.16:
           backend: rsync
