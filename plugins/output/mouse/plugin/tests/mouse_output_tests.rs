@@ -16,7 +16,7 @@ mod test {
         let mut app = App::new();
         app.add_plugins(MouseOutputPlugin);
 
-        let mouse_location = Enigo.mouse_location();
+        let mouse_location = Enigo::new().mouse_location();
 
         let move_mouse_events = app.world.get_resource_mut::<Events<MoveMouseRelatively>>();
         assert!(move_mouse_events.is_some());
