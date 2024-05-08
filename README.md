@@ -11,9 +11,10 @@
 <br>
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![codecov](https://codecov.io/gh/lkaratl/quin/graph/badge.svg?token=VK389L3N3V)](https://codecov.io/gh/lkaratl/quin)
 
 [//]: # (todo ci)
-[//]: # (todo test coverage)
+[//]: # (todo maintanence)
 
 ## Features
 

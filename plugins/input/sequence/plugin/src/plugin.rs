@@ -1,6 +1,7 @@
 use bevy::app::{App, Plugin};
 use bevy::prelude::{Event, Events, Update, World};
 
+use global_input_plugin::GlobalInputPlugin;
 pub use input_sequence_api::{Sequence, SequencesToEvent};
 use input_sequence_api::{ResetSequenceBuffer, ToEvent};
 
@@ -13,6 +14,9 @@ pub struct InputSequencePlugin;
 
 impl Plugin for InputSequencePlugin {
     fn build(&self, app: &mut App) {
+        if !app.get_added_plugins().contains(&&GlobalInputPlugin) {
+            app.add_plugins(GlobalInputPlugin);
+        }
         app.init_resource::<SequenceBuffer>();
         app.add_event::<ResetSequenceBuffer>();
         app.add_systems(Update, handle_input_event_system);

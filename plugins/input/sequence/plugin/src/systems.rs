@@ -1,6 +1,8 @@
 use bevy::prelude::{Added, Changed, DetectChanges, Event, EventReader, EventWriter, Or, Query, Res, ResMut};
+
 use global_input_api::input::InputEvent;
 use input_sequence_api::{ResetSequenceBuffer, Sequence, ToEvent};
+
 use crate::state::SequenceBuffer;
 
 pub fn handle_input_event_system(mut buffer: ResMut<SequenceBuffer>, mut events: EventReader<InputEvent>) {
@@ -40,6 +42,6 @@ pub fn reset_sequence_buffer_system(mut reset_sequence_buffer_reader: EventReade
     }
 }
 
-pub fn add_input_to_buffer(buffer: &mut SequenceBuffer, input: InputEvent) {
+fn add_input_to_buffer(buffer: &mut SequenceBuffer, input: InputEvent) {
     buffer.push(input);
 }

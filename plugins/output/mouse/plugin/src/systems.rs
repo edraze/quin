@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use bevy::prelude::EventReader;
 use enigo::{Enigo, MouseControllable};
 use rdev::EventType;
@@ -30,6 +32,8 @@ pub fn on_drag_and_drop_event_system(mut events: EventReader<DragAndDrop>) {
         .for_each(drag_and_drop);
 }
 
+
+// todo remove panics
 fn move_mouse_to_position(move_mouse: &MoveMouseToPosition) {
     println!("mouse move absolutely");
     let (x, y) = (move_mouse.x, move_mouse.y);
@@ -37,6 +41,7 @@ fn move_mouse_to_position(move_mouse: &MoveMouseToPosition) {
 }
 
 // todo use one crate for global and relative mouse movements
+// todo obliquely movements
 fn move_mouse_relatively(move_mouse: &MoveMouseRelatively) {
     let distance = move_mouse.distance;
     match move_mouse.direction {
@@ -47,6 +52,7 @@ fn move_mouse_relatively(move_mouse: &MoveMouseRelatively) {
     }
 }
 
+// todo remove panics
 fn scroll(scroll: &Scroll) {
     let distance = scroll.distance;
     match scroll.direction {
@@ -67,13 +73,16 @@ fn drag_and_drop(drag_and_drop: &DragAndDrop) {
 
 fn click(button: &Button) {
     press_button(button);
+    std::thread::sleep(Duration::from_millis(200));
     release_button(button);
 }
 
+// todo remove panics
 fn press_button(button: &Button) {
     rdev::simulate(&EventType::ButtonPress(button.into())).unwrap();
 }
 
+// todo remove panics
 fn release_button(button: &Button) {
     rdev::simulate(&EventType::ButtonRelease(button.into())).unwrap();
 }

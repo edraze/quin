@@ -7,3 +7,4 @@ edition.workspace = true
 bevy = { workspace = true }
 global_input_api = { workspace = true }
 input_sequence_api = { workspace = true }
+global_input_plugin = { workspace = true }
