@@ -17,7 +17,7 @@ impl Sequence {
             input_events: input_sequence
         }
     }
-    pub fn len(&self) -> usize {
+    pub fn length(&self) -> usize {
         self.input_events.len()
     }
 }
