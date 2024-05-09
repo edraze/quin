@@ -37,30 +37,44 @@ steps:
           continue_on_error: true
   - wait: ~
   - key: "test"
-    label: ":clipboard: Test"
-    commands:
-      - "cargo llvm-cov nextest --all-features --workspace --lcov --output-path target/lcov.info 
-      -Z unstable-options --timings=json | buildkite-test-collector"
-    plugins:
-      - joscha/codecov#v3.1.0:
-          token: "$CODECOV_TOKEN"
-          path_to_coverage: "target/"
-          files: "*.info"
-      - nienbo/cache#v2.4.16:
-          backend: rsync
-          rsync:
-            path: "/tmp/pipeline-caches"
-          key: "$BUILDKITE_REPO"
-          restore-keys:
-            - "$BUILDKITE_REPO"
-          paths:
-            - "target"
-          continue_on_error: true
+    group: ":clipboard: Test"
+    steps:
+      - label: "collector"
+        commands: "cargo test -- -Z unstable-options --format json --report-time | buildkite-test-collector"
+        plugins:
+          - nienbo/cache#v2.4.16:
+              backend: rsync
+              rsync:
+                path: "/tmp/pipeline-caches"
+              key: "$BUILDKITE_REPO"
+              restore-keys:
+                - "$BUILDKITE_REPO"
+              paths:
+                - "target"
+              continue_on_error: true
+      - label: "coverage"
+        commands: "cargo llvm-cov nextest --all-features --workspace --lcov --output-path target/lcov.info"
+        plugins:
+          - joscha/codecov#v3.1.0:
+              token: "$CODECOV_TOKEN"
+              path_to_coverage: "./target"
+              files: "*.info"
+          - nienbo/cache#v2.4.16:
+              backend: rsync
+              rsync:
+                path: "/tmp/pipeline-caches"
+              key: "$BUILDKITE_REPO"
+              restore-keys:
+                - "$BUILDKITE_REPO"
+              paths:
+                - "target"
+              continue_on_error: true
   - wait: ~
   - key: "upload_artifacts"
     label: ":file_cabinet: Upload artifacts"
     commands:
       - "buildkite-agent artifact download 'target/x86_64-pc-windows-gnu/release/*.exe' ."
       - "rclone sync ./target/x86_64-pc-windows-gnu/release/*.exe drive:/Managed/Quin/build/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER"
+      - "rclone copy --update drive:/Managed/Quin/build/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER drive:/Managed/Quin/build/$BUILDKITE_BRANCH/latest"
     plugins:
       - "uber-workflow/run-without-clone": ~
