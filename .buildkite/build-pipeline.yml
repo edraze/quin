@@ -18,7 +18,7 @@ steps:
   - key: "build_binaries"
     label: ":hammer_and_wrench: Build binaries"
     commands:
-      - "cargo build run --release --target x86_64-pc-windows-gnu"
+      - "cargo build --release --target x86_64-pc-windows-gnu"
     artifact_paths:
       - "target/release/*.exe"
     plugins:
