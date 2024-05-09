@@ -57,8 +57,7 @@ steps:
         plugins:
           - joscha/codecov#v3.1.0:
               token: "$CODECOV_TOKEN"
-              path_to_coverage: "./target"
-              files: "*.info"
+              files: "target/lcov.info"
           - nienbo/cache#v2.4.16:
               backend: rsync
               rsync:
