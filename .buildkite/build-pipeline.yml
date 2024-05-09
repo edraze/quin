@@ -18,7 +18,7 @@ steps:
   - key: "build_binaries"
     label: ":hammer_and_wrench: Build binaries"
     commands:
-      - "cargo cross run --release --target x86_64-pc-windows-gnu"
+      - "cargo build run --release --target x86_64-pc-windows-gnu"
     artifact_paths:
       - "target/release/*.exe"
     plugins:
@@ -36,7 +36,7 @@ steps:
   - key: "test"
     label: ":clipboard: Test"
     commands:
-      - "cargo cross test --release --target x86_64-pc-windows-gnu"
+      - "cargo llvm-cov nextest --release --target x86_64-pc-windows-gnu --all-features --workspace --lcov --output-path target/lcov.info -Z unstable-options --timings=json"
     plugins:
       - nienbo/cache#v2.4.16:
           backend: rsync

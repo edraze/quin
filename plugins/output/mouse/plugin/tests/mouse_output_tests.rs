@@ -11,6 +11,7 @@ mod test {
     use mouse_output_plugin::MouseOutputPlugin;
     use test_utils::InputStream;
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn move_mouse_relatively_up_test() {
         let mut app = App::new();
@@ -30,6 +31,7 @@ mod test {
         assert_eq!(new_mouse_location, (mouse_location.0, mouse_location.1 - 50))
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn move_mouse_relatively_down_test() {
         let mut app = App::new();
@@ -49,6 +51,7 @@ mod test {
         assert_eq!(new_mouse_location, (mouse_location.0, mouse_location.1 + 50))
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn move_mouse_relatively_left_test() {
         let mut app = App::new();
@@ -68,6 +71,7 @@ mod test {
         assert_eq!(new_mouse_location, (mouse_location.0 - 50, mouse_location.1))
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn move_mouse_relatively_right_test() {
         let mut app = App::new();
@@ -87,6 +91,7 @@ mod test {
         assert_eq!(new_mouse_location, (mouse_location.0 + 50, mouse_location.1))
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn move_mouse_to_position_test() {
         let mut app = App::new();
@@ -107,6 +112,7 @@ mod test {
         assert_eq!(new_mouse_location, (100, 100))
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn scroll_mouse_up_test() {
         let mut app = App::new();
@@ -127,6 +133,7 @@ mod test {
         assert_eq!(scroll_event.unwrap(), EventType::Wheel { delta_x: 0, delta_y: 1 });
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn scroll_mouse_down_test() {
         let mut app = App::new();
@@ -147,6 +154,7 @@ mod test {
         assert_eq!(scroll_event.unwrap(), EventType::Wheel { delta_x: 0, delta_y: -1 });
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn scroll_mouse_left_test() {
         let mut app = App::new();
@@ -167,6 +175,7 @@ mod test {
         assert_eq!(scroll_event.unwrap(), EventType::Wheel { delta_x: -1, delta_y: 0 });
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn scroll_mouse_right_test() {
         let mut app = App::new();
