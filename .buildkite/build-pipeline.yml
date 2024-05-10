@@ -5,12 +5,13 @@ steps:
       - "cargo clippy --tests -- -D warnings"
     plugins:
       - nienbo/cache#v2.4.16:
+          id: "$BUILDKITE_REPO"
           backend: rsync
           rsync:
             path: "/tmp/pipeline-caches"
-          key: "$BUILDKITE_REPO"
+          key: "{{ id }}"
           restore-keys:
-            - "$BUILDKITE_REPO"
+            - "{{ id }}"
           paths:
             - "target"
           continue_on_error: true
@@ -23,27 +24,29 @@ steps:
       - "target/x86_64-pc-windows-gnu/release/*.exe"
     plugins:
       - nienbo/cache#v2.4.16:
+          id: "$BUILDKITE_REPO"
           backend: rsync
           rsync:
             path: "/tmp/pipeline-caches"
-          key: "$BUILDKITE_REPO"
+          key: "{{ id }}"
           restore-keys:
-            - "$BUILDKITE_REPO"
+            - "{{ id }}"
           paths:
             - "target"
           continue_on_error: true
   - wait: ~
   - key: "test"
     label: ":clipboard: Test"
-    commands: "cargo nextest run --release --target x86_64-pc-windows-gnu"
+    commands: "cargo nextest run --release"
     plugins:
       - nienbo/cache#v2.4.16:
+          id: "$BUILDKITE_REPO"
           backend: rsync
           rsync:
             path: "/tmp/pipeline-caches"
-          key: "$BUILDKITE_REPO"
+          key: "{{ id }}"
           restore-keys:
-            - "$BUILDKITE_REPO"
+            - "{{ id }}"
           paths:
             - "target"
           continue_on_error: true

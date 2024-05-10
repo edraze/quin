@@ -1,5 +1,5 @@
 name: "QUIN Test reporting"
-description: "Quin pipeline to collect tests and code coverage reports"
+description: "Quin pipeline to collect test and code coverage reports"
 emoji: ":codecov:"
 color: "#245f78"
 steps:
