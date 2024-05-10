@@ -38,9 +38,8 @@ steps:
     commands:
       - "cargo llvm-cov nextest --all-features --workspace --lcov --output-path target/lcov.info"
       - "export CODECOV_TOKEN=$(buildkite-agent meta-data get CODECOV_TOKEN) && echo \"CODECOV_TOKEN: $$CODECOV_TOKEN\""
-      - "bash <(curl -s https://codecov.io/bash) -f target/lcov.info -t \"$$CODECOV_TOKEN\""
+      - "bash <(curl -s https://codecov.io/bash) -f target/lcov.info -t \"$$CODECOV_TOKEN\" quin"
     plugins:
-      - joscha/codecov#v3.1.0: ~
       - nienbo/cache#v2.4.16:
           id: "$BUILDKITE_REPO"
           backend: rsync
