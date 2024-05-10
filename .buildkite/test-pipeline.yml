@@ -15,6 +15,7 @@ steps:
       - "echo \"BUILDKITE_ANALYTICS_TOKEN: $$BUILDKITE_ANALYTICS_TOKEN\""
       - "buildkite-agent meta-data set 'BUILDKITE_ANALYTICS_TOKEN' \"$$BUILDKITE_ANALYTICS_TOKEN\""
       - "buildkite-agent meta-data set 'CODECOV_TOKEN' \"$$CODECOV_TOKEN\""
+  - wait: ~
   - key: "upload_test_report"
     label: ":clipboard: Test reporting"
     commands:
