@@ -4,22 +4,19 @@ steps:
     commands:
       - "echo '+++ :triangular_flag_on_post: PIPELINE PARAMS :triangular_flag_on_post:'"
       - "git clone git@github.com:lkaratl/infr-configs.git"
-      - "ls"
-      - "echo '' >> ./infr-configs/quin/test-pipeline.env"
       - |
         while IFS= read -r line
                   do
                       echo "$$line"
                       export $$line
                   done < "./infr-configs/quin/test-pipeline.env"
-      - "echo \"BUILDKITE_ANALYTICS_TOKEN: $$BUILDKITE_ANALYTICS_TOKEN\""
       - "buildkite-agent meta-data set 'BUILDKITE_ANALYTICS_TOKEN' \"$$BUILDKITE_ANALYTICS_TOKEN\""
       - "buildkite-agent meta-data set 'CODECOV_TOKEN' \"$$CODECOV_TOKEN\""
   - wait: ~
   - key: "upload_test_report"
     label: ":clipboard: Test reporting"
     commands:
-      - "export BUILDKITE_ANALYTICS_TOKEN=$(buildkite-agent meta-data get BUILDKITE_ANALYTICS_TOKEN) && echo \"BUILDKITE_ANALYTICS_TOKEN: $$BUILDKITE_ANALYTICS_TOKEN\""
+      - "export BUILDKITE_ANALYTICS_TOKEN=$(buildkite-agent meta-data get BUILDKITE_ANALYTICS_TOKEN)"
       - "cargo test -- -Z unstable-options --format json --report-time | buildkite-test-collector"
     plugins:
       - nienbo/cache#v2.4.16:
@@ -37,8 +34,8 @@ steps:
     label: ":codecov: Code coverage"
     commands:
       - "cargo llvm-cov nextest --all-features --workspace --lcov --output-path target/lcov.info"
-      - "export CODECOV_TOKEN=$(buildkite-agent meta-data get CODECOV_TOKEN) && echo \"CODECOV_TOKEN: $$CODECOV_TOKEN\""
-      - "bash <(curl -s https://codecov.io/bash) -f target/lcov.info -t \"$$CODECOV_TOKEN\"-r quin"
+      - "export CODECOV_TOKEN=$(buildkite-agent meta-data get CODECOV_TOKEN)"
+      - "bash <(curl -s https://codecov.io/bash) --fail-on-error -f target/lcov.info -t \"$$CODECOV_TOKEN\" -r lkaratl/quin"
     plugins:
       - nienbo/cache#v2.4.16:
           id: "$BUILDKITE_REPO"
