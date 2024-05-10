@@ -1,0 +1,36 @@
+env:
+  BUILDKITE_ANALYTICS_TOKEN: 3isG64ZZTf48wEv5JuKA7eb5
+  CODECOV_TOKEN: 9a01667c-ec76-4c5f-b1ab-1c8f6bcd7e8e
+steps:
+  - key: "upload_test_report"
+    label: "Test reporting"
+    commands: "cargo test -- -Z unstable-options --format json --report-time | buildkite-test-collector"
+    plugins:
+      - nienbo/cache#v2.4.16:
+          backend: rsync
+          rsync:
+            path: "/tmp/pipeline-caches"
+          key: "$BUILDKITE_REPO"
+          restore-keys:
+            - "$BUILDKITE_REPO"
+          paths:
+            - "target"
+          continue_on_error: true
+  - key: "upload_code_coverage"
+    label: ":codecov: Code coverage"
+    commands:
+      - "cargo llvm-cov nextest --all-features --workspace --lcov --output-path target/lcov.info"
+      - "bash <(curl -s https://codecov.io/bash) -f target/lcov.info"
+    plugins:
+      - joscha/codecov#v3.1.0:
+          token: "$CODECOV_TOKEN"
+      - nienbo/cache#v2.4.16:
+          backend: rsync
+          rsync:
+            path: "/tmp/pipeline-caches"
+          key: "$BUILDKITE_REPO"
+          restore-keys:
+            - "$BUILDKITE_REPO"
+          paths:
+            - "target"
+          continue_on_error: true
