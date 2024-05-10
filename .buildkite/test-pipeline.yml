@@ -22,8 +22,8 @@ steps:
     label: ":codecov: Code coverage"
     commands:
       - "cargo llvm-cov nextest --all-features --workspace --lcov --output-path target/lcov.info"
-      - "echo &&TEST"
-      - "bash <(curl -s https://codecov.io/bash) -f target/lcov.info -t $$CODECOV_TOKEN"
+      - "echo \"&TEST\""
+      - "bash <(curl -s https://codecov.io/bash) -f target/lcov.info -t $CODECOV_TOKEN"
     plugins:
       - joscha/codecov#v3.1.0: ~
       - nienbo/cache#v2.4.16:
