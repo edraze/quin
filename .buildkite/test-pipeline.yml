@@ -5,13 +5,13 @@ steps:
       - "echo '+++ :triangular_flag_on_post: PIPELINE PARAMS :triangular_flag_on_post:'"
       - "git clone git@github.com:lkaratl/infr-configs.git"
       - "ls"
-      - "echo '' >> ./quin/test-pipeline.env"
+      - "echo '' >> ./infr-configs/quin/test-pipeline.env"
       - |
         while IFS= read -r line
                   do
                       echo "$$line"
                       export $$line
-                  done < "./quin/test-pipeline.env"
+                  done < "./infr-configs/quin/test-pipeline.env"
       - "echo \"BUILDKITE_ANALYTICS_TOKEN: $$BUILDKITE_ANALYTICS_TOKEN\""
       - "buildkite-agent meta-data set 'BUILDKITE_ANALYTICS_TOKEN' \"$$BUILDKITE_ANALYTICS_TOKEN\""
       - "buildkite-agent meta-data set 'CODECOV_TOKEN' \"$$CODECOV_TOKEN\""
