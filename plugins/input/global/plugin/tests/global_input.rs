@@ -12,6 +12,7 @@ mod test {
     use global_input_plugin::GlobalInputPlugin;
     use test_utils::InputStream;
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn listen_keyboard_input_test() {
         let mut app = App::new();
@@ -32,6 +33,7 @@ mod test {
         assert_eq!(input_event.unwrap(), &InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)));
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn listen_mouse_buttons_input_test() {
         let mut app = App::new();
@@ -52,6 +54,7 @@ mod test {
         assert_eq!(input_event.unwrap(), &InputEvent::MouseButton(ButtonEvent::Pressed(Button::Left)));
     }
 
+    #[ignore = "unsupported on ci"]
     #[test]
     fn block_keyboard_key_input_test() {
         let mut app = App::new();
@@ -86,7 +89,7 @@ mod test {
         assert!(input_event.is_none());
     }
 
-    #[ignore = "not compatible with nextest"]
+    #[ignore = "unsupported on ci"]
     #[test]
     fn unblock_keyboard_key_input_test() {
         let mut app = App::new();

@@ -1,0 +1,7 @@
+name: "QUIN Build"
+description: "Quin check/build/test/publish binaries pipeline"
+emoji: ":hammer_and_wrench:"
+color: "#245f78"
+steps:
+  - command: "buildkite-agent pipeline upload ./.buildkite/build-pipeline.yml"
+    label: ":git:"

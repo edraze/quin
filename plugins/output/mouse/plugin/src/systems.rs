@@ -45,10 +45,10 @@ fn move_mouse_to_position(move_mouse: &MoveMouseToPosition) {
 fn move_mouse_relatively(move_mouse: &MoveMouseRelatively) {
     let distance = move_mouse.distance;
     match move_mouse.direction {
-        Direction::Up => Enigo.mouse_move_relative(0, -distance),
-        Direction::Down => Enigo.mouse_move_relative(0, distance),
-        Direction::Left => Enigo.mouse_move_relative(-distance, 0),
-        Direction::Right => Enigo.mouse_move_relative(distance, 0),
+        Direction::Up => Enigo::new().mouse_move_relative(0, -distance),
+        Direction::Down => Enigo::new().mouse_move_relative(0, distance),
+        Direction::Left => Enigo::new().mouse_move_relative(-distance, 0),
+        Direction::Right => Enigo::new().mouse_move_relative(distance, 0),
     }
 }
 

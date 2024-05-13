@@ -1,0 +1,61 @@
+steps:
+  - key: "check"
+    label: ":mag: Check"
+    commands:
+      - "cargo clippy --tests -- -D warnings"
+    plugins:
+      - nienbo/cache#v2.4.16:
+          id: "$BUILDKITE_REPO"
+          backend: rsync
+          rsync:
+            path: "/tmp/pipeline-caches"
+          key: "{{ id }}"
+          restore-keys:
+            - "{{ id }}"
+          paths:
+            - "target"
+          continue_on_error: true
+  - wait: ~
+  - key: "build_binaries"
+    label: ":hammer_and_wrench: Build binaries"
+    commands:
+      - "cargo build --release --target x86_64-pc-windows-gnu"
+    artifact_paths:
+      - "target/x86_64-pc-windows-gnu/release/*.exe"
+    plugins:
+      - nienbo/cache#v2.4.16:
+          id: "$BUILDKITE_REPO"
+          backend: rsync
+          rsync:
+            path: "/tmp/pipeline-caches"
+          key: "{{ id }}"
+          restore-keys:
+            - "{{ id }}"
+          paths:
+            - "target"
+          continue_on_error: true
+  - wait: ~
+  - key: "test"
+    label: ":clipboard: Test"
+    commands: "cargo nextest run --release"
+    plugins:
+      - nienbo/cache#v2.4.16:
+          id: "$BUILDKITE_REPO"
+          backend: rsync
+          rsync:
+            path: "/tmp/pipeline-caches"
+          key: "{{ id }}"
+          restore-keys:
+            - "{{ id }}"
+          paths:
+            - "target"
+          continue_on_error: true
+  - wait: ~
+  - key: "upload_artifacts"
+    label: ":file_cabinet: Upload artifacts"
+    commands:
+      - "buildkite-agent artifact download 'target/x86_64-pc-windows-gnu/release/*.exe' ."
+      - "rclone sync ./target/x86_64-pc-windows-gnu/release/*.exe drive:/Managed/Quin/build/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER"
+      - "rclone copy --update drive:/Managed/Quin/build/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER drive:/Managed/Quin/build/$BUILDKITE_BRANCH/latest"
+    plugins:
+      - "uber-workflow/run-without-clone": ~

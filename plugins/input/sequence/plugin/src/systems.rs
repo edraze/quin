@@ -23,10 +23,12 @@ pub fn check_sequence_system<E: Event + Clone>(mut query: Query<(&Sequence, &ToE
     }
 }
 
-pub fn update_buffer_system(query: Query<&Sequence, Or<(Added<Sequence>, Changed<Sequence>)>>,
+type SequenceEntitiesUpdateFilter = Or<(Added<Sequence>, Changed<Sequence>)>;
+
+pub fn update_buffer_system(query: Query<&Sequence, SequenceEntitiesUpdateFilter>,
                         mut buffer: ResMut<SequenceBuffer>) {
     let capacity = query.iter()
-        .map(|sequence| sequence.len())
+        .map(|sequence| sequence.length())
         .max();
     if let Some(size) = capacity {
         println!("Resize sequence buffer: {size}");

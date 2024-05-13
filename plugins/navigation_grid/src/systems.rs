@@ -48,11 +48,11 @@ pub fn init_labels_system(windows: Query<&Window>,
 
         let sub_grid_width = x_padding * 1.5;
         let sub_grid_height = y_padding * 1.5;
-        
+       
         let sub_grid_density = 20.;
         let navigation_sub_points = build_navigation_for_rect(sub_grid_width, sub_grid_height, sub_grid_density, sub_grid_density);
 
-        commands.insert_resource(SubGrid::new(sub_grid_width, sub_grid_height, sub_grid_width / 2., sub_grid_height / 2.));
+        commands.insert_resource(SubGrid::new(sub_grid_width / 2., sub_grid_height / 2.));
 
         let mut sub_labels = sub_labels.iter();
         for point in navigation_sub_points {

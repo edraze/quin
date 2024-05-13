@@ -37,16 +37,12 @@ impl From<(f32, f32)> for NavigationPoint {
 
 #[derive(Resource)]
 pub struct SubGrid {
-    pub width: f32,
-    pub height: f32,
     pub center: Vec2,
 }
 
 impl SubGrid {
-    pub fn new(width: f32, height: f32, x_center: f32, y_center:f32) -> Self {
+    pub fn new(x_center: f32, y_center: f32) -> Self {
         Self {
-            width,
-            height,
             center: (x_center, y_center).into(),
         }
     }

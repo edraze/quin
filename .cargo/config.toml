@@ -1,0 +1,2 @@
+[env]
+RUST_TEST_THREADS = "1" # required for proper input/output testing
