@@ -1,5 +1,5 @@
-<div>
-    <h1 align="center">QUIN</h1>
+<div align="center">
+    <h1>QUIN</h1>
     <strong>Set of utilities to enhance OS experience and increase user productivity and efficiency.</strong>
 </div>
 
