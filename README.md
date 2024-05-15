@@ -16,25 +16,25 @@
 
 ## Features
 
-| Feature                     | Plugin                                                     | Description                                                                                           |
-|-----------------------------|------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| Navigate cursor with keys   | [navigation_grid](./plugins/navigation_grid/README.md)     | Move a cursor to the desired region of the screen by pressing a sequence of keys                      |
-| Control mouse with keyboard | [keyboard_to_mouse](./plugins/keyboard_to_mouse/README.md) | Simulate mouse actions using keyboard                                                                 |
-| Tray                        | -                                                          | Displays the program running in the background as a tray and allows to interact with it via tray menu |
-| Auto startup                | -                                                          | Automatically launches the program when the operating system  starts                                  |
+| Feature                     | Plugin                                                          | Description                                                                                           | Demo                                                             |
+|-----------------------------|-----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| Navigate cursor with keys   | [navigation_grid](./docs/plugins/navigation_grid/README.md)     | Move a cursor to the desired region of the screen by pressing a sequence of keys                      | ![](./docs/plugins/navigation_grid/navigation_grid_demo.gif)     |
+| Control mouse with keyboard | [keyboard_to_mouse](./docs/plugins/keyboard_to_mouse/README.md) | Simulate mouse actions using keyboard                                                                 | ![](./docs/plugins/keyboard_to_mouse/keyboard_to_mouse_demo.gif) |
+| Tray                        | -                                                               | Displays the program running in the background as a tray and allows to interact with it via tray menu | -                                                                |
+| Auto startup                | -                                                               | Automatically launches the program when the operating system  starts                                  | -                                                                |
 
 ## Plugins
 
-| Plugin                                                     | Windows            | Linux           | MacOS           |
-|------------------------------------------------------------|--------------------|-----------------|-----------------|
-| tray                                                       | :heavy_check_mark: | :x:             | :x:             |
-| [global_input](./plugins/input/global/README.md)           | :heavy_check_mark: | :grey_question: | :grey_question: |
-| [input_sequence](./plugins/input/sequence/README.md)       | :heavy_check_mark: | :grey_question: | :grey_question: |
-| [gui](./plugins/gui/README.md)                             | :heavy_check_mark: | :grey_question: | :grey_question: |
-| overlay                                                    | :heavy_check_mark: | :grey_question: | :grey_question: |
-| [keyboard_to_mouse](./plugins/keyboard_to_mouse/README.md) | :heavy_check_mark: | :grey_question: | :grey_question: |
-| [navigation_grid](./plugins/navigation_grid/README.md)     | :heavy_check_mark: | :grey_question: | :grey_question: |
-| [mouse_output](./plugins/output/mouse/README.md)           | :heavy_check_mark: | :grey_question: | :grey_question: |
+| Plugin                                                          | Windows            | Linux           | MacOS           |
+|-----------------------------------------------------------------|--------------------|-----------------|-----------------|
+| tray                                                            | :heavy_check_mark: | :x:             | :x:             |
+| [global_input](./docs/plugins/input/global/README.md)           | :heavy_check_mark: | :grey_question: | :grey_question: |
+| [input_sequence](./docs/plugins/input/sequence/README.md)       | :heavy_check_mark: | :grey_question: | :grey_question: |
+| [gui](./docs/plugins/gui/README.md)                             | :heavy_check_mark: | :grey_question: | :grey_question: |
+| overlay                                                         | :heavy_check_mark: | :grey_question: | :grey_question: |
+| [keyboard_to_mouse](./docs/plugins/keyboard_to_mouse/README.md) | :heavy_check_mark: | :grey_question: | :grey_question: |
+| [navigation_grid](./docs/plugins/navigation_grid/README.md)     | :heavy_check_mark: | :grey_question: | :grey_question: |
+| [mouse_output](./docs/plugins/output/mouse/README.md)           | :heavy_check_mark: | :grey_question: | :grey_question: |
 
 ## License
 
