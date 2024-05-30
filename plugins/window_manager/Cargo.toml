@@ -1,0 +1,14 @@
+[package]
+name = "tiling_window_manager"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy = { workspace = true }
+komorebi = { workspace = true }
+komorebi-client = { workspace = true }
+serde = { workspace = true }
+config_loader = { workspace = true }
+input_sequence_api = { workspace = true }
+input_sequence_plugin = { workspace = true }
+global_input_api = { workspace = true }

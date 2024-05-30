@@ -1,6 +1,7 @@
 use bevy::app::Plugin;
 use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
+
 use config_loader::Config;
 use global_input_plugin::GlobalInputPlugin;
 use gui_plugin::GuiPlugin;
@@ -9,7 +10,9 @@ use keyboard_to_mouse_plugin::KeyboardToMousePlugin;
 use mouse_output_plugin::MouseOutputPlugin;
 use navigation_grid::NavigationGridPlugin;
 use overlay_plugin::OverlayPlugin;
+use tiling_window_manager::TilingWindowManagerPlugin;
 use tray_plugin::TrayPlugin;
+
 use crate::general::GENERAL_PLUGIN_NAME;
 
 #[derive(Resource, Serialize, Deserialize, Debug, Clone)]
@@ -38,6 +41,7 @@ impl Default for GeneralConfig {
                 KeyboardToMousePlugin.name().to_string(),
                 NavigationGridPlugin.name().to_string(),
                 MouseOutputPlugin.name().to_string(),
+                TilingWindowManagerPlugin.name().to_string(),
             ],
         }
     }

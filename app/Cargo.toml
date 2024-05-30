@@ -14,6 +14,7 @@ keyboard_to_mouse_plugin = { workspace = true }
 navigation_grid = { workspace = true}
 mouse_output_plugin = { workspace = true }
 auto-launch = { workspace = true }
+tiling_window_manager = { workspace = true }
 
 serde = { workspace = true }
 bevy = { workspace = true }
