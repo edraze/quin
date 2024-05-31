@@ -17,7 +17,7 @@ steps:
     label: ":clipboard: Test reporting"
     commands:
       - "export BUILDKITE_ANALYTICS_TOKEN=$(buildkite-agent meta-data get BUILDKITE_ANALYTICS_TOKEN)"
-      - "cargo test -- -Z unstable-options --format json --report-time | buildkite-test-collector"
+      - "cargo test --target x86_64-pc-windows-gnu -- -Z unstable-options --format json --report-time | buildkite-test-collector"
     plugins:
       - nienbo/cache#v2.4.16:
           id: "$BUILDKITE_REPO"
@@ -33,7 +33,7 @@ steps:
   - key: "upload_code_coverage"
     label: ":codecov: Code coverage"
     commands:
-      - "cargo llvm-cov nextest --all-features --workspace --lcov --output-path target/lcov.info"
+      - "cargo llvm-cov nextest --target x86_64-pc-windows-gnu --all-features --workspace --lcov --output-path target/lcov.info"
       - "export CODECOV_TOKEN=$(buildkite-agent meta-data get CODECOV_TOKEN)"
       - "bash <(curl -s https://codecov.io/bash) -Z -f target/lcov.info -t \"$$CODECOV_TOKEN\""
     plugins:
