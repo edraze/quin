@@ -8,17 +8,9 @@ use input_sequence_api::Sequence;
 
 use crate::TILING_WINDOW_MANAGER_PLUGIN_NAME;
 
-#[derive(Resource, Serialize, Deserialize, Debug, Clone)]
+#[derive(Resource, Serialize, Deserialize, Debug, Clone, Default)]
 pub struct TilingWindowManagerConfig {
     pub key_bindings: TilingWindowManagerBindings,
-}
-
-impl Default for TilingWindowManagerConfig {
-    fn default() -> Self {
-        Self {
-            key_bindings: Default::default(),
-        }
-    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
