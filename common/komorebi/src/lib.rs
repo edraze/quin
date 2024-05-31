@@ -32,7 +32,7 @@ fn load_binary(path: &Path) {
     if fs::metadata(path).is_err() {
         println!("Komorebi binary missing, try to write binary in path: {path:?}");
         let binary = include_bytes!("../../../bin/komorebi.exe");
-        fs::create_dir_all(&path.parent().unwrap()).unwrap();
+        fs::create_dir_all(path.parent().unwrap()).unwrap();
         fs::write(path, binary).expect("Error during komorebi binary creation");
     }
 }
