@@ -3529,7 +3529,7 @@ checksum = "e2db585e1d738fc771bf08a151420d3ed193d9d895a36df7f6f8a9456b911ddc"
 [[package]]
 name = "komorebi"
 version = "0.1.27-dev.0"
-source = "git+https://github.com/lkaratl/komorebi?branch=master#4bcbe916f90441433ebbef2c15c6970e9746d4be"
+source = "git+https://github.com/LGUG2Z/komorebi?branch=master#b7a987be8f23724f9acf6cedb9ecfc059e852617"
 dependencies = [
  "bitflags 2.5.0",
  "clap",
@@ -3579,7 +3579,7 @@ dependencies = [
 [[package]]
 name = "komorebi-client"
 version = "0.1.27-dev.0"
-source = "git+https://github.com/lkaratl/komorebi?branch=master#4bcbe916f90441433ebbef2c15c6970e9746d4be"
+source = "git+https://github.com/LGUG2Z/komorebi?branch=master#b7a987be8f23724f9acf6cedb9ecfc059e852617"
 dependencies = [
  "komorebi 0.1.27-dev.0",
  "komorebi-core",
@@ -3590,7 +3590,7 @@ dependencies = [
 [[package]]
 name = "komorebi-core"
 version = "0.1.27-dev.0"
-source = "git+https://github.com/lkaratl/komorebi?branch=master#4bcbe916f90441433ebbef2c15c6970e9746d4be"
+source = "git+https://github.com/LGUG2Z/komorebi?branch=master#b7a987be8f23724f9acf6cedb9ecfc059e852617"
 dependencies = [
  "clap",
  "color-eyre",

@@ -54,8 +54,9 @@ impl Plugin for TilingWindowManagerPlugin {
         let close_window_binding: SequencesToEvent<_> = (config.key_bindings.close.clone(), CloseWindow).into();
         listen_sequences(app, close_window_binding);
 
+        let state = KomorebiState::init(komorebi::KOMOREBI_CONFIG, komorebi::KOMOREBI_APPLICATIONS_CONFIG);
         app
-            .init_resource::<KomorebiState>()
+            .insert_resource(state)
             .add_systems(Update, (
                 on_focus_left_system,
                 on_focus_right_system,
