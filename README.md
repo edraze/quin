@@ -28,7 +28,7 @@
 
 | Plugin                                                                  | Windows            | Linux           | MacOS           |
 |-------------------------------------------------------------------------|--------------------|-----------------|-----------------|
-| tray                                                                    | :heavy_check_mark: | :x:             | :x:             |
+| tray                                                                    | :heavy_check_mark: | :grey_question: | :grey_question: |
 | [global_input](./docs/plugins/input/global/README.md)                   | :heavy_check_mark: | :grey_question: | :grey_question: |
 | [input_sequence](./docs/plugins/input/sequence/README.md)               | :heavy_check_mark: | :grey_question: | :grey_question: |
 | [gui](./docs/plugins/gui/README.md)                                     | :heavy_check_mark: | :grey_question: | :grey_question: |
