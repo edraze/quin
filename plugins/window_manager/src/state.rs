@@ -3,7 +3,6 @@ use std::thread::JoinHandle;
 
 use bevy::prelude::Resource;
 
-const KOMOREBI_CLIENT_NAME: &str = "quin.sock";
 const KOMOREBI_CONFIG_FOLDER_NAME: &str = "komorebi";
 
 #[derive(Resource)]
