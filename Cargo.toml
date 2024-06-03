@@ -64,14 +64,14 @@ bevy-persistent = { version = "0.5.0", features = ["toml", "pretty"] }
 rdev = { version = "0.5.3", features = ["unstable_grab"] }
 enigo = "0.1"
 
-# tiling_window_manager
-# todo use some release no master when parking_lot fix will be released
-komorebi-client = { git = "https://github.com/LGUG2Z/komorebi", branch = "master" }
-
 # other
 image = "0.25"
 tray-icon = "0.13"
 auto-launch = "0.5"
+
+# tiling_window_manager
+# todo use some release no master when parking_lot fix will be released
+komorebi-client = { git = "https://github.com/LGUG2Z/komorebi", branch = "master" }
 
 [profile.dev]
 deps = ["bevy/dynamic_linking"]

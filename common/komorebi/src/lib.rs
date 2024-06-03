@@ -9,12 +9,10 @@ pub use config::KOMOREBI_CONFIG;
 mod applications_config;
 mod config;
 
-const BINARY_PATH: &str = "./bin/komorebi.exe";
-
 pub fn run(config_path: Option<&str>) -> Result<(), Error> {
     let binary_path = executable_path().join("bin/komorebi.exe");
     load_binary(&binary_path);
-    let mut command = Command::new(BINARY_PATH);
+    let mut command = Command::new(binary_path);
 
     if let Some(config_path) = config_path {
         command.args(["-c", config_path]);
@@ -34,6 +32,8 @@ fn load_binary(path: &Path) {
         let binary = include_bytes!("../../../bin/komorebi.exe");
         fs::create_dir_all(path.parent().unwrap()).unwrap();
         fs::write(path, binary).expect("Error during komorebi binary creation");
+    } else {
+        println!("Komorebi binary found in path: {path:?}");
     }
 }
 

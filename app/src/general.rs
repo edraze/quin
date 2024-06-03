@@ -32,6 +32,7 @@ impl Plugin for QuinPlugins {
         add_plugin_if_enabled(app, &config, KeyboardToMousePlugin);
         add_plugin_if_enabled(app, &config, NavigationGridPlugin);
         add_plugin_if_enabled(app, &config, MouseOutputPlugin);
+        #[cfg(target_os = "windows")]
         add_plugin_if_enabled(app, &config, TilingWindowManagerPlugin);
     }
     fn name(&self) -> &str {

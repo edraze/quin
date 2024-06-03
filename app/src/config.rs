@@ -41,6 +41,7 @@ impl Default for GeneralConfig {
                 KeyboardToMousePlugin.name().to_string(),
                 NavigationGridPlugin.name().to_string(),
                 MouseOutputPlugin.name().to_string(),
+                #[cfg(target_os = "windows")]
                 TilingWindowManagerPlugin.name().to_string(),
             ],
         }

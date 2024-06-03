@@ -19,7 +19,7 @@ impl KomorebiState {
         let _komorebi_thead = thread::spawn(move || {
             komorebi::run(Some(&config_file_path))
                 .map_err(|error|
-                    println!("Failed to run Komorebi in separate thread, executable path: {config_file_path}, error: {error}"))
+                    println!("Failed to run Komorebi in separate thread, config path: {config_file_path}, error: {error}"))
                 .unwrap()
         });
         Self {
