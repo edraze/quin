@@ -24,9 +24,10 @@ steps:
           backend: rsync
           rsync:
             path: "/tmp/pipeline-caches"
-          key: "{{ id }}"
+          key: "cache-{{ id }}-{{ runner.os }}-{{ checksum 'Cargo.lock' }}"
           restore-keys:
-            - "{{ id }}"
+            - 'cache-{{ id }}-{{ runner.os }}-'
+            - 'cache-{{ id }}-'
           paths:
             - "target"
           continue_on_error: true
@@ -42,9 +43,10 @@ steps:
           backend: rsync
           rsync:
             path: "/tmp/pipeline-caches"
-          key: "{{ id }}"
+          key: "cache-{{ id }}-{{ runner.os }}-{{ checksum 'Cargo.lock' }}"
           restore-keys:
-            - "{{ id }}"
+            - 'cache-{{ id }}-{{ runner.os }}-'
+            - 'cache-{{ id }}-'
           paths:
             - "target"
           continue_on_error: true
