@@ -1,8 +1,10 @@
 use bevy::prelude::EventReader;
+#[cfg(target_os = "windows")]
 use komorebi_client::{OperationDirection, SocketMessage};
 
 use crate::events::{CloseWindow, FocusWindowDown, FocusWindowLeft, FocusWindowRight, FocusWindowUp, MinimizeWindow, MoveWindowDown, MoveWindowLeft, MoveWindowRight, MoveWindowUp, StackWindowDown, StackWindowLeft, StackWindowRight, StackWindowUp, ToggleFloat, ToggleMaximize, ToggleMonocle, UnstackWindow};
 
+#[cfg(target_os = "windows")]
 pub fn on_focus_left_system(mut events: EventReader<FocusWindowLeft>) {
     for _ in events.read() {
         println!("Handle FocusWindowLeft event");
@@ -12,6 +14,7 @@ pub fn on_focus_left_system(mut events: EventReader<FocusWindowLeft>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_focus_right_system(mut events: EventReader<FocusWindowRight>) {
     for _ in events.read() {
         println!("Handle FocusWindowRight event");
@@ -21,6 +24,7 @@ pub fn on_focus_right_system(mut events: EventReader<FocusWindowRight>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_focus_up_system(mut events: EventReader<FocusWindowUp>) {
     for _ in events.read() {
         println!("Handle FocusWindowUp event");
@@ -30,6 +34,7 @@ pub fn on_focus_up_system(mut events: EventReader<FocusWindowUp>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_focus_down_system(mut events: EventReader<FocusWindowDown>) {
     for _ in events.read() {
         println!("Handle FocusWindowDown event");
@@ -39,6 +44,7 @@ pub fn on_focus_down_system(mut events: EventReader<FocusWindowDown>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_move_left_system(mut events: EventReader<MoveWindowLeft>) {
     for _ in events.read() {
         println!("Handle MoveWindowLeft event");
@@ -48,6 +54,7 @@ pub fn on_move_left_system(mut events: EventReader<MoveWindowLeft>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_move_right_system(mut events: EventReader<MoveWindowRight>) {
     for _ in events.read() {
         println!("Handle MoveWindowRight event");
@@ -57,6 +64,7 @@ pub fn on_move_right_system(mut events: EventReader<MoveWindowRight>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_move_up_system(mut events: EventReader<MoveWindowUp>) {
     for _ in events.read() {
         println!("Handle MoveWindowUp event");
@@ -66,6 +74,7 @@ pub fn on_move_up_system(mut events: EventReader<MoveWindowUp>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_move_down_system(mut events: EventReader<MoveWindowDown>) {
     for _ in events.read() {
         println!("Handle MoveWindowDown event");
@@ -75,6 +84,7 @@ pub fn on_move_down_system(mut events: EventReader<MoveWindowDown>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_stack_left_system(mut events: EventReader<StackWindowLeft>) {
     for _ in events.read() {
         println!("Handle StackWindowLeft event");
@@ -84,6 +94,7 @@ pub fn on_stack_left_system(mut events: EventReader<StackWindowLeft>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_stack_right_system(mut events: EventReader<StackWindowRight>) {
     for _ in events.read() {
         println!("Handle StackWindowRight event");
@@ -93,6 +104,7 @@ pub fn on_stack_right_system(mut events: EventReader<StackWindowRight>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_stack_up_system(mut events: EventReader<StackWindowUp>) {
     for _ in events.read() {
         println!("Handle StackWindowUp event");
@@ -102,6 +114,7 @@ pub fn on_stack_up_system(mut events: EventReader<StackWindowUp>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_stack_down_system(mut events: EventReader<StackWindowDown>) {
     for _ in events.read() {
         println!("Handle StackWindowDown event");
@@ -111,6 +124,7 @@ pub fn on_stack_down_system(mut events: EventReader<StackWindowDown>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_unstack_system(mut events: EventReader<UnstackWindow>) {
     for _ in events.read() {
         println!("Handle UnstackWindow event");
@@ -120,6 +134,7 @@ pub fn on_unstack_system(mut events: EventReader<UnstackWindow>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_toggle_maximize_system(mut events: EventReader<ToggleMaximize>) {
     for _ in events.read() {
         println!("Handle ToggleMaximize event");
@@ -129,6 +144,7 @@ pub fn on_toggle_maximize_system(mut events: EventReader<ToggleMaximize>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_toggle_monocle_system(mut events: EventReader<ToggleMonocle>) {
     for _ in events.read() {
         println!("Handle ToggleMonocle event");
@@ -138,6 +154,7 @@ pub fn on_toggle_monocle_system(mut events: EventReader<ToggleMonocle>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_toggle_float_system(mut events: EventReader<ToggleFloat>) {
     for _ in events.read() {
         println!("Handle ToggleFloat event");
@@ -147,6 +164,7 @@ pub fn on_toggle_float_system(mut events: EventReader<ToggleFloat>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_minimize_window_system(mut events: EventReader<MinimizeWindow>) {
     for _ in events.read() {
         println!("Handle MinimizeWindow event");
@@ -156,6 +174,7 @@ pub fn on_minimize_window_system(mut events: EventReader<MinimizeWindow>) {
     }
 }
 
+#[cfg(target_os = "windows")]
 pub fn on_close_window_system(mut events: EventReader<CloseWindow>) {
     for _ in events.read() {
         println!("Handle CloseWindow event");

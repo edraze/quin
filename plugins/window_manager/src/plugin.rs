@@ -10,6 +10,7 @@ use crate::systems::{on_close_window_system, on_focus_down_system, on_focus_left
 
 pub const TILING_WINDOW_MANAGER_PLUGIN_NAME: &str = "tiling_window_manager";
 
+#[cfg(target_os = "windows")]
 #[derive(Default)]
 pub struct TilingWindowManagerPlugin;
 

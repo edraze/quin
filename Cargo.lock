@@ -3572,9 +3572,6 @@ dependencies = [
 [[package]]
 name = "komorebi"
 version = "0.2.0"
-dependencies = [
- "komorebi-client",
-]
 
 [[package]]
 name = "komorebi-client"
