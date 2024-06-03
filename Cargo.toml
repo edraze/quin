@@ -3,11 +3,15 @@ version = "0.2.0"
 edition = "2021"
 
 [workspace]
-members = ["app"
+members = [
+    "app"
     , "common/config_loader"
     , "common/input_model"
     , "common/toggle"
     , "common/keyboard_layout"
+    , "common/ui_elements"
+    , "common/komorebi"
+    , "common/test_utils"
     , "plugins/output/mouse/api"
     , "plugins/output/mouse/plugin"
     , "plugins/input/global/api"
@@ -20,8 +24,8 @@ members = ["app"
     , "plugins/tray/api"
     , "plugins/tray/plugin"
     , "plugins/navigation_grid"
-    , "common/ui_elements"
-    , "common/test_utils"]
+    , "plugins/window_manager"
+]
 
 [workspace.dependencies]
 config_loader = { path = "common/config_loader" }
@@ -29,6 +33,7 @@ ui_elements = { path = "common/ui_elements" }
 input_model = { path = "common/input_model" }
 toggle = { path = "common/toggle" }
 keyboard_layout = { path = "common/keyboard_layout" }
+komorebi = { path = "common/komorebi" }
 test_utils = { path = "common/test_utils" }
 mouse_output_api = { path = "plugins/output/mouse/api" }
 mouse_output_plugin = { path = "plugins/output/mouse/plugin" }
@@ -42,6 +47,7 @@ gui_plugin = { path = "plugins/gui/plugin" }
 tray_api = { path = "plugins/tray/api" }
 tray_plugin = { path = "plugins/tray/plugin" }
 navigation_grid = { path = "plugins/navigation_grid" }
+tiling_window_manager = { path = "plugins/window_manager" }
 
 #common
 crossbeam = "0.8"
@@ -57,6 +63,10 @@ bevy-persistent = { version = "0.5.0", features = ["toml", "pretty"] }
 # input/output
 rdev = { version = "0.5.3", features = ["unstable_grab"] }
 enigo = "0.1"
+
+# tiling_window_manager
+# todo use some release no master when parking_lot fix will be released
+komorebi-client = { git = "https://github.com/LGUG2Z/komorebi", branch = "master" }
 
 # other
 image = "0.25"

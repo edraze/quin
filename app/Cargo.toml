@@ -17,3 +17,6 @@ auto-launch = { workspace = true }
 
 serde = { workspace = true }
 bevy = { workspace = true }
+
+[target.'cfg(windows)'.dependencies]
+tiling_window_manager = { workspace = true }

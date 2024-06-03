@@ -34,8 +34,8 @@ pub trait Config: Resource + Serialize + DeserializeOwned + Default + Send + Syn
 }
 
 // todo remove panic
-fn config_dir_path() -> PathBuf {
-    let mut config_dir = env::current_exe().unwrap();
+pub fn config_dir_path() -> PathBuf {
+    let mut config_dir = env::current_exe().expect("Can't get executable path");
     config_dir.pop();
     config_dir.push(CONFIG_DIR_NAME);
     config_dir

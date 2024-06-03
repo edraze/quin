@@ -1,0 +1,4 @@
+[package]
+name = "komorebi"
+version.workspace = true
+edition.workspace = true

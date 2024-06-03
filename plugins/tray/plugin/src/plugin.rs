@@ -6,7 +6,6 @@ use crate::systems::{create_tray_system, emmit_tray_event_system, emmit_tray_ite
 
 const TRAY_PLUGIN_NAME: &str = "tray";
 
-
 #[derive(Default)]
 pub struct TrayPlugin;
 
