@@ -11,13 +11,13 @@ mod config;
 
 const BINARY_PATH: &str = "./bin/komorebi.exe";
 
-pub fn run(config_path: Option<String>) -> Result<(), Error> {
+pub fn run(config_path: Option<&str>) -> Result<(), Error> {
     let binary_path = executable_path().join("bin/komorebi.exe");
     load_binary(&binary_path);
     let mut command = Command::new(BINARY_PATH);
 
     if let Some(config_path) = config_path {
-        command.args(["-c", &config_path]);
+        command.args(["-c", config_path]);
     }
 
     command
