@@ -1,34 +1,56 @@
 use bevy::prelude::Event;
-use rdev::EventType;
 use serde::{Deserialize, Serialize};
-use input_model::keyboard::KeyEvent;
-use input_model::mouse::ButtonEvent;
+
+use input_model::{Button, Input, Key};
+use input_model::definition::{P, R};
 
 #[derive(Event, Serialize, Deserialize, Debug, PartialEq, Clone)]
-pub enum InputEvent {
-    // todo remove indirection if it possible
-    Keyboard(KeyEvent),
-    MouseButton(ButtonEvent),
-    MouseMove {
-        x: f64,
-        y: f64,
-    },
-    Wheel {
-        delta_x: i64,
-        delta_y: i64,
-    },
+pub struct InputEvent(pub Input);
+
+impl From<P<Key>> for InputEvent {
+    fn from(value: P<Key>) -> Self {
+        InputEvent(value.into())
+    }
 }
 
-impl From<&rdev::Event> for InputEvent {
-    fn from(value: &rdev::Event) -> Self {
-        let event = value.event_type;
-        match &event {
-            EventType::KeyPress(key) => InputEvent::Keyboard(KeyEvent::Pressed(key.into())),
-            EventType::KeyRelease(key) => InputEvent::Keyboard(KeyEvent::Released(key.into())),
-            EventType::ButtonPress(button) => InputEvent::MouseButton(ButtonEvent::Pressed(button.into())),
-            EventType::ButtonRelease(button) => InputEvent::MouseButton(ButtonEvent::Released(button.into())),
-            EventType::MouseMove { x, y } => InputEvent::MouseMove { x: *x, y: *y },
-            EventType::Wheel { delta_x, delta_y } => InputEvent::Wheel { delta_x: *delta_x, delta_y: *delta_y },
-        }
+impl From<P<Button>> for InputEvent {
+    fn from(value: P<Button>) -> Self {
+        InputEvent(value.into())
+    }
+}
+
+impl From<R<Key>> for InputEvent {
+    fn from(value: R<Key>) -> Self {
+        InputEvent(value.into())
+    }
+}
+
+impl From<R<Button>> for InputEvent {
+    fn from(value: R<Button>) -> Self {
+        InputEvent(value.into())
+    }
+}
+
+impl From<(Key, Input)> for InputEvent {
+    fn from(value: (Key, Input)) -> Self {
+        InputEvent(value.into())
+    }
+}
+
+impl From<(&[Key], Input)> for InputEvent {
+    fn from(value: (&[Key], Input)) -> Self {
+        InputEvent(value.into())
+    }
+}
+
+impl From<(Button, Input)> for InputEvent {
+    fn from(value: (Button, Input)) -> Self {
+        InputEvent(value.into())
+    }
+}
+
+impl From<(&[Button], Input)> for InputEvent {
+    fn from(value: (&[Button], Input)) -> Self {
+        InputEvent(value.into())
     }
 }

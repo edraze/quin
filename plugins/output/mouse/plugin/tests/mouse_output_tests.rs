@@ -6,8 +6,8 @@ mod test {
     use enigo::{Enigo, MouseControllable};
     use rdev::EventType;
 
+    use input_model::Button;
     use mouse_output_api::{Direction, DragAndDrop, DragAndDropAction, MouseClick, MoveMouseRelatively, MoveMouseToPosition, Scroll};
-    use mouse_output_api::mouse::Button;
     use mouse_output_plugin::MouseOutputPlugin;
     use test_utils::InputStream;
 

@@ -3,16 +3,15 @@ use std::fmt::Debug;
 use bevy::prelude::{Component, Event};
 use serde::{Deserialize, Serialize};
 
-use global_input_api::input::InputEvent;
-use global_input_api::input_model::keyboard::{Key, KeyEvent};
+use global_input_api::input_model::{DeviceInput, Input, Key, KeyboardInput};
 
 #[derive(Component, Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Sequence {
-    pub input_events: Vec<InputEvent>,
+    pub input_events: Vec<Input>,
 }
 
 impl Sequence {
-    pub fn new(input_sequence: Vec<InputEvent>) -> Self {
+    pub fn new(input_sequence: Vec<Input>) -> Self {
         Self {
             input_events: input_sequence
         }
@@ -29,8 +28,8 @@ impl TryFrom<char> for Sequence {
         let key = Key::try_from(value);
         Result::and_then(key, |key| {
             let input = vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(key)),
-                InputEvent::Keyboard(KeyEvent::Released(key)),
+                Input::Device(DeviceInput::Keyboard(KeyboardInput::Pressed(key))),
+                Input::Device(DeviceInput::Keyboard(KeyboardInput::Released(key))),
             ];
             Ok(Sequence::new(input))
         })

@@ -2,8 +2,8 @@ use bevy::app::{App, Plugin, Startup};
 use bevy::prelude::{IntoSystemConfigs, Update};
 use itertools::Itertools;
 
-use global_input_api::input::InputEvent;
-use global_input_api::input_model::keyboard::{Key, KeyEvent};
+use global_input_api::input_model::{DeviceInput, Input, Key, KeyboardInput};
+use global_input_api::input_model::definition::{P, R};
 use input_sequence_api::{Sequence, SequencesToEvent};
 use input_sequence_plugin::listen_sequences;
 use keyboard_layout::Layout;
@@ -112,10 +112,10 @@ fn get_keyboard_to_mouse_keys(app: &App) -> Vec<Key> {
 fn sequence_to_keys(sequence: Sequence) -> Vec<Key> {
     let mut keys = Vec::new();
     for input_event in sequence.input_events.into_iter() {
-        if let InputEvent::Keyboard(key_event) = input_event {
-            let key = match key_event {
-                KeyEvent::Pressed(key) => key,
-                KeyEvent::Released(key) => key,
+        if let Input::Device(DeviceInput::Keyboard(keyboard_input)) = input_event {
+            let key = match keyboard_input {
+                KeyboardInput::Pressed(key) => key,
+                KeyboardInput::Released(key) => key,
             };
             keys.push(key);
         }
@@ -126,8 +126,8 @@ fn sequence_to_keys(sequence: Sequence) -> Vec<Key> {
 fn keys_to_sequences(keys: Vec<Key>) -> Sequence {
     let mut input_events = Vec::new();
     for key in keys.into_iter() {
-        input_events.push(InputEvent::Keyboard(KeyEvent::Pressed(key)));
-        input_events.push(InputEvent::Keyboard(KeyEvent::Released(key)));
+        input_events.push(P(key).into());
+        input_events.push(R(key).into());
     }
     Sequence::new(input_events)
 }

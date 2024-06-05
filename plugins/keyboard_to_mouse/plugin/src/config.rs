@@ -1,9 +1,12 @@
 use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
+
 use config_loader::Config;
-use global_input_api::input::InputEvent;
-use global_input_api::input_model::keyboard::{Key, KeyEvent};
+use global_input_api::input_model::definition::{P, R};
+use global_input_api::input_model::Key;
+use global_input_api::input_model::Key::{A, C, ControlRight, D, G, H, I, J, K, L, U};
 use input_sequence_api::Sequence;
+
 use crate::KEYBOARD_TO_MOUSE_PLUGIN_NAME;
 
 #[derive(Resource, Serialize, Deserialize, Debug, Clone)]
@@ -45,35 +48,35 @@ pub struct KeyboardToMouseKeyBindings {
 impl Default for KeyboardToMouseKeyBindings {
     fn default() -> Self {
         Self {
-            activate: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::ControlRight))])],
-            deactivate: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Released(Key::ControlRight))])],
-            mouse_move_up: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyK))])],
-            mouse_move_down: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyJ))])],
-            mouse_move_left: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyH))])],
-            mouse_move_right: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyL))])],
-            mouse_scroll_up: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyU))])],
-            mouse_scroll_down: vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyD))])],
+            activate: vec![Sequence::new(vec![P(ControlRight).into()])],
+            deactivate: vec![Sequence::new(vec![R(ControlRight).into()])],
+            mouse_move_up: vec![Sequence::new(vec![P(K).into()])],
+            mouse_move_down: vec![Sequence::new(vec![P(J).into()])],
+            mouse_move_left: vec![Sequence::new(vec![P(H).into()])],
+            mouse_move_right: vec![Sequence::new(vec![P(L).into()])],
+            mouse_scroll_up: vec![Sequence::new(vec![P(U).into()])],
+            mouse_scroll_down: vec![Sequence::new(vec![P(D).into()])],
             mouse_scroll_left: vec![],
             mouse_scroll_right: vec![],
             mouse_left_button_click: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyI)),
-                InputEvent::Keyboard(KeyEvent::Released(Key::KeyI)),
+                P(I).into(),
+                R(I).into(),
             ])],
             mouse_right_button_click: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyA)),
-                InputEvent::Keyboard(KeyEvent::Released(Key::KeyA)),
+                P(A).into(),
+                R(A).into(),
             ])],
             mouse_middle_button_click: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyC)),
-                InputEvent::Keyboard(KeyEvent::Released(Key::KeyC)),
+                P(C).into(),
+                R(C).into(),
             ])],
             mouse_drag_and_drop_activate: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyG)),
-                InputEvent::Keyboard(KeyEvent::Released(Key::KeyG)),
+                P(G).into(),
+                R(G).into(),
             ])],
             mouse_drag_and_drop_deactivate: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyP)),
-                InputEvent::Keyboard(KeyEvent::Released(Key::KeyP)),
+                P(Key::P).into(),
+                R(Key::P).into(),
             ])],
         }
     }

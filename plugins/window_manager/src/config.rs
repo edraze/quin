@@ -2,8 +2,8 @@ use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
 
 use config_loader::Config;
-use global_input_api::input::InputEvent;
-use global_input_api::input_model::keyboard::{Key, KeyEvent};
+use global_input_api::input_model::definition::P;
+use global_input_api::input_model::Key::{AltLeft, DownArrow, Escape, F, J, K, L, LeftArrow, M, O, RightArrow, SemiColon, ShiftLeft, T, UpArrow, X};
 use input_sequence_api::Sequence;
 
 use crate::TILING_WINDOW_MANAGER_PLUGIN_NAME;
@@ -39,63 +39,63 @@ impl Default for TilingWindowManagerBindings {
     fn default() -> Self {
         Self {
             focus_left: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyJ))])],
+                P(AltLeft).into(),
+                P(J).into()])],
             focus_right: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::SemiColon))])],
+                P(AltLeft).into(),
+                P(SemiColon).into()])],
             focus_up: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyL))])],
+                P(AltLeft).into(),
+                P(L).into()])],
             focus_down: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyK))])],
+                P(AltLeft).into(),
+                P(K).into()])],
             move_left: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::ShiftLeft)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyJ))])],
+                P(AltLeft).into(),
+                P(ShiftLeft).into(),
+                P(J).into()])],
             move_right: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::ShiftLeft)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::SemiColon))])],
+                P(AltLeft).into(),
+                P(ShiftLeft).into(),
+                P(SemiColon).into()])],
             move_up: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::ShiftLeft)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyL))])],
+                P(AltLeft).into(),
+                P(ShiftLeft).into(),
+                P(L).into()])],
             move_down: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::ShiftLeft)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyK))])],
+                P(AltLeft).into(),
+                P(ShiftLeft).into(),
+                P(K).into()])],
             stack_left: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::LeftArrow))])],
+                P(AltLeft).into(),
+                P(LeftArrow).into()])],
             stack_right: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::RightArrow))])],
+                P(AltLeft).into(),
+                P(RightArrow).into()])],
             stack_up: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::UpArrow))])],
+                P(AltLeft).into(),
+                P(UpArrow).into()])],
             stack_down: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::DownArrow))])],
+                P(AltLeft).into(),
+                P(DownArrow).into()])],
             unstack: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Escape))])],
+                P(AltLeft).into(),
+                P(Escape).into()])],
             toggle_maximize: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyO))])],
+                P(AltLeft).into(),
+                P(O).into()])],
             toggle_monocle: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT))])],
+                P(AltLeft).into(),
+                P(T).into()])],
             toggle_float: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyF))])],
+                P(AltLeft).into(),
+                P(F).into()])],
             minimize: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyM))])],
+                P(AltLeft).into(),
+                P(M).into()])],
             close: vec![Sequence::new(vec![
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::Alt)),
-                InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyX))])],
+                P(AltLeft).into(),
+                P(X).into()])],
         }
     }
 }
