@@ -14,7 +14,7 @@ use global_input_api::input_model::{ButtonInput, DeviceInput, Input, KeyboardInp
 
 // todo remove mutex here to improve overall fps
 pub static BLOCKED_EVENTS: Lazy<Arc<Mutex<Vec<Input>>>> = Lazy::new(|| { Arc::new(Mutex::new(Vec::new())) });
-static MODIFIERS: Lazy<Mutex<HashSet<Modifier>>> = Lazy::new(|| { Mutex::new(HashSet::new()) });
+static MODIFIERS: Lazy<Mutex<Vec<Modifier>>> = Lazy::new(|| { Mutex::new(Vec::new()) });
 
 // todo hard to kill rdev listener because https://github.com/Narsil/rdev/issues/72
 // todo if sub thread not drop it creates many threads in tests
@@ -61,24 +61,26 @@ fn is_ignored(raw_event: &Event) -> bool {
     false
 }
 
-// todo fix bug when modifier release should send device input but send modified input
+// todo optimize, remove cloning and mutex
 fn modify(device_input: DeviceInput) -> Input {
-    let mut modifiers = MODIFIERS.lock().unwrap();
-    let actual_modifiers = modifiers.clone();
+    let mut modifiers_state = MODIFIERS.lock().unwrap();
+    let mut modifiers = modifiers_state.clone();
     if let DeviceInput::Keyboard(KeyboardInput::Pressed(key)) = device_input {
-        modifiers.insert(key.into());
+        modifiers_state.push(key.into());
     } else if let DeviceInput::Mouse(MouseInput::Button(ButtonInput::Pressed(button))) = device_input {
-        modifiers.insert(button.into());
+        modifiers_state.push(button.into());
     } else if let DeviceInput::Keyboard(KeyboardInput::Released(key)) = device_input {
-        modifiers.retain(|modifier| !modifier.eq(&key.into()));
+        modifiers_state.retain(|modifier| !modifier.eq(&key.into()));
+        modifiers = modifiers_state.clone();
     } else if let DeviceInput::Mouse(MouseInput::Button(ButtonInput::Released(button))) = device_input {
-        modifiers.retain(|modifier| !modifier.eq(&button.into()));
+        modifiers_state.retain(|modifier| !modifier.eq(&button.into()));
+        modifiers = modifiers_state.clone();
     }
-    if actual_modifiers.is_empty() || modifiers.is_empty() {
+
+    if modifiers.is_empty() {
         Input::Device(device_input)
     } else {
-        let mut modifiers: Vec<_> = actual_modifiers.into_iter().collect();
-        modifiers.reverse();
+        modifiers.dedup();
         Input::Modified(Modified {
             modifiers,
             input: Box::new(Input::Device(device_input)),

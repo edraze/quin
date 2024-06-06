@@ -5,7 +5,7 @@ mod test {
     use global_input_api::input::InputEvent;
     use global_input_api::input_model::Key::{E, F, S, T};
     use global_input_api::input_model::Sequence;
-    use global_input_api::input_model::view::definition::P;
+    use global_input_api::input_model::views::definition::P;
     use input_sequence_api::{ResetSequenceBuffer, SequencesToEvent};
     use input_sequence_plugin::{InputSequencePlugin, listen_sequences};
 

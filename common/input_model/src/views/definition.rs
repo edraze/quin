@@ -19,10 +19,7 @@ impl<M> From<P<M>> for Input
 impl<M> From<P<M>> for Vec<Input>
     where M: AsModifier {
     fn from(value: P<M>) -> Self {
-        let input = match value.0.as_modifier() {
-            Modifier::Key(key) => Input::Device(DeviceInput::Keyboard(KeyboardInput::Pressed(key))),
-            Modifier::Button(button) => Input::Device(DeviceInput::Mouse(MouseInput::Button(ButtonInput::Pressed(button)))),
-        };
+        let input = value.into();
         vec![input]
     }
 }
@@ -57,10 +54,7 @@ impl<M> From<R<M>> for Input
 impl<M> From<R<M>> for Vec<Input>
     where M: AsModifier {
     fn from(value: R<M>) -> Self {
-        let input = match value.0.as_modifier() {
-            Modifier::Key(key) => Input::Device(DeviceInput::Keyboard(KeyboardInput::Released(key))),
-            Modifier::Button(button) => Input::Device(DeviceInput::Mouse(MouseInput::Button(ButtonInput::Released(button)))),
-        };
+        let input = value.into();
         vec![input]
     }
 }

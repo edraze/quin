@@ -2,7 +2,7 @@ use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
 
 use config_loader::Config;
-use global_input_api::input_model::Key::{AltLeft, DownArrow, Escape, F, J, K, L, LeftArrow, M, O, RightArrow, SemiColon, ShiftLeft, T, UpArrow, X};
+use global_input_api::input_model::Key::{AltLeft, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Escape, F, J, K, L, M, O, SemiColon, ShiftLeft, T, X};
 use global_input_api::input_model::Sequence;
 use global_input_api::input_model::views::definition::P;
 
@@ -63,16 +63,16 @@ impl Default for TilingWindowManagerBindings {
                 (vec![AltLeft, ShiftLeft], P(K).into()).into(),
             ],
             stack_left: vec![
-                (AltLeft, P(LeftArrow).into()).into()
+                (AltLeft, P(ArrowLeft).into()).into()
             ],
             stack_right: vec![
-                (AltLeft, P(RightArrow).into()).into()
+                (AltLeft, P(ArrowRight).into()).into()
             ],
             stack_up: vec![
-                (AltLeft, P(UpArrow).into()).into()
+                (AltLeft, P(ArrowUp).into()).into()
             ],
             stack_down: vec![
-                (AltLeft, P(DownArrow).into()).into()
+                (AltLeft, P(ArrowDown).into()).into()
             ],
             unstack: vec![
                 (AltLeft, P(Escape).into()).into()
