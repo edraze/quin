@@ -3,36 +3,14 @@ use std::fmt::Debug;
 use bevy::prelude::{Component, Event};
 use serde::{Deserialize, Serialize};
 
-use global_input_api::input_model::{DeviceInput, Input, Key, KeyboardInput};
+use global_input_api::input_model::Sequence;
 
 #[derive(Component, Serialize, Deserialize, Debug, PartialEq, Clone)]
-pub struct Sequence {
-    pub input_events: Vec<Input>,
-}
+pub struct SequenceComponent(pub Sequence);
 
-impl Sequence {
-    pub fn new(input_sequence: Vec<Input>) -> Self {
-        Self {
-            input_events: input_sequence
-        }
-    }
-    pub fn length(&self) -> usize {
-        self.input_events.len()
-    }
-}
-
-impl TryFrom<char> for Sequence {
-    type Error = String;
-
-    fn try_from(value: char) -> Result<Self, Self::Error> {
-        let key = Key::try_from(value);
-        Result::and_then(key, |key| {
-            let input = vec![
-                Input::Device(DeviceInput::Keyboard(KeyboardInput::Pressed(key))),
-                Input::Device(DeviceInput::Keyboard(KeyboardInput::Released(key))),
-            ];
-            Ok(Sequence::new(input))
-        })
+impl From<Sequence> for SequenceComponent {
+    fn from(value: Sequence) -> Self {
+        SequenceComponent(value)
     }
 }
 
@@ -50,12 +28,15 @@ impl<E: Event + Clone> ToEvent<E> {
 }
 
 pub struct SequencesToEvent<E: Event + Clone> {
-    pub sequences: Vec<Sequence>,
+    pub sequences: Vec<SequenceComponent>,
     pub event: E,
 }
 
 impl<E: Event + Clone> From<(Vec<Sequence>, E)> for SequencesToEvent<E> {
     fn from((sequences, event): (Vec<Sequence>, E)) -> Self {
+        let sequences = sequences.into_iter()
+            .map(|sequence| sequence.into())
+            .collect();
         Self {
             sequences,
             event,
@@ -65,7 +46,7 @@ impl<E: Event + Clone> From<(Vec<Sequence>, E)> for SequencesToEvent<E> {
 
 impl<E: Event + Clone> From<(Sequence, E)> for SequencesToEvent<E> {
     fn from((sequence, event): (Sequence, E)) -> Self {
-        let sequences = vec![sequence];
+        let sequences = vec![sequence.into()];
         Self {
             sequences,
             event,

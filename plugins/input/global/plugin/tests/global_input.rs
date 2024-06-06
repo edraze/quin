@@ -8,9 +8,9 @@ mod test {
     use global_input_api::filter::InputFilterEvent;
     use global_input_api::input::InputEvent;
     use global_input_api::input_model::Button::Left;
-    use global_input_api::input_model::definition::{P, R};
     use global_input_api::input_model::filter::InputFilter;
     use global_input_api::input_model::Key::{ControlLeft, T};
+    use global_input_api::input_model::views::definition::{P, R};
     use global_input_plugin::GlobalInputPlugin;
     use test_utils::InputStream;
 
@@ -33,7 +33,7 @@ mod test {
         let mut input_events_reader = input_events.get_reader();
         let input_event = input_events_reader.read(&input_events).next();
         assert!(input_event.is_some());
-        assert_eq!(input_event.unwrap(), &P(T).into());
+        assert_eq!(input_event.unwrap(), &InputEvent(P(T).into()));
     }
 
     // #[ignore = "unsupported on ci"]
@@ -55,7 +55,7 @@ mod test {
         let mut input_events_reader = input_events.get_reader();
         let input_event = input_events_reader.read(&input_events).next();
         assert!(input_event.is_some());
-        assert_eq!(input_event.unwrap(), &P(Left).into());
+        assert_eq!(input_event.unwrap(), &InputEvent(P(Left).into()));
     }
 
     // #[ignore = "unsupported on ci"]
@@ -81,10 +81,10 @@ mod test {
         let mut input_events_iter = input_events_reader.read(&input_events);
         let input_event = input_events_iter.next();
         assert!(input_event.is_some());
-        assert_eq!(input_event.unwrap(), &P(ControlLeft).into());
+        assert_eq!(input_event.unwrap(), &InputEvent(P(ControlLeft).into()));
         let input_event = input_events_iter.next();
         assert!(input_event.is_some());
-        assert_eq!(input_event.unwrap(), &(ControlLeft, P(T).into()).into());
+        assert_eq!(input_event.unwrap(), &InputEvent((ControlLeft, P(T).into()).into()));
     }
 
     // #[ignore = "unsupported on ci"]
@@ -116,7 +116,7 @@ mod test {
             let mut input_events_reader = input_events.get_reader();
             let input_event = input_events_reader.read(&input_events).next();
             assert!(input_event.is_some());
-            assert_eq!(input_event.unwrap(), &P(T).into());
+            assert_eq!(input_event.unwrap(), &InputEvent(P(T).into()));
         }
 
         // check input outside app

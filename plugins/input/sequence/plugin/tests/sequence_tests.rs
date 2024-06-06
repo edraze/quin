@@ -3,9 +3,10 @@ mod test {
     use bevy::prelude::{App, Event, Events};
 
     use global_input_api::input::InputEvent;
-    use global_input_api::input_model::definition::P;
     use global_input_api::input_model::Key::{E, F, S, T};
-    use input_sequence_api::{ResetSequenceBuffer, Sequence, SequencesToEvent};
+    use global_input_api::input_model::Sequence;
+    use global_input_api::input_model::view::definition::P;
+    use input_sequence_api::{ResetSequenceBuffer, SequencesToEvent};
     use input_sequence_plugin::{InputSequencePlugin, listen_sequences};
 
     #[derive(Event, Clone)]

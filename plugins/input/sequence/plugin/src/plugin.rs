@@ -2,8 +2,8 @@ use bevy::app::{App, Plugin};
 use bevy::prelude::{Event, Events, Update, World};
 
 use global_input_plugin::GlobalInputPlugin;
-pub use input_sequence_api::{Sequence, SequencesToEvent};
-use input_sequence_api::{ResetSequenceBuffer, ToEvent};
+use input_sequence_api::{ResetSequenceBuffer, SequenceComponent, ToEvent};
+pub use input_sequence_api::SequencesToEvent;
 
 use crate::state::SequenceBuffer;
 use crate::systems::{check_sequence_system, handle_input_event_system, reset_sequence_buffer_system, update_buffer_system};
@@ -40,6 +40,6 @@ pub fn listen_sequences<E: Event + Clone>(app: &mut App, binding: impl Into<Sequ
     }
 }
 
-pub fn subscribe<E: Event + Clone>(world: &mut World, sequence: Sequence, event: E) {
+pub fn subscribe<E: Event + Clone>(world: &mut World, sequence: SequenceComponent, event: E) {
     world.spawn((sequence, ToEvent::from_event(event)));
 }

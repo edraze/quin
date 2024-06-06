@@ -1,5 +1,8 @@
 use serde::{Deserialize, Serialize};
 
+use crate::input::AsModifier;
+use crate::Modifier;
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub enum MouseInput {
     Button(ButtonInput),
@@ -19,6 +22,12 @@ pub enum Button {
     Right,
     Middle,
     Unknown(u8),
+}
+
+impl AsModifier for Button {
+    fn as_modifier(&self) -> Modifier {
+        Modifier::Button(*self)
+    }
 }
 
 impl From<&Button> for rdev::Button {

@@ -1,5 +1,8 @@
 use serde::{Deserialize, Serialize};
 
+use crate::input::AsModifier;
+use crate::Modifier;
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub enum KeyboardInput {
     Pressed(Key),
@@ -116,6 +119,12 @@ pub enum Key {
     Unknown(u32),
 }
 
+impl AsModifier for Key {
+    fn as_modifier(&self) -> Modifier {
+        Modifier::Key(*self)
+    }
+}
+
 impl From<&rdev::Key> for Key {
     fn from(value: &rdev::Key) -> Self {
         match value {
@@ -225,80 +234,6 @@ impl From<&rdev::Key> for Key {
             rdev::Key::KpDelete => Key::KpDelete,
             rdev::Key::Function => Key::Function,
             rdev::Key::Unknown(key) => Key::Unknown(*key),
-        }
-    }
-}
-
-impl TryFrom<char> for Key {
-    type Error = String;
-
-    fn try_from(value: char) -> Result<Self, Self::Error> {
-        match value {
-            // todo support upper case 
-            'q' => Ok(Key::Q),
-            'w' => Ok(Key::W),
-            'e' => Ok(Key::E),
-            'r' => Ok(Key::R),
-            't' => Ok(Key::T),
-            'y' => Ok(Key::Y),
-            'u' => Ok(Key::U),
-            'i' => Ok(Key::I),
-            'o' => Ok(Key::O),
-            'p' => Ok(Key::P),
-            'a' => Ok(Key::A),
-            's' => Ok(Key::S),
-            'd' => Ok(Key::D),
-            'f' => Ok(Key::F),
-            'g' => Ok(Key::G),
-            'h' => Ok(Key::H),
-            'j' => Ok(Key::J),
-            'k' => Ok(Key::K),
-            'l' => Ok(Key::L),
-            'z' => Ok(Key::Z),
-            'x' => Ok(Key::X),
-            'c' => Ok(Key::C),
-            'v' => Ok(Key::V),
-            'b' => Ok(Key::B),
-            'n' => Ok(Key::N),
-            'm' => Ok(Key::M),
-            value => Err(format!("Fail to parse Key from unsupported char: '{value}'"))
-        }
-    }
-}
-
-impl TryFrom<Key> for char {
-    type Error = String;
-
-    fn try_from(value: Key) -> Result<Self, Self::Error> {
-        match value {
-            // todo support upper case 
-            Key::Q => Ok('q'),
-            Key::W => Ok('w'),
-            Key::E => Ok('e'),
-            Key::R => Ok('r'),
-            Key::T => Ok('t'),
-            Key::Y => Ok('y'),
-            Key::U => Ok('u'),
-            Key::I => Ok('i'),
-            Key::O => Ok('o'),
-            Key::P => Ok('p'),
-            Key::A => Ok('a'),
-            Key::S => Ok('s'),
-            Key::D => Ok('d'),
-            Key::F => Ok('f'),
-            Key::G => Ok('g'),
-            Key::H => Ok('h'),
-            Key::J => Ok('j'),
-            Key::K => Ok('k'),
-            Key::L => Ok('l'),
-            Key::Z => Ok('z'),
-            Key::X => Ok('x'),
-            Key::C => Ok('c'),
-            Key::V => Ok('v'),
-            Key::B => Ok('b'),
-            Key::N => Ok('n'),
-            Key::M => Ok('m'),
-            value => Err(format!("Fail to parse char from unsupported key: '{value:?}'"))
         }
     }
 }

@@ -2,9 +2,9 @@ use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
 
 use config_loader::Config;
-use global_input_api::input_model::definition::P;
 use global_input_api::input_model::Key::{AltLeft, DownArrow, Escape, F, J, K, L, LeftArrow, M, O, RightArrow, SemiColon, ShiftLeft, T, UpArrow, X};
-use input_sequence_api::Sequence;
+use global_input_api::input_model::Sequence;
+use global_input_api::input_model::views::definition::P;
 
 use crate::TILING_WINDOW_MANAGER_PLUGIN_NAME;
 
@@ -38,64 +38,60 @@ pub struct TilingWindowManagerBindings {
 impl Default for TilingWindowManagerBindings {
     fn default() -> Self {
         Self {
-            focus_left: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(J).into()])],
-            focus_right: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(SemiColon).into()])],
-            focus_up: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(L).into()])],
-            focus_down: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(K).into()])],
-            move_left: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(ShiftLeft).into(),
-                P(J).into()])],
-            move_right: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(ShiftLeft).into(),
-                P(SemiColon).into()])],
-            move_up: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(ShiftLeft).into(),
-                P(L).into()])],
-            move_down: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(ShiftLeft).into(),
-                P(K).into()])],
-            stack_left: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(LeftArrow).into()])],
-            stack_right: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(RightArrow).into()])],
-            stack_up: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(UpArrow).into()])],
-            stack_down: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(DownArrow).into()])],
-            unstack: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(Escape).into()])],
-            toggle_maximize: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(O).into()])],
-            toggle_monocle: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(T).into()])],
-            toggle_float: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(F).into()])],
-            minimize: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(M).into()])],
-            close: vec![Sequence::new(vec![
-                P(AltLeft).into(),
-                P(X).into()])],
+            focus_left: vec![
+                (AltLeft, P(J).into()).into()
+            ],
+            focus_right: vec![
+                (AltLeft, P(SemiColon).into()).into()
+            ],
+            focus_up: vec![
+                (AltLeft, P(L).into()).into()
+            ],
+            focus_down: vec![
+                (AltLeft, P(K).into()).into()
+            ],
+            move_left: vec![
+                (vec![AltLeft, ShiftLeft], P(J).into()).into(),
+            ],
+            move_right: vec![
+                (vec![AltLeft, ShiftLeft], P(SemiColon).into()).into(),
+            ],
+            move_up: vec![
+                (vec![AltLeft, ShiftLeft], P(L).into()).into(),
+            ],
+            move_down: vec![
+                (vec![AltLeft, ShiftLeft], P(K).into()).into(),
+            ],
+            stack_left: vec![
+                (AltLeft, P(LeftArrow).into()).into()
+            ],
+            stack_right: vec![
+                (AltLeft, P(RightArrow).into()).into()
+            ],
+            stack_up: vec![
+                (AltLeft, P(UpArrow).into()).into()
+            ],
+            stack_down: vec![
+                (AltLeft, P(DownArrow).into()).into()
+            ],
+            unstack: vec![
+                (AltLeft, P(Escape).into()).into()
+            ],
+            toggle_maximize: vec![
+                (AltLeft, P(O).into()).into()
+            ],
+            toggle_monocle: vec![
+                (AltLeft, P(T).into()).into()
+            ],
+            toggle_float: vec![
+                (AltLeft, P(F).into()).into()
+            ],
+            minimize: vec![
+                (AltLeft, P(M).into()).into()
+            ],
+            close: vec![
+                (AltLeft, P(X).into()).into()
+            ],
         }
     }
 }

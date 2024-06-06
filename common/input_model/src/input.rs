@@ -5,27 +5,38 @@ use crate::{Button, ButtonInput, Key, Position, Rotation};
 use crate::keyboard::KeyboardInput;
 use crate::mouse::MouseInput;
 
-// [...].into()
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Sequence {
-    input_events: Vec<Input>,
+    pub input_events: Vec<Input>,
 }
 
-// Input::Device(DeviceInput::Keyboard(KeyboardEvent::Pressed(Key::KeyT)) 
-// | Device(Keyboard(Pressed(KeyT)) 
-// | Pressed(KeyT).into()
+impl Sequence {
+    pub fn new(input_sequence: Vec<Input>) -> Self {
+        Self {
+            input_events: input_sequence
+        }
+    }
+    pub fn length(&self) -> usize {
+        self.input_events.len()
+    }
+}
 
-// Input::Modified(Modified::new([DeviceInput::Keyboard(KeyboardEvent::Pressed(Key::AltRight))], DeviceInput::Keyboard(KeyboardEvent::Pressed(Key::KeyT)))) 
-// | Modified(Modified::new([Keyboard(Pressed(AltRight))], Keyboard(Pressed(KeyT)))) 
-// | ([Pressed(AltRight)], Pressed(KeyT)).into()
+impl From<Input> for Sequence {
+    fn from(value: Input) -> Self {
+        Sequence::new(vec![value])
+    }
+}
 
-// Input::Idle(Duration::from_secs(10));
-// | 10.into()
+impl From<Input> for Vec<Sequence> {
+    fn from(value: Input) -> Self {
+        vec![value.into()]
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub enum Input {
     Device(DeviceInput),
     Modified(Modified),
-    // Idle(Duration),
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
@@ -54,33 +65,25 @@ pub struct Modified {
     pub input: Box<Input>,
 }
 
+impl From<Modified> for Input {
+    fn from(value: Modified) -> Self {
+        Input::Modified(value)
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Hash, Clone)]
 pub enum Modifier {
     Key(Key),
     Button(Button),
 }
 
-impl From<Key> for Modifier {
-    fn from(value: Key) -> Self {
-        Modifier::Key(value)
-    }
+pub trait AsModifier {
+    fn as_modifier(&self) -> Modifier;
 }
 
-impl From<Button> for Modifier {
-    fn from(value: Button) -> Self {
-        Modifier::Button(value)
+impl<M> From<M> for Modifier
+    where M: AsModifier {
+    fn from(value: M) -> Self {
+        value.as_modifier()
     }
 }
-
-impl From<Key> for Vec<Modifier> {
-    fn from(value: Key) -> Self {
-        vec![Modifier::Key(value)]
-    }
-}
-
-impl From<Button> for Vec<Modifier> {
-    fn from(value: Button) -> Self {
-        vec![Modifier::Button(value)]
-    }
-}
-

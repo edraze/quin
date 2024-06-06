@@ -2,10 +2,9 @@ use bevy::prelude::Resource;
 use serde::{Deserialize, Serialize};
 
 use config_loader::Config;
-use global_input_api::input_model::definition::{P, R};
-use global_input_api::input_model::Key;
+use global_input_api::input_model::views::definition::{P, R};
+use global_input_api::input_model::{Key, Sequence};
 use global_input_api::input_model::Key::{A, C, ControlRight, D, G, H, I, J, K, L, U};
-use input_sequence_api::Sequence;
 
 use crate::KEYBOARD_TO_MOUSE_PLUGIN_NAME;
 
@@ -48,36 +47,36 @@ pub struct KeyboardToMouseKeyBindings {
 impl Default for KeyboardToMouseKeyBindings {
     fn default() -> Self {
         Self {
-            activate: vec![Sequence::new(vec![P(ControlRight).into()])],
-            deactivate: vec![Sequence::new(vec![R(ControlRight).into()])],
-            mouse_move_up: vec![Sequence::new(vec![P(K).into()])],
-            mouse_move_down: vec![Sequence::new(vec![P(J).into()])],
-            mouse_move_left: vec![Sequence::new(vec![P(H).into()])],
-            mouse_move_right: vec![Sequence::new(vec![P(L).into()])],
-            mouse_scroll_up: vec![Sequence::new(vec![P(U).into()])],
-            mouse_scroll_down: vec![Sequence::new(vec![P(D).into()])],
+            activate: P(ControlRight).into(),
+            deactivate: R(ControlRight).into(),
+            mouse_move_up: P(K).into(),
+            mouse_move_down: P(J).into(),
+            mouse_move_left: P(H).into(),
+            mouse_move_right: P(L).into(),
+            mouse_scroll_up: P(U).into(),
+            mouse_scroll_down: P(D).into(),
             mouse_scroll_left: vec![],
             mouse_scroll_right: vec![],
-            mouse_left_button_click: vec![Sequence::new(vec![
+            mouse_left_button_click: vec![
                 P(I).into(),
                 R(I).into(),
-            ])],
-            mouse_right_button_click: vec![Sequence::new(vec![
+            ],
+            mouse_right_button_click: vec![
                 P(A).into(),
                 R(A).into(),
-            ])],
-            mouse_middle_button_click: vec![Sequence::new(vec![
+            ],
+            mouse_middle_button_click: vec![
                 P(C).into(),
                 R(C).into(),
-            ])],
-            mouse_drag_and_drop_activate: vec![Sequence::new(vec![
+            ],
+            mouse_drag_and_drop_activate: vec![
                 P(G).into(),
                 R(G).into(),
-            ])],
-            mouse_drag_and_drop_deactivate: vec![Sequence::new(vec![
+            ],
+            mouse_drag_and_drop_deactivate: vec![
                 P(Key::P).into(),
                 R(Key::P).into(),
-            ])],
+            ],
         }
     }
 }

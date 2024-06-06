@@ -42,7 +42,6 @@ fn grab(s_chan: Sender<Input>) {
             return Some(raw_event);
         }
         let event = modify((&raw_event).into());
-        dbg!(&event);
         send_input(&event, &s_chan);
 
         let blocked_events = BLOCKED_EVENTS.lock().unwrap();
@@ -66,27 +65,20 @@ fn is_ignored(raw_event: &Event) -> bool {
 fn modify(device_input: DeviceInput) -> Input {
     let mut modifiers = MODIFIERS.lock().unwrap();
     let actual_modifiers = modifiers.clone();
-    dbg!(&device_input);
-    dbg!(&actual_modifiers);
-    dbg!(&modifiers);
     if let DeviceInput::Keyboard(KeyboardInput::Pressed(key)) = device_input {
-        dbg!("add modifier");
         modifiers.insert(key.into());
     } else if let DeviceInput::Mouse(MouseInput::Button(ButtonInput::Pressed(button))) = device_input {
-        dbg!("add modifier");
         modifiers.insert(button.into());
     } else if let DeviceInput::Keyboard(KeyboardInput::Released(key)) = device_input {
-        dbg!("remove");
         modifiers.retain(|modifier| !modifier.eq(&key.into()));
     } else if let DeviceInput::Mouse(MouseInput::Button(ButtonInput::Released(button))) = device_input {
-        dbg!("remove");
         modifiers.retain(|modifier| !modifier.eq(&button.into()));
     }
-    dbg!(&modifiers);
     if actual_modifiers.is_empty() || modifiers.is_empty() {
         Input::Device(device_input)
     } else {
-        let modifiers = actual_modifiers.into_iter().collect();
+        let mut modifiers: Vec<_> = actual_modifiers.into_iter().collect();
+        modifiers.reverse();
         Input::Modified(Modified {
             modifiers,
             input: Box::new(Input::Device(device_input)),

@@ -1,7 +1,6 @@
 use bevy::prelude::Resource;
 
-use global_input_api::input_model::Input;
-use input_sequence_api::Sequence;
+use global_input_api::input_model::{Input, Sequence};
 
 #[derive(Resource, Default)]
 pub struct SequenceBuffer {
