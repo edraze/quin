@@ -1,7 +1,6 @@
 use bevy::prelude::Event;
 
-pub use input_model::mouse;
-use input_model::mouse::Button;
+use input_model::Button;
 
 #[derive(Event, Debug, Clone)]
 pub struct MoveMouseRelatively {

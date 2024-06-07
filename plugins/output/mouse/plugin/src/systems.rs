@@ -4,8 +4,8 @@ use bevy::prelude::EventReader;
 use enigo::{Enigo, MouseControllable};
 use rdev::EventType;
 
+use input_model::Button;
 use mouse_output_api::{Direction, DragAndDrop, DragAndDropAction, MouseClick, MoveMouseRelatively, MoveMouseToPosition, Scroll};
-use mouse_output_api::mouse::Button;
 
 pub fn on_move_mouse_relatively_event_system(mut events: EventReader<MoveMouseRelatively>) {
     events.read()
@@ -73,7 +73,7 @@ fn drag_and_drop(drag_and_drop: &DragAndDrop) {
 
 fn click(button: &Button) {
     press_button(button);
-    std::thread::sleep(Duration::from_millis(200));
+    std::thread::sleep(Duration::from_millis(100));
     release_button(button);
 }
 

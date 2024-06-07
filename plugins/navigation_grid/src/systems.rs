@@ -1,6 +1,8 @@
 use bevy::prelude::{Commands, Entity, EventReader, EventWriter, Query, ResMut, Window, With};
 
-use global_input_api::filter::{FilterInput, InputFilterEvent};
+use global_input_api::filter::InputFilterEvent;
+use global_input_api::input_model::filter;
+use global_input_api::input_model::filter::InputFilter;
 use input_sequence_api::{ResetSequenceBuffer, ToEvent};
 use keyboard_to_mouse_plugin::events::{ActivateKeyboardToMouse, DeactivateKeyboardToMouse};
 use mouse_output_api::MoveMouseToPosition;
@@ -94,7 +96,7 @@ pub fn activate_plugin_system(mut activate_plugin_reader: EventReader<ActivateNa
                               mut activate_keyboard_to_mouse_writer: EventWriter<ActivateKeyboardToMouse>,
 ) {
     if activate_plugin_reader.read().count() > 0 {
-        input_filter_writer.send(InputFilterEvent::Block(FilterInput::FullKeyboardPress));
+        input_filter_writer.send(InputFilterEvent(InputFilter::Block(filter::keyboard_press_input())));
         deactivate_sub_grid_writer.send(DeactivateSubGrid);
         activate_main_grid_writer.send(ActivateMainGrid);
         activate_keyboard_to_mouse_writer.send(ActivateKeyboardToMouse); // todo fix keyboard_to_mouse plugin can be disabled by own activation/deactivation sequences
@@ -111,7 +113,7 @@ pub fn deactivate_plugin_system(mut deactivate_plugin_reader: EventReader<Deacti
         deactivate_keyboard_to_mouse_writer.send(DeactivateKeyboardToMouse);
         deactivate_sub_grid_writer.send(DeactivateSubGrid);
         deactivate_main_grid_writer.send(DeactivateMainGrid);
-        input_filter_writer.send(InputFilterEvent::Unblock(FilterInput::FullKeyboardPress));
+        input_filter_writer.send(InputFilterEvent(InputFilter::Unblock(filter::keyboard_press_input())));
     }
 }
 

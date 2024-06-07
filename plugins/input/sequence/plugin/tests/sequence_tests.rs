@@ -3,8 +3,10 @@ mod test {
     use bevy::prelude::{App, Event, Events};
 
     use global_input_api::input::InputEvent;
-    use global_input_api::input_model::keyboard::{Key, KeyEvent};
-    use input_sequence_api::{ResetSequenceBuffer, Sequence, SequencesToEvent};
+    use global_input_api::input_model::Key::{E, F, S, T};
+    use global_input_api::input_model::Sequence;
+    use global_input_api::input_model::views::definition::P;
+    use input_sequence_api::{ResetSequenceBuffer, SequencesToEvent};
     use input_sequence_plugin::{InputSequencePlugin, listen_sequences};
 
     #[derive(Event, Clone)]
@@ -12,7 +14,7 @@ mod test {
 
     #[test]
     fn subscribe_to_single_key_sequence_test() {
-        let test_sequence = vec![Sequence::new(vec![InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT))])];
+        let test_sequence = vec![Sequence::new(vec![P(T).into()])];
         let test_binding: SequencesToEvent<_> = (test_sequence, TestEvent).into();
 
         let mut app = App::new();
@@ -30,7 +32,7 @@ mod test {
         {
             let input_events = app.world.get_resource_mut::<Events<InputEvent>>();
             assert!(input_events.is_some());
-            input_events.unwrap().send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyF)));
+            input_events.unwrap().send(InputEvent(P(F).into()));
         }
 
         app.update();
@@ -45,7 +47,7 @@ mod test {
         {
             let input_events = app.world.get_resource_mut::<Events<InputEvent>>();
             assert!(input_events.is_some());
-            input_events.unwrap().send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)));
+            input_events.unwrap().send(InputEvent(P(T).into()));
         }
 
         app.update();
@@ -61,11 +63,11 @@ mod test {
     #[test]
     fn subscribe_to_word_sequence_test() {
         let test_sequence = vec![Sequence::new(vec![
-            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)),
-            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)),
-            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyS)),
-            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT))]),
-        ];
+            P(T).into(),
+            P(E).into(),
+            P(S).into(),
+            P(T).into()
+        ])];
         let test_binding: SequencesToEvent<_> = (test_sequence, TestEvent).into();
 
         let mut app = App::new();
@@ -84,10 +86,10 @@ mod test {
             let input_events = app.world.get_resource_mut::<Events<InputEvent>>();
             assert!(input_events.is_some());
             let mut input_events = input_events.unwrap();
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)));
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)));
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyS)));
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyS)));
+            input_events.send(InputEvent(P(T).into()));
+            input_events.send(InputEvent(P(E).into()));
+            input_events.send(InputEvent(P(S).into()));
+            input_events.send(InputEvent(P(S).into()));
         }
 
         app.update();
@@ -103,10 +105,10 @@ mod test {
             let input_events = app.world.get_resource_mut::<Events<InputEvent>>();
             assert!(input_events.is_some());
             let mut input_events = input_events.unwrap();
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)));
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)));
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyS)));
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)));
+            input_events.send(InputEvent(P(T).into()));
+            input_events.send(InputEvent(P(E).into()));
+            input_events.send(InputEvent(P(S).into()));
+            input_events.send(InputEvent(P(T).into()));
         }
 
         app.update();
@@ -122,11 +124,11 @@ mod test {
     #[test]
     fn reset_sequence_buffer_test() {
         let test_sequence = vec![Sequence::new(vec![
-            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)),
-            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)),
-            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyS)),
-            InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT))]),
-        ];
+            P(T).into(),
+            P(E).into(),
+            P(S).into(),
+            P(T).into()
+        ])];
         let test_binding: SequencesToEvent<_> = (test_sequence, TestEvent).into();
 
         let mut app = App::new();
@@ -145,8 +147,8 @@ mod test {
             let input_events = app.world.get_resource_mut::<Events<InputEvent>>();
             assert!(input_events.is_some());
             let mut input_events = input_events.unwrap();
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)));
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyE)));
+            input_events.send(InputEvent(P(T).into()));
+            input_events.send(InputEvent(P(E).into()));
         }
 
         app.update();
@@ -166,8 +168,8 @@ mod test {
             let input_events = app.world.get_resource_mut::<Events<InputEvent>>();
             assert!(input_events.is_some());
             let mut input_events = input_events.unwrap();
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyS)));
-            input_events.send(InputEvent::Keyboard(KeyEvent::Pressed(Key::KeyT)));
+            input_events.send(InputEvent(P(S).into()));
+            input_events.send(InputEvent(P(T).into()));
         }
 
         app.update();

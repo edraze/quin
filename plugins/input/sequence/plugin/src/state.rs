@@ -1,10 +1,10 @@
 use bevy::prelude::Resource;
-use global_input_api::input::InputEvent;
-use input_sequence_api::Sequence;
+
+use global_input_api::input_model::{Input, Sequence};
 
 #[derive(Resource, Default)]
 pub struct SequenceBuffer {
-    buffer: Vec<InputEvent>,
+    buffer: Vec<Input>,
 }
 
 impl SequenceBuffer {
@@ -16,7 +16,7 @@ impl SequenceBuffer {
         }
     }
 
-    pub fn push(&mut self, input: InputEvent) {
+    pub fn push(&mut self, input: Input) {
         if self.buffer.capacity() != 0 {
             if self.buffer.len() == self.buffer.capacity() {
                 self.buffer.remove(0);

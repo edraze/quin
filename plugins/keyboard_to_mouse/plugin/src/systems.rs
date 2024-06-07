@@ -1,8 +1,9 @@
 use bevy::prelude::{EventReader, EventWriter, Res, ResMut};
 
-use global_input_api::filter::{FilterInput, InputFilterEvent};
+use global_input_api::filter::InputFilterEvent;
+use global_input_api::input_model::{Button, filter};
+use global_input_api::input_model::filter::InputFilter;
 use mouse_output_api::{Direction, DragAndDrop, DragAndDropAction, MouseClick, MoveMouseRelatively, Scroll};
-use mouse_output_api::mouse::Button;
 use toggle::Active;
 
 use crate::config::KeyboardToMouseConfig;
@@ -11,7 +12,7 @@ use crate::state::KeyboardToMouseState;
 
 pub fn on_activate_keyboard_to_mouse_system(mut events: EventReader<ActivateKeyboardToMouse>, mut writer: EventWriter<InputFilterEvent>) {
     if events.read().count() > 0 {
-        writer.send(InputFilterEvent::Block(FilterInput::FullKeyboardPress));
+        writer.send(InputFilterEvent(InputFilter::Block(filter::keyboard_press_input())));
     }
 }
 
@@ -23,7 +24,7 @@ pub fn on_deactivate_keyboard_to_mouse_system(mut events: EventReader<Deactivate
         if state.drag_and_drop_active {
            drag_and_drop_end_writer.send(DragAndDropEnd); 
         }
-        input_filter_writer.send(InputFilterEvent::Unblock(FilterInput::FullKeyboardPress));
+        input_filter_writer.send(InputFilterEvent(InputFilter::Unblock(filter::keyboard_press_input())));
     }
 }
 
